@@ -89,3 +89,7 @@ pnpm-debug.log*
 next-env.d.ts
 # 注意：next-env.d.ts 通常建议提交，但如果你想保持仓库极其干净也可以忽略，
 # 它是 Next.js 自动生成的。一般保留在 Git 中比较好，这里我不列入忽略。
+
+# Generated Files
+src/generated/
+public/search.json
