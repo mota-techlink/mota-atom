@@ -1,6 +1,12 @@
+// generate-assets.mjs
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { glob } from 'glob'; 
+// 🟢 新增：引入序列化工具和插件
+import { serialize } from 'next-mdx-remote/serialize';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
 
 // ---------------------------------------------------------
 // 配置路径
@@ -10,26 +16,21 @@ const PUBLIC_DIR = path.join(process.cwd(), 'public');
 const OUTPUT_FILE = path.join(process.cwd(), 'src/generated/assets-manifest.json');
 const OUTPUT_DIR = path.dirname(OUTPUT_FILE);
 
-// 确保输出目录存在
 if (!fs.existsSync(OUTPUT_DIR)) {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 }
 
 // ---------------------------------------------------------
-// 移植原来的清洗逻辑 (cleanMDXContent)
+// 清洗逻辑 (保持不变)
 // ---------------------------------------------------------
 function cleanMDXContent(content, metadata) {
   let cleaned = content;
-
-  // 修复未闭合标签
   cleaned = cleaned.replace(/<br\s*\/?>/gi, '<br />');
   cleaned = cleaned.replace(/<hr\s*\/?>/gi, '<hr />');
   cleaned = cleaned.replace(/<img([^>]*?)(?<!\/)>/gi, (match, attributes) => {
      if (match.endsWith('/>')) return match;
      return `<img${attributes} />`;
   });
-
-  // 替换 align div
   cleaned = cleaned.replace(
     /<div\s+align="left">([\s\S]*?)<\/div>/gi, 
     (match, innerContent) => {
@@ -41,84 +42,99 @@ function cleanMDXContent(content, metadata) {
       return `<div className="flex flex-wrap gap-2 items-center text-sm text-blue-600 dark:text-blue-400 my-4 leading-none">${inlineContent}</div>`;
     }
   );
-
   cleaned = cleaned.replace(/align="center"/gi, 'className="text-center"');
   cleaned = cleaned.replace(/align="right"/gi, 'className="text-right"');
-  
-  // 移除重复标题 H1
   cleaned = cleaned.replace(/^\s*#\s+.+$/m, '');
-
-  // 移除重复封面图
   if (metadata.image) {
     const escapedImage = metadata.image.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const htmlImgRegex = new RegExp(
-      `(<p[^>]*>\\s*)?<img[^>]*src=["']${escapedImage}["'][^>]*\\/?>(\\s*<\\/p>)?`, 
-      'gi'
-    );
+    const htmlImgRegex = new RegExp(`(<p[^>]*>\\s*)?<img[^>]*src=["']${escapedImage}["'][^>]*\\/?>(\\s*<\\/p>)?`, 'gi');
     cleaned = cleaned.replace(htmlImgRegex, '');
-    
-    const mdImgRegex = new RegExp(
-      `!\\[.*?\\]\\(${escapedImage}\\)`,
-      'gi'
-    );
+    const mdImgRegex = new RegExp(`!\\[.*?\\]\\(${escapedImage}\\)`, 'gi');
     cleaned = cleaned.replace(mdImgRegex, '');
   }
-
   return cleaned;
 }
 
 // ---------------------------------------------------------
-// 任务 A: 扫描内容 (替代 fs.readdirSync + matter)
+// 任务 A: 扫描内容 (修改为异步函数以支持 await serialize)
 // ---------------------------------------------------------
-function scanContent() {
+async function scanContent() {
   const contentMap = {};
-  // 定义你要扫描的内容类型文件夹
   const types = ['blog', 'showcase', 'pages', 'legal', 'products', 'mota-ai', 'docs'];
 
-  types.forEach(type => {
-    const dir = path.join(CONTENT_DIR, type);
-    if (!fs.existsSync(dir)) {
+  for (const type of types) {
+    const typeDir = path.join(CONTENT_DIR, type);
+    
+    // 如果目录不存在，跳过
+    if (!fs.existsSync(typeDir)) {
       contentMap[type] = [];
-      return;
+      continue;
     }
 
-    const files = fs.readdirSync(dir);
-    const items = files
-      .filter(f => f.match(/\.(md|mdx)$/))
-      .map(filename => {
-        const filePath = path.join(dir, filename);
-        const fileContent = fs.readFileSync(filePath, 'utf-8');
-        const { data, content } = matter(fileContent);
-        
-        // 预清洗内容
-        const cleanedContent = cleanMDXContent(content, data);
+    // 🟢 1. 使用 glob 递归扫描所有 .md/.mdx 文件
+    // pattern: content/docs/**/*.mdx
+    // windows 下路径分隔符需要处理，glob 倾向于 '/'
+    const pattern = path.join(typeDir, '**/*.{md,mdx}').replace(/\\/g, '/');
+    const files = await glob(pattern);
 
-        return {
-          filename, // 保留文件名用于 locale 判断
-          slug: filename.replace(/\.(md|mdx)$/, '').replace(/\.[a-z]{2}$/, ''), // 基础 slug
-          metadata: data,
-          content: cleanedContent,
-        };
+    const items = [];
+
+    for (const filePath of files) {
+      // 读取文件内容
+      const fileContent = fs.readFileSync(filePath, 'utf-8');
+      const { data, content } = matter(fileContent);
+
+      // 🟢 2. 计算相对路径 Slug
+      // 例子: 
+      // typeDir  = /usr/project/content/docs
+      // filePath = /usr/project/content/docs/getting-started/installation.mdx
+      // relative = getting-started/installation.mdx
+      const relativePath = path.relative(typeDir, filePath);
+      
+      // 生成基础 slug (去掉扩展名) -> getting-started/installation
+      // 并在 Windows 上强制把反斜杠转为正斜杠，保证 URL 一致性
+      const slug = relativePath
+        .replace(/\.(md|mdx)$/, '')
+        .replace(/\.[a-z]{2}$/, '') // 去掉 .zh, .en 等语言后缀
+        .replace(/\\/g, '/');       // Windows 兼容
+
+      // 处理文件名 (用于判断 locale)
+      const filename = path.basename(filePath);
+
+      // 3. 清洗内容
+      const cleanedContent = cleanMDXContent(content, data);
+
+      // 4. 编译 MDX
+      const compiledSource = await serialize(cleanedContent, {
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+          rehypePlugins: [rehypeHighlight],
+          format: 'mdx',
+        },
+        parseFrontmatter: false,
       });
 
+      items.push({
+        filename, // 保留文件名 (e.g. installation.zh.mdx)
+        slug,     // 保留完整路径 Slug (e.g. getting-started/installation)
+        metadata: data,
+        content: compiledSource,
+      });
+    }
+
     contentMap[type] = items;
-  });
+  }
 
   return contentMap;
 }
 
 // ---------------------------------------------------------
-// 任务 B: 扫描图片 (替代 image-loader)
+// 任务 B: 扫描图片 (保持不变)
 // ---------------------------------------------------------
 function scanImages() {
   const imageMap = {};
-  
-  // 递归扫描函数
   function scanDir(currentPath, relativePath) {
     const files = fs.readdirSync(currentPath, { withFileTypes: true });
-    
-    // 初始化当前目录的数组
-    // key 比如: "/images/showcase"
     const dirKey = relativePath.replace(/\\/g, '/') || '/'; 
     if (!imageMap[dirKey]) imageMap[dirKey] = [];
 
@@ -126,24 +142,17 @@ function scanImages() {
       if (file.isDirectory()) {
         scanDir(path.join(currentPath, file.name), path.join(relativePath, file.name));
       } else if (file.isFile() && /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name)) {
-        // 如果是图片，加入到当前目录的 key 中
-        // value 比如: "/images/showcase/1.jpg"
         const webPath = path.join(relativePath, file.name).replace(/\\/g, '/');
         const fullWebPath = webPath.startsWith('/') ? webPath : `/${webPath}`;
-        
-        // 存入当前文件夹的列表
         const storeKey = path.join('/', relativePath).replace(/\\/g, '/');
         if (!imageMap[storeKey]) imageMap[storeKey] = [];
         imageMap[storeKey].push(fullWebPath);
       }
     });
   }
-
-  // 从 public 开始扫描
   if (fs.existsSync(PUBLIC_DIR)) {
     scanDir(PUBLIC_DIR, '');
   }
-
   return imageMap;
 }
 
@@ -151,11 +160,19 @@ function scanImages() {
 // 执行并保存
 // ---------------------------------------------------------
 console.log('📦 Generating assets manifest...');
-const assets = {
-  content: scanContent(),
-  images: scanImages(),
-  generatedAt: new Date().toISOString()
-};
+// 必须在一个 async 函数里执行
+(async () => {
+  try {
+    const assets = {
+      content: await scanContent(), // 等待编译完成
+      images: scanImages(),
+      generatedAt: new Date().toISOString()
+    };
 
-fs.writeFileSync(OUTPUT_FILE, JSON.stringify(assets, null, 2));
-console.log(`✅ Assets manifest generated at ${OUTPUT_FILE}`);
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify(assets, null, 2));
+    console.log(`✅ Assets manifest generated at ${OUTPUT_FILE}`);
+  } catch (error) {
+    console.error('❌ Error generating assets:', error);
+    process.exit(1);
+  }
+})();

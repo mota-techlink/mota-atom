@@ -1,7 +1,6 @@
-import matter from 'gray-matter';
 import { locales,defaultLocale } from '../i18n';
 import manifest from '@/generated/assets-manifest.json';
-
+import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 
 export type ContentType = 'blog' | 'showcase' | 'pages' | 'legal' | 'products' | 'mota-ai' | 'docs';
 
@@ -19,97 +18,14 @@ export type MdxPost = {
     draft?: boolean;
     [key: string]: any;
   };
-  content: string;
+  content: MDXRemoteSerializeResult;
 };
 
 function getManifestData(type: ContentType): any[] {
   // @ts-ignore
   return manifest.content[type] || [];
 }
-function cleanMDXContent(content: string, metadata: MdxPost['metadata']): string {
-  let cleaned = content;
 
-  // ---------------------------------------------------------
-  // 1. 基础清理 (修复 HTML 注释、未闭合标签)
-  // ---------------------------------------------------------
-  
-  // 删除 HTML 注释
-//   cleaned = cleaned.replace(/<!--.*?-->/gs, '');
-  
-  // 修复常见未闭合标签
-  cleaned = cleaned.replace(/<br\s*\/?>/gi, '<br />');
-  cleaned = cleaned.replace(/<hr\s*\/?>/gi, '<hr />');
-  
-  // 修复未闭合 img (把 <img ... > 变成 <img ... />)
-  cleaned = cleaned.replace(/<img([^>]*?)(?<!\/)>/gi, (match, attributes) => {
-     if (match.endsWith('/>')) return match;
-     return `<img${attributes} />`;
-  });
-
-  // 替换 align 属性
-  cleaned = cleaned.replace(
-    /<div\s+align="left">([\s\S]*?)<\/div>/gi, 
-    (match, innerContent) => {
-      // 1. 清洗内部：把换行符(\n)变成空格，把 <br> 删掉
-      const inlineContent = innerContent
-        .replace(/\r?\n/g, ' ')       // 换行 -> 空格
-        .replace(/<br\s*\/?>/gi, '')  // 删除可能存在的 <br>
-        .replace(/\s+/g, ' ')         // 把多个连续空格合并成一个
-        .trim();                      // 去掉首尾空格
-
-      // 2. 返回：用 Flex 容器包裹清洗后的一行内容
-      // 增加 'not-prose' (如果你的 Tailwind 配置支持) 或者手动重置样式，
-      // 防止 p 标签的 margin 干扰
-      return `<div className="flex flex-wrap gap-2 items-center text-sm text-blue-600 dark:text-blue-400 my-4 leading-none">${inlineContent}</div>`;
-    }
-  );
-
-  // ... 之前的 align="center" 等逻辑 ...
-  cleaned = cleaned.replace(/align="center"/gi, 'className="text-center"');
-  cleaned = cleaned.replace(/align="right"/gi, 'className="text-right"');
-
-  // ---------------------------------------------------------
-  // 2. 智能移除重复标题 (H1)
-  // ---------------------------------------------------------
-  
-  // 逻辑：Portal 页面已经渲染了 H1，所以 Markdown 正文里的第一个 # 标题是多余的。
-  // 我们移除第一个出现的 # Title (支持跨行匹配)
-  // ^\s*#\s+ 匹配行首的 # 号
-  cleaned = cleaned.replace(/^\s*#\s+.+$/m, '');
-
-
-  // ---------------------------------------------------------
-  // 3. 智能移除重复封面图 (Image)
-  // ---------------------------------------------------------
-  
-  if (metadata.image) {
-    // A. 移除 HTML 风格图片: <img src="..." /> 及其包裹的 <p>
-    // 这种写法常见于 GitHub Readme: <p align="center"><img src="..." /></p>
-    // 我们构建一个动态正则，匹配包含该图片 URL 的 img 标签
-    // 注意：我们需要转义 metadata.image 中的特殊字符用于正则
-    const escapedImage = metadata.image.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    
-    // 匹配模式：
-    // <p ...> (可选)
-    //   <img ... src="IMAGE_URL" ... />
-    // </p> (可选)
-    const htmlImgRegex = new RegExp(
-      `(<p[^>]*>\\s*)?<img[^>]*src=["']${escapedImage}["'][^>]*\\/?>(\\s*<\\/p>)?`, 
-      'gi'
-    );
-    cleaned = cleaned.replace(htmlImgRegex, '');
-
-    // B. 移除 Markdown 风格图片: ![alt](url)
-    // ![...](IMAGE_URL)
-    const mdImgRegex = new RegExp(
-      `!\\[.*?\\]\\(${escapedImage}\\)`,
-      'gi'
-    );
-    cleaned = cleaned.replace(mdImgRegex, '');
-  }
-
-  return cleaned;
-}
 // 获取指定类型的所有内容（用于生成列表页或聚合页）
 export function getContents(type: ContentType, locale: string = defaultLocale): MdxPost[] {
   const allItems = getManifestData(type);

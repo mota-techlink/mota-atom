@@ -1,8 +1,10 @@
-import { MDXRemote } from 'next-mdx-remote/rsc';
+'use client';
+
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import remarkGfm from 'remark-gfm';
 import React from 'react';
 
-// 引入你的自定义组件
+// 引入自定义组件
 import { CodeBlock } from './code-block';
 import { YouTube } from './youtube';
 import { ImageSlider } from './image-slider';
@@ -88,7 +90,7 @@ const sharedComponents = {
 // -----------------------------------------------------------------------------
 
 interface MdxContentProps {
-  content: string;
+  content: MDXRemoteSerializeResult;
   className?: string;
 }
 
@@ -102,17 +104,7 @@ export function MdxContent({ content, className }: MdxContentProps) {
         在 Next.js App Router 中，MDXRemote 也是在服务端运行的，
         但它的内部实现机制对 Edge 更友好。
       */}
-      <MDXRemote
-        source={content}
-        components={sharedComponents}
-        options={{
-          mdxOptions: {
-            remarkPlugins: [remarkGfm],
-            // 建议先只用 highlight，排除 pretty-code 的 fs 问题
-            // rehypePlugins: [rehypeHighlight], 
-          },
-        }}
-      />
+      <MDXRemote {...content} components={sharedComponents} />
     </div>
   );
 }
