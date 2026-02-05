@@ -14,6 +14,7 @@ import { Overview } from "@/components/dashboard/overview";
 import { RecentSales } from "@/components/dashboard/recent-sales";
 import { Download, Activity, CreditCard, DollarSign, Users } from "lucide-react";
 
+export const runtime = 'edge';
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "Example dashboard app built using the components.",

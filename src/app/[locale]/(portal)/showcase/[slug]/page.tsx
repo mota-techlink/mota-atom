@@ -10,6 +10,7 @@ import { generatePostParams } from "@/lib/static-helper";
 export function generateStaticParams() {
   return generatePostParams('showcase'); // 👈 只需要改个参数
 }
+export const dynamicParams = false;
 
 export default async function ShowcasePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

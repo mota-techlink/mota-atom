@@ -16,6 +16,7 @@ import { generateLocaleParams } from "@/lib/static-helper";
 
 // 🔴 1. 先删掉这行，不要强制 force-static
 // export const dynamic = staticMode; 
+export const dynamicParams = false;
 
 // 🟢 2. 保留这个，Next.js 会自动识别并做 SSG
 export function generateStaticParams() {

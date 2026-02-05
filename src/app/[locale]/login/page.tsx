@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/card';
 import { login, signup } from './actions'; // 引入刚才写的 Server Actions
 
+export const runtime = 'edge';
 export default function LoginPage() {
   const t = useTranslations('Auth'); // 假设我们在 en.json 中定义了 Auth 字段
 

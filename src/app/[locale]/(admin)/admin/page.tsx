@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { deleteUser } from "./actions"; // 引入刚才写的 action
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
-
+export const runtime = 'edge';
 export default async function AdminPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
