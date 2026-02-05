@@ -38,6 +38,33 @@ interface SidebarProps {
   items: NavItem[];
   title: string;
 }
+const LogoContent = ({ collapsed = false }: { collapsed?: boolean }) => (
+  <div className="flex items-center gap-3">
+    {/* Logo 图片 */}
+    <div className="relative w-8 h-8 shrink-0 overflow-hidden rounded-md">
+      <Image 
+        src="/logos/mota-icon-v2.png" 
+        alt="Mota Logo" 
+        fill 
+        className="object-cover"
+        priority // 优先加载 Logo
+      />
+    </div>
+
+    {/* 文字区域：支持折叠隐藏 */}
+    <div className={cn(
+      "flex flex-col items-start justify-center transition-all duration-300 overflow-hidden",
+      collapsed ? "w-0 opacity-0 translate-x-[-10px]" : "w-auto opacity-100 translate-x-0"
+    )}>
+      <span className="font-bold text-md leading-none text-slate-900 dark:text-slate-100 tracking-wide">
+        MOTA
+      </span>
+      <span className="font-bold text-[12px] leading-none text-blue-600 dark:text-blue-400 mt-0.5 tracking-wider">
+        TECHLINK
+      </span>
+    </div>
+  </div>
+);
 
 export function Sidebar({ items, title }: SidebarProps) {
   const pathname = usePathname();
@@ -45,33 +72,7 @@ export function Sidebar({ items, title }: SidebarProps) {
   const t = useTranslations('Dashboard');
 
   // 提取出来的 Logo 组件，用于复用 (Desktop & Mobile)
-  const LogoContent = ({ collapsed = false }: { collapsed?: boolean }) => (
-    <div className="flex items-center gap-3">
-      {/* Logo 图片 */}
-      <div className="relative w-8 h-8 shrink-0 overflow-hidden rounded-md">
-        <Image 
-          src="/logos/mota-icon-v2.png" 
-          alt="Mota Logo" 
-          fill 
-          className="object-cover"
-          priority // 优先加载 Logo
-        />
-      </div>
-
-      {/* 文字区域：支持折叠隐藏 */}
-      <div className={cn(
-        "flex flex-col items-start justify-center transition-all duration-300 overflow-hidden",
-        collapsed ? "w-0 opacity-0 translate-x-[-10px]" : "w-auto opacity-100 translate-x-0"
-      )}>
-        <span className="font-bold text-md leading-none text-slate-900 dark:text-slate-100 tracking-wide">
-          MOTA
-        </span>
-        <span className="font-bold text-[12px] leading-none text-blue-600 dark:text-blue-400 mt-0.5 tracking-wider">
-          TECHLINK
-        </span>
-      </div>
-    </div>
-  );
+  
 
   return (
     <>
