@@ -4,7 +4,8 @@ import { z } from 'zod'
 
 // 定义验证 Schema (保持不变)
 const schema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  firstName: z.string().min(1, 'First name is required'), // 改为 firstName
+  lastName: z.string().optional(), // 改为 lastName
   email: z.string().email('Invalid email address'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
 })
@@ -12,7 +13,8 @@ const schema = z.object({
 export async function sendContactEmail(prevState: any, formData: FormData) {
   // 1. 验证数据
   const validatedFields = schema.safeParse({
-    name: formData.get('name'),
+    firstName: formData.get('firstName'), // 读取 firstName
+    lastName: formData.get('lastName'),   // 读取 lastName
     email: formData.get('email'),
     message: formData.get('message'),
   })
@@ -24,7 +26,7 @@ export async function sendContactEmail(prevState: any, formData: FormData) {
     }
   }
 
-  const { name, email, message } = validatedFields.data
+  const { firstName, lastName, email, message } = validatedFields.data
 
   try {
     // 🟢 2. 使用原生 fetch 调用 Resend API (替代 Resend SDK)
@@ -37,13 +39,13 @@ export async function sendContactEmail(prevState: any, formData: FormData) {
       },
       body: JSON.stringify({
         from: 'Mota Portal <onboarding@resend.dev>', // 或者你配置的域名
-        to: 'your-email@example.com', // 🔴 记得改成你接收邮件的真实邮箱
-        subject: `New Contact Form Submission from ${name}`,
+        to: 'contact@@motaiot.com', 
+        subject: `New Contact Form Submission from ${firstName} ${lastName}`,
         reply_to: email,
-        text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+        text: `Name: $ ${firstName} ${lastName}\nEmail: ${email}\nMessage: ${message}`,
         html: `
           <h3>New Contact Message</h3>
-          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Name:</strong>  ${firstName} ${lastName}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Message:</strong></p>
           <p>${message}</p>
