@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Mail, MapPin, Phone, Loader2, CheckCircle2, Send } from "lucide-react"
 import { siteConfig } from "@/config/site"
-import { sendContactEmail } from "@/actions/contact"
+
 import { GoogleMapView } from "@/components/ui/google-map-view"
 
 
@@ -17,14 +17,30 @@ export default function ContactPage() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    // 获取表单数据
     const formData = new FormData(event.currentTarget)
+    // 转为 JSON 对象
+    const data = Object.fromEntries(formData.entries())
     
     startTransition(async () => {
-      const result = await sendContactEmail(null, formData)
-      if (result.success) {
-        setSuccess(true)
-      } else {
-        alert(result.message)
+      try {
+        // 🟢 改为请求 API Route
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        const result = await res.json();
+
+        if (res.ok && result.success) {
+          setSuccess(true);
+        } else {
+          alert(result.message || "Failed to send message");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("An unexpected error occurred.");
       }
     })
   }
