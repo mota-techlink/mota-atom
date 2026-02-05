@@ -10,7 +10,7 @@ import { siteConfig } from "@/config/site"
 import { sendContactEmail } from "@/actions/contact"
 import { GoogleMapView } from "@/components/ui/google-map-view"
 
-export const runtime = 'edge'; 
+
 export default function ContactPage() {
   const [isPending, startTransition] = useTransition()
   const [success, setSuccess] = useState(false)

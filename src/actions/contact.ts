@@ -2,6 +2,7 @@
 
 import { z } from 'zod'
 
+export const runtime = 'edge';
 // 定义验证 Schema (保持不变)
 const schema = z.object({
   firstName: z.string().min(1, 'First name is required'), // 改为 firstName
