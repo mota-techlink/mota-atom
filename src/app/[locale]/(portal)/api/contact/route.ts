@@ -55,7 +55,13 @@ export async function POST(req: Request) {
     if (!resendRes.ok) {
       const errorData = await resendRes.json();
       console.error('Resend Error:', errorData);
-      return NextResponse.json({ success: false, message: 'Failed to send email via provider' }, { status: 500 });
+      
+      // 🟢 修改这里：把 errorData 返回给前端
+      return NextResponse.json({ 
+        success: false, 
+        message: `Resend Error: ${errorData.message || errorData.name || 'Unknown'}`,
+        details: errorData // 把详细信息带回去
+      }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, message: 'Message sent successfully' });
