@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       },
       body: JSON.stringify({
         from: 'Mota Portal <onboarding@resend.dev>', // 记得换成你验证过的域名
-        to: 'contact@motaiot.com', // 🔴 改成你的接收邮箱
+        to: 'harling@motaiot.com', // 🔴 改成你的接收邮箱
         subject: `New Contact: ${fullName}`,
         reply_to: email,
         text: `Name: ${fullName}\nEmail: ${email}\nMessage: ${message}`,
