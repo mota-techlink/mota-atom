@@ -200,7 +200,7 @@ export const getShowcaseBySlug = (slug: string, locale: string) => getContentByS
 export const getDocBySlug = (slug: string, locale: string) => getContentBySlug('docs', slug, locale);
 
 
-// 获取所有标签（用于 Taxonomy 聚合）
+
 export function getAllTags(): string[] {
     const posts = getContents('blog');
     const tags = new Set<string>();

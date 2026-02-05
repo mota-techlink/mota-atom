@@ -6,9 +6,8 @@ export const siteConfig = {
   logoDark: "/logos/mota-techlink-logo-blk.png",   // 暗色模式 Logo
   Icon: "/logos/mota-icon-v2.png",    // 网站图标 Favicon
   logo: "/logos/mota-logo-v2.png",
-  slogan: "Structing Chaos",
   description:
-    "An open source portal built for the next generation of SaaS.",
+    "Launch Your Dream Startup with AI Support. Zero Cost. Infinite Scale...",
   url: "https://motaiot.com", 
   ogImage: "https://motaiot.com/og.jpg",
   contact: {
