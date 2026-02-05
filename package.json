@@ -1,16 +1,17 @@
 {
   "name": "mota-atom",
   "version": "0.1.0",
-  "private": true,
+  "private": true,  
   "scripts": {
-    "dev": "node scripts/build-search.mjs && next dev",
-    "build": "node scripts/build-search.mjs && node scripts/embed-docs.mjs && npx @cloudflare/next-on-pages",
-    "start": "next start",
-    "lint": "eslint",
-    "build:data": "node scripts/build-search.mjs && node scripts/embed-docs.mjs",
-    "db:pull": "supabase db pull",
-    "db:push": "supabase db push"
-  },
+  "dev": "node scripts/build-search.mjs && next dev",
+  "build": "node scripts/build-search.mjs && next build",  
+  "start": "next start",
+  "lint": "eslint",    
+  "pages:build": "node scripts/embed-docs.mjs && npx @cloudflare/next-on-pages",  
+  "build:data": "node scripts/build-search.mjs && node scripts/embed-docs.mjs",
+  "db:pull": "supabase db pull",
+  "db:push": "supabase db push"
+},
   "dependencies": {
     "@ai-sdk/google": "^1.2.22",
     "@ai-sdk/openai": "^1.1.13",
