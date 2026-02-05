@@ -9,7 +9,7 @@ import { generatePostParams } from "@/lib/static-helper";
 export function generateStaticParams() {
   return generatePostParams('docs'); // 👈 只需要改个参数
 }
-export const dynamicParams = false;
+
 interface DocPageProps {
   params: Promise<{
     slug?: string[]; // 注意：[[...slug]] 捕获的是数组，且可能是 undefined

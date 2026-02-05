@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css"; // 别忘了引入全局样式
 
-
+export const runtime = 'edge';
 // 定义字体 (根据你的实际情况，可能是 Inter 或其他)
 const fontSans = Inter({
   subsets: ["latin"],
