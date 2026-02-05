@@ -19,7 +19,7 @@ export function SiteFooter({ className }: { className?: string }) {
               <div className="relative h-[40px] w-[40px]"> 
                 <Image
                   src={siteConfig.Icon}
-                  alt="MOTA ATOM"
+                  alt="MOTA TECHLINK"
                   fill
                   className="object-contain"
                   priority
@@ -66,7 +66,7 @@ export function SiteFooter({ className }: { className?: string }) {
           <div>
             <h3 className="text-sm font-semibold text-foreground tracking-wider uppercase">Products</h3>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li><Link href="/products/mota-ai" className="hover:text-foreground transition-colors">MOTA ATOM</Link></li>
+              <li><Link href="/products/mota-ai" className="hover:text-foreground transition-colors">MOTA AI</Link></li>
               <li><Link href="/products/sitebuild" className="hover:text-foreground transition-colors">Site Building</Link></li>
               <li><Link href="/products/mvp" className="hover:text-foreground transition-colors">MVP</Link></li>
               <li><Link href="/products/scalup" className="hover:text-foreground transition-colors">Scale Up</Link></li>

@@ -1,10 +1,5 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { compileMDX } from 'next-mdx-remote/rsc'; 
-import rehypePrettyCode from 'rehype-pretty-code';
 import remarkGfm from 'remark-gfm';
-import remarkBreaks from 'remark-breaks';
-import rehypeSlug from 'rehype-slug';
-import { AlertTriangle } from "lucide-react";
 import React from 'react';
 
 // 引入你的自定义组件

@@ -1,7 +1,7 @@
 import { log } from "console"
 
 export const siteConfig = {
-  name: "MOTA ATOM",
+  name: "MOTA TECHLINK",
   logoLight: "/logos/mota-techlink-logo-wht.png", // 亮色模式 Logo
   logoDark: "/logos/mota-techlink-logo-blk.png",   // 暗色模式 Logo
   Icon: "/logos/mota-icon-v2.png",    // 网站图标 Favicon
