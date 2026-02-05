@@ -37,7 +37,7 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Mota Portal <onboarding@resend.dev>', // 记得换成你验证过的域名
+        from: 'MOTA TECHLINK <contact@motaiot.com>', // 记得换成你验证过的域名
         to: 'harling@motaiot.com', // 🔴 改成你的接收邮箱
         subject: `New Contact: ${fullName}`,
         reply_to: email,
