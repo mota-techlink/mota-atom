@@ -168,3 +168,28 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+📄 License & Copyright
+Software Source Code
+The source code of this project is licensed under the GNU Affero General Public License v3.0 (AGPLv3).
+
+✅ You can modify and distribute the code.
+
+✅ You must open-source your modifications if you host this as a service.
+
+See the LICENSE file for details.
+
+Data and Assets
+The datasets, documentation, and non-code assets (located in data/ and docs/) are licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC-BY-NC-SA 4.0).
+
+✅ You can use the data for analysis or personal projects.
+
+❌ You cannot use the data for commercial purposes (e.g., reselling the dataset).
+
+See the LICENSE-DATA file for details.
+
+💎 Commercial License (Enterprise)
+Integrating Mota Atom into a proprietary (closed-source) product? We offer a commercial license that exempts you from the AGPLv3 obligations and provides access to advanced enterprise features.
+
+👉 [Contact us for Licensing] (mailto:contact@motaiot.com)
