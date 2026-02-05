@@ -1,11 +1,14 @@
 import { notFound } from "next/navigation";
 import { getDocBySlug } from "@/lib/mdx";
 import { MdxContent } from "@/components/mdx/mdx-content";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
 import { DocsPager } from "@/components/docs/docs-pager";
 import { getTableOfContents } from "@/lib/toc"; // 引入提取工具
 import { DashboardTableOfContents } from "@/components/docs/toc"; // 引入 UI
+import { generatePostParams } from "@/lib/static-helper";
+
+export function generateStaticParams() {
+  return generatePostParams('docs'); // 👈 只需要改个参数
+}
 
 interface DocPageProps {
   params: Promise<{

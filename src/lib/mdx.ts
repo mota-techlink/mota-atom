@@ -1,11 +1,7 @@
-import fs from 'fs';
-import path from 'path';
 import matter from 'gray-matter';
 import { locales,defaultLocale } from '../i18n';
+import manifest from '@/generated/assets-manifest.json';
 
-// const contentDirectory = path.join(process.cwd(), 'content/blog');
-// 定义内容的基础路径
-const contentBaseDir = path.join(process.cwd(), 'content');
 
 export type ContentType = 'blog' | 'showcase' | 'pages' | 'legal' | 'products' | 'mota-ai' | 'docs';
 
@@ -26,6 +22,10 @@ export type MdxPost = {
   content: string;
 };
 
+function getManifestData(type: ContentType): any[] {
+  // @ts-ignore
+  return manifest.content[type] || [];
+}
 function cleanMDXContent(content: string, metadata: MdxPost['metadata']): string {
   let cleaned = content;
 
@@ -112,38 +112,42 @@ function cleanMDXContent(content: string, metadata: MdxPost['metadata']): string
 }
 // 获取指定类型的所有内容（用于生成列表页或聚合页）
 export function getContents(type: ContentType, locale: string = defaultLocale): MdxPost[] {
-  const dir = path.join(contentBaseDir, type);
-  
-  // 如果文件夹不存在，返回空数组
-  if (!fs.existsSync(dir)) return [];
-  
-  const fileNames = fs.readdirSync(dir);
-  const baseFiles = fileNames.filter(f => 
-    !locales.some(l => l !== defaultLocale && f.includes(`.${l}.md`)) && 
-    f.match(/\.(md|mdx)$/)
-  );
-  
-  const allContent = baseFiles.map((fileName) => {
-      const slug = fileName.replace(/\.(md|mdx)$/, '');
-      const fullPath = path.join(dir, fileName);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
-      const { data, content } = matter(fileContents);
+  const allItems = getManifestData(type);
+  // 1. 过滤逻辑 (移植原 filter)
+  const filtered = allItems.filter((item: any) => {
+    // 过滤掉 draft (生产环境)
+    if (process.env.NODE_ENV === 'production' && item.metadata.draft === true) {
+      return false;
+    }
 
-      // 过滤掉 draft: true 的文章 (生产环境)
-      if (process.env.NODE_ENV === 'production' && data.draft === true) {
-        return null; 
-      }
+    // 语言过滤逻辑：
+    // 如果文件名包含 .en.md，但当前请求的是 zh，则过滤掉
+    const isLocalizedFile = locales.some(l => l !== defaultLocale && item.filename.includes(`.${l}.`));
+    
+    // 如果当前请求是默认语言(zh)，但文件是(en)，则跳过
+    if (locale === defaultLocale && isLocalizedFile) return false;
 
-      return {
-        slug,
-        metadata: data as MdxPost['metadata'],
-        content: content,
-      };
-    })
-    .filter((post): post is MdxPost => post !== null); // 过滤 null
+    // 如果当前请求是(en)，但文件不是(en)且不是默认文件... 这里简化逻辑：
+    // 我们主要需要确保取出"最合适"的文件。
+    // 在列表页，通常我们只返回默认语言的文章，或者做更复杂的去重。
+    // 原代码逻辑：!locales.some(l => l !== defaultLocale && f.includes(`.${l}.md`))
+    // 原意是：只获取默认语言的文件 + 不带后缀的文件
+    if (locales.some(l => l !== defaultLocale && item.filename.includes(`.${l}.`))) {
+      return false; 
+    }
 
-  // 默认按日期降序
-  return allContent.sort((a, b) => {
+    return true;
+  });
+   
+// 2. 映射格式 (JSON 里已经是 parse 好的了)
+  const posts: MdxPost[] = filtered.map((item: any) => ({
+    slug: item.slug,
+    metadata: item.metadata,
+    content: item.content,
+  }));
+
+  // 3. 排序
+  return posts.sort((a, b) => {
     if (a.metadata.date && b.metadata.date) {
       return new Date(a.metadata.date) > new Date(b.metadata.date) ? -1 : 1;
     }
@@ -153,39 +157,31 @@ export function getContents(type: ContentType, locale: string = defaultLocale): 
 
 // 📖 通用获取单篇内容函数
 export function getContentBySlug(type: ContentType, slug: string, locale: string = defaultLocale): MdxPost | null {
-  try {
-    const dir = path.join(contentBaseDir, type);
-    const realSlug = slug.replace(/\.mdx$/, '');
-    let targetFilePath = path.join(dir, `${realSlug}.${locale}.mdx`);    
-    if (!fs.existsSync(targetFilePath)) {
-       targetFilePath = path.join(dir, `${realSlug}.${locale}.md`);
-    }
-    // 2. 如果带语言的文件不存在，或者是默认语言，则尝试获取无后缀文件 (例如: post.mdx)
-    if (!fs.existsSync(targetFilePath)) {
-      // 回退机制：如果找不到 zh 版本，读取默认版本 (en)
-      targetFilePath = path.join(dir, `${realSlug}.mdx`);
-      
-      // 如果默认版本是 .md 而不是 .mdx
-      if (!fs.existsSync(targetFilePath)) {
-         targetFilePath = path.join(dir, `${realSlug}.md`);
-      }
-    }
-    // 3. 如果连默认文件都不存在，返回 null (404)
-    if (!fs.existsSync(targetFilePath)) {
-      return null;
-    }
-    const fileContents = fs.readFileSync(targetFilePath, 'utf8');
-    const { data, content } = matter(fileContents);
-    const cleanedContent = cleanMDXContent(content, data as MdxPost['metadata']);
-    
-    return {
-      slug: realSlug,
-      metadata: data as MdxPost['metadata'],
-      content: cleanedContent,
-    };
-  } catch (error) {
-    return null;
+  const allItems = getManifestData(type);
+  const realSlug = slug.replace(/\.mdx?$/, '');
+
+  // 查找优先级：
+  // 1. slug.zh.mdx (具体语言)
+  // 2. slug.mdx (默认/无后缀)
+  
+  let targetItem = allItems.find((item: any) => 
+    item.slug === realSlug && item.filename.includes(`.${locale}.`)
+  );
+
+  if (!targetItem) {
+    // 回退到默认语言 (假设默认是不带 locale 后缀的)
+    targetItem = allItems.find((item: any) => 
+      item.slug === realSlug && !locales.some(l => item.filename.includes(`.${l}.`))
+    );
   }
+
+  if (!targetItem) return null;
+
+  return {
+    slug: realSlug,
+    metadata: targetItem.metadata,
+    content: targetItem.content, // 内容在构建时已经清洗过了
+  };
 }
 
 

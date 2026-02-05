@@ -1,12 +1,15 @@
 import { getContentBySlug } from '@/lib/mdx'; // 使用新的通用方法
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import { MdxContent } from '@/components/mdx/mdx-content'; // 使用新的渲染器
+import { MdxContent } from '@/components/mdx/mdx-content'; 
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { HeaderMedia } from '@/components/mdx/header-media';
+import { generatePostParams } from "@/lib/static-helper";
 
+export function generateStaticParams() {
+  return generatePostParams('showcase'); // 👈 只需要改个参数
+}
 
 export default async function ShowcasePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

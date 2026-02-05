@@ -7,7 +7,7 @@ export const siteConfig = {
   Icon: "/logos/mota-icon-v2.png",    // 网站图标 Favicon
   logo: "/logos/mota-logo-v2.png",
   description:
-    "Launch Your Dream Startup with AI Support. Zero Cost. Infinite Scale...",
+    "Launch Your Dream Startup with AI Support, Zero Cost and Infinite Scale...",
   url: "https://motaiot.com", 
   ogImage: "https://motaiot.com/og.jpg",
   contact: {

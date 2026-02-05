@@ -12,6 +12,21 @@ import { SiteFooter } from "@/components/site-footer"
 import { useTranslations } from 'next-intl';
 import { LanguageToggle } from '@/components/language-toggle';
 
+import { generateLocaleParams } from "@/lib/static-helper";
+
+// 🔴 1. 先删掉这行，不要强制 force-static
+// export const dynamic = staticMode; 
+
+// 🟢 2. 保留这个，Next.js 会自动识别并做 SSG
+export function generateStaticParams() {
+  const params = generateLocaleParams();
+  
+  // 🔍 3. 加上这行 Log，看看到底生成了什么！
+  // 在终端里看输出 (不是浏览器控制台)
+  console.log('Build Params:', JSON.stringify(params, null, 2));
+  
+  return params;
+}
 
 interface PortalLayoutProps {
   children: React.ReactNode
@@ -35,7 +50,7 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
           <div className="relative w-[140px] h-[55px] dark:hidden mar-2">
               <Image 
                 src={siteConfig.logoLight}
-                alt="MOTA ATOM" 
+                alt="Mota Techlink" 
                 fill 
                 className="object-contain object-left" // object-left 确保 Logo 靠左对齐
                 priority
@@ -46,7 +61,7 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
           <div className="relative w-[140px] h-[55px] hidden dark:block">
               <Image 
                 src={siteConfig.logoDark}
-                alt="MOTA ATOM" 
+                alt="Mota Techlink" 
                 fill 
                 className="object-contain object-left"
                 priority

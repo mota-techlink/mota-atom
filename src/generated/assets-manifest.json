@@ -1,0 +1,595 @@
+{
+  "content": {
+    "blog": [
+      {
+        "filename": "dh_pipeline.md",
+        "slug": "dh_pipeline",
+        "metadata": {
+          "title": "How to generating Digital Human via opensource project",
+          "date": "2025-12-26 08:31:05",
+          "description": "Sync up from MOTA ATOM's opensource project: dh_pipeline technical white paper",
+          "categories": [
+            "Opensource",
+            "White paper"
+          ],
+          "tags": [
+            "Data Pipeline",
+            "IoT"
+          ],
+          "image": "https://raw.githubusercontent.com/mota-techlink/dh_pipeline/refs/heads/main/assets/images/cover.jpg",
+          "canonicalUrl": "https://github.com/mota-techlink/dh_pipeline",
+          "keywords": [
+            "Digital Human",
+            "LivePortrait",
+            "MuseTalk",
+            "AI Video Pipeline",
+            "MOTA ATOM"
+          ],
+          "author": "MOTA ATOM"
+        },
+        "content": "\n\n\nA modular and high-efficiency pipeline designed to generate realistic digital human videos locally. It integrates LivePortrait for motion synchronization and MuseTalk for precise lip-sync, powered by MOTA ATOM's optimization logic.\n\n\n<div className=\"flex flex-wrap gap-2 items-center text-sm text-blue-600 dark:text-blue-400 my-4 leading-none\"><a href=\"https://zdoc.app/zh/mota-techlink/dh_pipeline\">中文</a> | <a href=\"https://zdoc.app/es/mota-techlink/dh_pipeline\">Español</a> | <a href=\"https://zdoc.app/de/mota-techlink/dh_pipeline\">Deutsch</a> | <a href=\"https://zdoc.app/fr/mota-techlink/dh_pipeline\">Français</a> | <a href=\"https://zdoc.app/pt/mota-techlink/dh_pipeline\">Português</a> | <a href=\"https://zdoc.app/ru/mota-techlink/dh_pipeline\">Русский</a> | <a href=\"https://zdoc.app/ko/mota-techlink/dh_pipeline\">한국어</a> | <a href=\"https://zdoc.app/ja/mota-techlink/dh_pipeline\">日本語</a> |</div>\n\n<br />\n\n> The value of this project:\n>\n> Unlike standalone tools, dh_pipeline solves the version conflict between Torch 2.1.2 and MMCV, ensuring a one-click deployment experience. \n<br />\n\n## 1. Environment preparation\n\n> It is strongly recommended to use conda\n```bash\nmkdir dh_pipeline\ncd dh_pipeline\nconda create -n dh_pipeline python=3.10 -y\nconda activate dh_pipeline\n```\n\n## 2. Translation and voice generating\n>Install Google Deep Translator and Microsoft EdgeTTS to translate content from the original language to another language, then generate sound accordingly.\n\n```bash\npip install deep-translator edge-tts\n```\n\n>Run the translation and TTS gen\n```bash\npython run_tts.py\n```\n\n## 3. Video Combine\n> Let static avator be moving along with the sample video that could be anyone's movement.\n\n<p className=\"text-center\">\n  <img src=\"https://github.com/KlingTeam/LivePortrait/raw/main/assets/docs/showcase2.gif\" alt=\"image\"/>\n</p>\n\n### a. Get source of LivePortrait\n```bash\ngit clone https://github.com/KwaiVGI/LivePortrait\ncd LivePortrait\n```\n### b. Install dependencies\n\n<details> \n <summary>Check your CUDA versions!!!</summary>\n\n```\nnvcc -V # example versions: 11.1, 11.8, 12.1, etc.\n```\nThen, install the corresponding torch version. Here are examples for different CUDA versions. Visit the [PyTorch Official Website](https://pytorch.org/get-started/previous-versions) for installation commands if your CUDA version is not listed:\n  ```bash  \n  # for CUDA 11.8\n  pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118\n\n  # for CUDA 12.1\n  pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121\n  # ...\n  ```\n  > You can check your CUDA version using `nvidia-smi`. If your CUDA version is 11.8 or higher, use the installation command for CUDA 11.8 or above, and always keep the torch version at 2.1.2 to avoid conflicts with MuseTalk.\n\n  **Check Numpy, should not be greater than 2.0, if so downgrade**\n  ```\n  # check Numpy version\n  pip show numpy\n\n  pip install \"numpy==1.26.4\"\n  ```\n</details>\n\ninstall the remaining dependencies:\n\n```bash\npip install -r requirements.txt\n```\n\n### c. Download pretrained weights 📥\nThe easiest way to download the pretrained weights is from HuggingFace:\n\n```bash\n# !pip install -U \"huggingface_hub[cli]\"\nhuggingface-cli download KlingTeam/LivePortrait --local-dir pretrained_weights --exclude \"*.git*\" \"README.md\" \"docs\"\n```\n\nIf you cannot access to Huggingface, you can use hf-mirror to download:\n```bash\n# !pip install -U \"huggingface_hub[cli]\"\nexport HF_ENDPOINT=https://hf-mirror.com\nhuggingface-cli download KlingTeam/LivePortrait --local-dir pretrained_weights --exclude \"*.git*\" \"README.md\" \"docs\"\n```\n\nAlternatively, you can download all pretrained weights from [Google Drive](https://drive.google.com/drive/folders/1UtKgzKjFAOmZkhNK-OYT0caJ_w2XAnib) or [Baidu Yun](https://pan.baidu.com/s/1MGctWmNla_vZxDbEp2Dtzw?pwd=z5cn). Unzip and place them in ./pretrained_weights.\n\nEnsuring the directory structure is as or contains following.\n\n> The directory structure of `pretrained_weights`\n\n```text\npretrained_weights\n├── insightface\n│   └── models\n│       └── buffalo_l\n│           ├── 2d106det.onnx\n│           └── det_10g.onnx\n├── liveportrait\n│   ├── base_models\n│   │   ├── appearance_feature_extractor.pth\n│   │   ├── motion_extractor.pth\n│   │   ├── spade_generator.pth\n│   │   └── warping_module.pth\n│   ├── landmark.onnx\n│   └── retargeting_models\n│       └── stitching_retargeting_module.pth\n└── liveportrait_animals\n    ├── base_models\n    │   ├── appearance_feature_extractor.pth\n    │   ├── motion_extractor.pth\n    │   ├── spade_generator.pth\n    │   └── warping_module.pth\n    ├── retargeting_models\n    │   └── stitching_retargeting_module.pth\n    └── xpose.pth\n```\n\n**Rock and Roll**\n> default saved result at LivePortrait/animations\n```bash\n python inference.py\n```\n\nor with image and driving video path\n\n```bash\npython inference.py  --source \"assets/examples/source/s12.jpg\"   --driving \"assets/examples/driving/d13.mp4\" \n```\n\n## 4. Mouth match\n\n![Model Structure](https://github.com/user-attachments/assets/02f4a214-1bdd-4326-983c-e70b478accba)\n\n## Cases\n\n<table>\n<tr>\n<td width=\"33%\">\n\n### Input Video\n---\nhttps://github.com/TMElyralab/MuseTalk/assets/163980830/37a3a666-7b90-4244-8d3a-058cb0e44107\n\n---\nhttps://github.com/user-attachments/assets/1ce3e850-90ac-4a31-a45f-8dfa4f2960ac\n\n---\nhttps://github.com/user-attachments/assets/fa3b13a1-ae26-4d1d-899e-87435f8d22b3\n\n---\nhttps://github.com/user-attachments/assets/15800692-39d1-4f4c-99f2-aef044dc3251\n\n---\nhttps://github.com/user-attachments/assets/a843f9c9-136d-4ed4-9303-4a7269787a60\n\n---\nhttps://github.com/user-attachments/assets/6eb4e70e-9e19-48e9-85a9-bbfa589c5fcb\n\n</td>\n<td width=\"33%\">\n\n### MuseTalk 1.0\n---\nhttps://github.com/user-attachments/assets/c04f3cd5-9f77-40e9-aafd-61978380d0ef\n\n---\nhttps://github.com/user-attachments/assets/2051a388-1cef-4c1d-b2a2-3c1ceee5dc99\n\n---\nhttps://github.com/user-attachments/assets/b5f56f71-5cdc-4e2e-a519-454242000d32\n\n---\nhttps://github.com/user-attachments/assets/a5843835-04ab-4c31-989f-0995cfc22f34\n\n---\nhttps://github.com/user-attachments/assets/3dc7f1d7-8747-4733-bbdd-97874af0c028\n\n---\nhttps://github.com/user-attachments/assets/3c78064e-faad-4637-83ae-28452a22b09a\n\n</td>\n<td width=\"33%\">\n\n### MuseTalk 1.5\n---\nhttps://github.com/user-attachments/assets/999a6f5b-61dd-48e1-b902-bb3f9cbc7247\n\n---\nhttps://github.com/user-attachments/assets/d26a5c9a-003c-489d-a043-c9a331456e75\n\n---\nhttps://github.com/user-attachments/assets/471290d7-b157-4cf6-8a6d-7e899afa302c\n\n---\nhttps://github.com/user-attachments/assets/1ee77c4c-8c70-4add-b6db-583a12faa7dc\n\n---\nhttps://github.com/user-attachments/assets/370510ea-624c-43b7-bbb0-ab5333e0fcc4\n\n---\nhttps://github.com/user-attachments/assets/b011ece9-a332-4bc1-b8b7-ef6e383d7bde\n\n</td>\n</tr>\n</table>\n\n### a. Download code\n```bash\ngit clone https://github.com/TMElyralab/MuseTalk.git\ncd MuseTalk\n```\n\n### b. Install Dependencies\n\n```bash\npip install -r requirements.txt\n\n# Make sure numpy is lower than 2.0\n# pip install \"numpy==1.26.4\"\n\n# Make sure torch is 2.1.2, \n#pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118\n\n# make sure the version of mmcv is following:\nwget https://download.openmmlab.com/mmcv/dist/cu118/torch2.1.0/mmcv-2.1.0-cp310-cp310-manylinux1_x86_64.whl\n\npip install mmcv-2.1.0-cp310-cp310-manylinux1_x86_64.whl\n\n# Strictly limit the versions of the remaining dependencies\npip install \"transformers==4.37.2\" \"diffusers==0.24.0\" \"accelerate==0.26.0\" \"huggingface-hub==0.23.5\" \"tokenizers==0.15.2\" \"opencv-python-headless==4.9.0.80\" \"omegaconf\" \"imageio-ffmpeg\" \"av\" \"scipy\"\n\n# Finally install OpenMMLab components\npip install \"mmengine>=0.10.0\" \"mmpose>=1.1.0\" \"mmdet>=3.1.0\"\n\n# verify\npython -c \"import torch; import cv2; import numpy; from mmcv.ops import MultiScaleDeformableAttention; print(f'✅ Perfect enviroment: Torch={torch.__version__}, NumPy={numpy.__version__}, MMCV OK')\"\n```\n\n> if it does not show ' ✅ Perfect enviroment: Torch=2.1.2+cu118, NumPy=1.26.4, MMCV O', please start over!!!\n\n### c. Download weights\nYou can download weights in two ways:\n\n#### Option 1: Using Download Scripts\nWe provide two scripts for automatic downloading:\n\nFor Linux:\n```bash\nsh ./download_weights.sh\n```\n\nFor Windows:\n```batch\n# Run the script\ndownload_weights.bat\n```\n\nYou can also download the weights manually from the following links:\n\n1. Download our trained [weights](https://huggingface.co/TMElyralab/MuseTalk/tree/main)\n2. Download the weights of other components:\n   - [sd-vae-ft-mse](https://huggingface.co/stabilityai/sd-vae-ft-mse/tree/main)\n   - [whisper](https://huggingface.co/openai/whisper-tiny/tree/main)\n   - [dwpose](https://huggingface.co/yzd-v/DWPose/tree/main)\n   - [syncnet](https://huggingface.co/ByteDance/LatentSync/tree/main)\n   - [face-parse-bisent](https://drive.google.com/file/d/154JgKpzCPW82qINcVieuPH3fZ2e0P812/view?pli=1)\n   - [resnet18](https://download.pytorch.org/models/resnet18-5c106cde.pth)\n\nFinally, these weights should be organized in `models` as follows:\n```\n./models/\n├── musetalk\n│   └── musetalk.json\n│   └── pytorch_model.bin\n├── musetalkV15\n│   └── musetalk.json\n│   └── unet.pth\n├── syncnet\n│   └── latentsync_syncnet.pt\n├── dwpose\n│   └── dw-ll_ucoco_384.pth\n├── face-parse-bisent\n│   ├── 79999_iter.pth\n│   └── resnet18-5c106cde.pth\n├── sd-vae\n│   ├── config.json\n│   └── diffusion_pytorch_model.bin\n└── whisper\n    ├── config.json\n    ├── pytorch_model.bin\n    └── preprocessor_config.json\n    \n```\n\n\n### d. Run the inference\n```bash\nsh inference.sh v1.5 realtime\n```\n\n## ❓ Frequently Asked Questions (FAQ)\n\n**Q: Can this pipeline run on a consumer-grade GPU?**\nA: Yes, it is optimized for NVIDIA GPUs with at least 8GB VRAM (e.g., RTX 3060 and above).\n\n**Q: Does it support real-time generation?**\nA: Currently, it supports high-speed offline inference. Real-time support is in the MOTA ATOM roadmap.\n\n**Q: Why use Edge-TTS instead of other providers?**\nA: Edge-TTS provides the best balance between natural prosody and zero-cost local integration."
+      },
+      {
+        "filename": "mota-scout-sentinel.md",
+        "slug": "mota-scout-sentinel",
+        "metadata": {
+          "title": "Project Scout: The Inverted Atom's Sentinel",
+          "date": "2026-01-09 11:43:43",
+          "description": "Structuring the Chaos: How MOTA ATOM's open-source scout monitors high-value edge data.",
+          "categories": [
+            "Open Source",
+            "Infrastructure"
+          ],
+          "tags": [
+            "Cloudflare Workers",
+            "Data Pipeline",
+            "Automation"
+          ],
+          "image": "https://raw.githubusercontent.com/mota-techlink/mota-scout-public/main/assets/images/cover.jpg",
+          "canonicalUrl": "https://github.com/mota-techlink/mota-scout-public",
+          "keywords": [
+            "MOTA ATOM",
+            "Scout",
+            "Edge Computing",
+            "Structuring the Chaos"
+          ],
+          "author": "MOTA ATOM"
+        },
+        "content": "\n\n\n\n**Project Scout** is the high-efficiency edge data gateway of the MOTA ecosystem. Designed as a \"Sentinel,\" it monitors high-value digital noise—starting with YouTube and RSS feeds—and compresses it into structured signals via Cloudflare Workers and Supabase.\n\n> **Structuring the Chaos:** This project is a living implementation of the \"Inverted Atom\" theory, where digital chaos is captured at the edge and funneled into high-density actionable insights.\n\n\n\n<div className=\"flex flex-wrap gap-2 items-center text-sm text-blue-600 dark:text-blue-400 my-4 leading-none\"><a href=\"https://zdoc.app/zh/mota-techlink/mota-scout-public\">中文</a> | <a href=\"https://zdoc.app/es/mota-techlink/mota-scout-public\">Español</a> | <a href=\"https://zdoc.app/de/mota-techlink/mota-scout-public\">Deutsch</a> | <a href=\"https://zdoc.app/fr/mota-techlink/mota-scout-public\">Français</a> | <a href=\"https://zdoc.app/pt/mota-techlink/mota-scout-public\">Português</a> | <a href=\"https://zdoc.app/ru/mota-techlink/mota-scout-public\">Русский</a> | <a href=\"https://zdoc.app/ko/mota-techlink/mota-scout-public\">한국어</a> | <a href=\"https://zdoc.app/ja/mota-techlink/mota-scout-public\">日本語</a> |</div>\n\n<br />\n\n## 1. Project Vision\n\nIn the MOTA architecture, **Scout** represents the sensory system. While most pipelines struggle with manual data entry, Scout automates the \"Discovery Phase.\" \n\n- **Edge First:** Runs on Cloudflare Workers for 0-ms latency and global distribution.\n- **Serverless Persistence:** Integrates with Supabase to maintain a real-time state of the \"Digital Frontier.\"\n- **Building in Public:** This module is open-source to showcase how to build a robust, cost-effective data pipeline in 2026.\n\n## 2. Technical Architecture\n\nThe pipeline follows a tri-layer structure:\n1. **The Scout (Public):** A Cloudflare Worker that polls YouTube/RSS feeds.\n2. **The Heart (Private/Public Mix):** Supabase PostgreSQL storing video metadata and processing status.\n3. **The Muscle (Private):** A local worker (via Cloudflare Tunnel) that handles heavy-duty transcription and LLM structuring.\n\n## 3. Quick Start (How to Reference)\n\n### a. Setup Supabase\nCreate a table named `videos` with the following schema:\n\n```sql\ncreate table videos (\n  id uuid default uuid_generate_v4() primary key,\n  video_id text unique,\n  title text,\n  url text,\n  status text default 'pending', -- pending, processing, completed\n  created_at timestamp with time zone default now()\n);\n```\n\n### b. Deploy the Sentinel\nInstall Wrangler and deploy the worker to your Cloudflare account:\n\n```Bash\nnpm install -g wrangler\nwrangler deploy\n```\n\n### c. Configuration\nEnsure you set your environment variables in Cloudflare:\n\nSUPABASE_URL: Your project URL.\n\nSUPABASE_KEY: Your service role key (stored as a Secret).\n\n## 4. Why reference this project?\nUnlike generic scrapers, Project Scout is optimized for:\n\n- **Low Cost:** Utilizing Cloudflare's free tier for scheduling.\n\n- **Scalability:** Easily add more channels or data sources by modifying the src/index.js.\n\n- **Content Strategy:** It serves as the \"First Breath\" of the MOTA Content Engine, feeding data directly into the Digital Human pipeline (dh_pipeline).\n\n## ❓ FAQ\n**Q: Can I use this for non-YouTube sources?**  A: Absolutely. The architecture is modular. You can plug in any RSS or API-based source.\n\n**Q: Is it safe to run?** A: Yes. All sensitive keys are handled via Cloudflare Secrets and GitHub Actions.\n\n\n[MOTA ATOM:](https://motaiot.com) **From Bits to Atoms. Inverted.**"
+      },
+      {
+        "filename": "synthetic-data-nvidia-mota.md",
+        "slug": "synthetic-data-nvidia-mota",
+        "metadata": {
+          "title": "Sim-to-Real: Why Synthetic Data is the New Fuel for Industrial AIoT",
+          "date": "2026-01-06 09:00:00",
+          "description": "Inspired by NVIDIA's robot training in virtual worlds, MOTA ATOM explores how Generative AI synthesizes industrial data to accelerate Edge AI deployment.",
+          "categories": [
+            "AI Engineering",
+            "Edge AI"
+          ],
+          "tags": [
+            "NVIDIA",
+            "Synthetic Data",
+            "GenAI",
+            "Industrial IoT",
+            "Edge Computing"
+          ],
+          "image": "/images/showcase/Edge-Computing/GenAI-Cover.png"
+        },
+        "content": "\nYesterday, **NVIDIA** showcased how the next generation of robots is being trained entirely within virtual simulations (sim-to-real). The core message is clear: **Real-world data is no longer enough.**\n\nAt **MOTA ATOM**, we are bringing this same \"NVIDIA-level\" logic to the **Industrial IoT** landscape. \n\n### Bridging the Gap with GenAI\nIn many industrial scenarios, capturing high-quality data for rare events—like specific machine failures or safety breaches—is costly and time-consuming. \n\nOur **[GenAI-Driven IoT Solution](/showcase/genai-driven/)** solves this by using Generative AI to synthesize high-fidelity industrial datasets. This allows us to:\n* **Train Edge AI models** for scenarios that haven't even happened yet.\n* **Slash deployment time** by eliminating months of manual data labeling.\n* **Optimize for NPU hardware**, ensuring real-time inference at the edge.\n\n### Conclusion\nAs AI continues to evolve, the ability to generate and utilize **Synthetic Data** will define the leaders in Industry 4.0. We are proud to be at the forefront of this shift, ensuring that Generative AI delivers mission-critical value to the physical world.\n\n***\n*This post was adapted from our recent thread on [X.com](https://x.com/MOTATECHLINK). Follow us there for daily insights on the future of AIoT.*"
+      },
+      {
+        "filename": "synthetic-data-nvidia-mota.zh.md",
+        "slug": "synthetic-data-nvidia-mota",
+        "metadata": {
+          "title": "Sim-to-Real: Why Synthetic Data is the New Fuel for Industrial AIoT",
+          "date": "2026-01-06 09:00:00",
+          "description": "Inspired by NVIDIA's robot training in virtual worlds, MOTA ATOM explores how Generative AI synthesizes industrial data to accelerate Edge AI deployment.",
+          "categories": [
+            "AI Engineering",
+            "Edge AI"
+          ],
+          "tags": [
+            "NVIDIA",
+            "Synthetic Data",
+            "GenAI",
+            "Industrial IoT",
+            "Edge Computing"
+          ],
+          "image": "/images/showcase/Edge-Computing/GenAI-Cover.png"
+        },
+        "content": "\n\n**中文版**\n"
+      }
+    ],
+    "showcase": [
+      {
+        "filename": "Edge-Native-AI-Assistant.md",
+        "slug": "Edge-Native-AI-Assistant",
+        "metadata": {
+          "title": "Edge-Native AI Assistant: Enterprise RAG Solution",
+          "date": "2025-11-16T00:00:00.000Z",
+          "image": "/images/showcase/chatbot/chatbot-cover.jpg",
+          "description": "A high-performance, serverless AI chatbot built entirely on Cloudflare's edge network. Features Retrieval-Augmented Generation (RAG), custom OAuth 2.0 security, and real-time streaming, delivering enterprise-grade AI interactions at a fraction of the cost.",
+          "meta_title": "Edge-Native AI RAG Chatbot Case Study - MOTA ATOM",
+          "tags": [
+            "AI",
+            "RAG",
+            "Cloudflare",
+            "Serverless",
+            "Edge Computing"
+          ],
+          "categories": [
+            "AI Engineering"
+          ],
+          "draft": false
+        },
+        "content": "\n## Overview\n\nIn the era of Generative AI, businesses need \n<Gradient from=\"red\" to=\"orange\">intelligent assistants</Gradient> that understand their specific domain knowledge, ensure data privacy, and operate with low latency. Standard \"wrapper\" solutions often suffer from high API costs, slow response times, and data hallucinations.\n\n**MOTA ATOM** engineered a full-stack, edge-native AI solutionthat leverages **Retrieval-Augmented Generation (RAG)** to provide accurate, context-aware answers based on private corporate data. By bypassing traditional heavy servers and utilizing Cloudflare's global edge network, we achieved unparalleled performance and cost efficiency.\n\n##### <Gradient from=\"orange\" to=\"blue\">  TALK to BOT  </Gradient>[🤖](https://motaiot.com/chatbot/)\n\n## The Challenge\n\nBuilding a production-ready AI Chatbot on a static site architecture (Hugo) presented several unique engineering challenges:\n\n1.  **Edge Runtime Compatibility:** Standard Node.js authentication libraries (like Auth.js) rely on APIs not available in the V8 Edge Runtime.\n2.  **State Management:** Handling OAuth 2.0 flows and conversation history in a serverless, stateless environment without race conditions.\n3.  **Real-time Experience:** Implementing smooth, typewriter-style streaming responses (SSE) while simultaneously performing asynchronous database writes for history auditing.\n4.  **Cost & Accuracy:** Balancing the need for high-quality LLM reasoning with strict operational cost controls.\n\n## The Solution: Edge-Native Architecture\n\n >We moved beyond simple API calls to build a robust **Serverless AI Gateway** using Cloudflare's modern stack.\n\n![](/images/showcase/chatbot/edge-solution.png)\n\n### System Architecture\n\n* **Frontend:** Hugo (Static) + Vanilla JS (SSE Parser & Markdown Renderer).\n* **Edge API Gateway:** Cloudflare Pages Functions (V8 Runtime).\n* **Authentication:** Custom-engineered Native OAuth 2.0 flow (Google) secured with **Workers KV**.\n* **Knowledge Base (RAG):** **Cloudflare Vectorize** (Vector DB) + **Workers AI** (Embedding Models).\n* **Inference Engine:** **Llama 3** running on Workers AI (Edge GPU).\n* **Persistence:** **Cloudflare D1** (Serverless SQL) for user profiles and chat history.\n\n### Key Features\n\n#### 1. Retrieval-Augmented Generation (RAG)\nUnlike generic chatbots, our system \"reads\" MOTA ATOM's proprietary documentation before answering. We utilize **AutoRAG** workflows to embed, index, and retrieve relevant context, ensuring answers are accurate and hallucination-free.\n\n#### 2. Native OAuth 2.0 Implementation\nTo overcome Edge Runtime limitations, we engineered a lightweight, native OAuth authentication flow.\n* **Security:** Implements state validation using **Workers KV** to prevent CSRF attacks.\n* **Session Management:** Secure, HTTP-only JWT sessions stored in **D1**, validating user identity at the edge with less than 10ms latency.\n\n#### 3. Real-Time Streaming & History\nWe implemented a custom **Server-Sent Events (SSE)** protocol.\n* **Non-blocking I/O:** The system streams the AI response to the user byte-by-byte for instant feedback.\n* **Async Logging:** Utilizing `Response.tee()` and `context.waitUntil`, conversation history is asynchronously persisted to the D1 database without adding latency to the user experience.\n\n## Technical Highlights\n\n### Solving the Edge Compatibility Puzzle\nStandard authentication libraries failed in the Edge environment. We rewrote the OAuth callback logic to manually handle token exchanges and OpenID Connect user info fetching using standard `fetch` APIs, ensuring 100% compatibility with Cloudflare's V8 runtime.\n\n### Optimizing for Cost & Performance\nBy switching from a \"Knowledge Injection\" approach (sending all docs in the prompt) to a RAG architecture, we reduced **Input Token consumption by 90%**. Furthermore, leveraging Cloudflare Workers AI allows us to run inference on edge GPUs, eliminating the need for expensive, always-on GPU servers.\n\n## Beyond Support: A Lifelong Learning Asset\n![](/images/showcase/chatbot/lifegrowth.jpg)\n\nThe true value of this technology extends far beyond providing **24H7D multilingual customer support**. Its core strength lies in its **evolutionary capability**:\n\n* **Continuous Improvement Loop:** Every interaction is securely logged in our D1 database.\n* **Active Learning:** Administrators can review conversation logs, rate the quality of AI responses, and identify gaps in the knowledge base.\n* **Lifelong Growth:** By continuously feeding corrected information and new business cases back into the RAG system, the AI's knowledge base grows organically. It doesn't just answer questions; it becomes smarter, more accurate, and more aligned with your business goals over time.\n\n## Integration & Services\n\nThis is not just a showcase; it's a ready-to-deploy solution.\n\n**We are eager to help you integrate this edge-native AI technology into any existing website or platform.** Whether you are running a static site, a WordPress blog, or a custom enterprise application, our modular architecture allows for seamless embedding. Let us help you transform your static content into an interactive, intelligent knowledge hub.\n\n## The Stack\n\n* **Framework:** Hugo (Hugoplate)\n* **Compute:** Cloudflare Pages Functions\n* **Database:** Cloudflare D1 (SQLite)\n* **Vector Database:** Cloudflare Vectorize\n* **Key-Value Store:** Cloudflare Workers KV\n* **AI Models(Variouse):**\n    * *Inference:* `@cf/meta/llama-3-8b-instruct`\n    * *Embedding:* `@cf/baai/bge-small-en-v1.5`\n\n## Conclusion\n\nThis project demonstrates **MOTA ATOM's** ability to deliver complex, full-stack AI solutions. We don't just integrate APIs; we architect secure, scalable, and cost-effective systems tailored to modern edge environments."
+      },
+      {
+        "filename": "GenAI-Driven.md",
+        "slug": "GenAI-Driven",
+        "metadata": {
+          "title": "GenAI-Driven Edge Computing: Smart Safety for Vertical Transport",
+          "meta_title": "GenAI & Edge AI for Smart Elevator Safety - MOTA ATOM",
+          "description": "Revolutionizing object detection with synthetic data generation and NPU quantization for real-time electric scooter detection in elevators. A privacy-first, low-latency Edge AI solution.",
+          "date": "2025-12-08T00:00:00.000Z",
+          "image": "/images/showcase/Edge-Computing/GenAI-Cover.png",
+          "categories": [
+            "Edge AI",
+            "IOT",
+            "AI Engineering"
+          ],
+          "tags": [
+            "GenAI",
+            "Edge Computing",
+            "Computer Vision",
+            "NPU",
+            "IoT",
+            "Synthetic Data"
+          ],
+          "draft": false
+        },
+        "content": "\n## Project Overview\n\nIn high-density urban environments, the unauthorized transport of electric motocycles (e-motocycles) in elevators poses a severe fire hazard due to lithium battery instability. Property managers face a critical safety requirement: <Gradient from=\"red\" to=\"orange\"> stop e-motocycles before the doors close. </Gradient>\n\n**MOTA ATOM** engineered an end-to-end **Edge AIoT solution** that detects prohibited objects in real-time. By pivoting from traditional data collection to **Generative AI (GenAI) synthetic data creation**, we bypassed data scarcity bottlenecks and deployed a highly optimized, privacy-compliant model directly onto embedded hardware.\n\n## The Challenge: Safety vs. Data Constraints\n\nDeveloping a robust detection system for the confined, dynamic environment of an elevator car presents unique engineering hurdles:\n\n1.  **Data Scarcity & Privacy (GDPR):** Collecting real-world training data is legally complex. Capturing images of residents in elevators raises significant privacy concerns (GDPR/PIPL), and staging photos of motocycles is labor-intensive.\n2.  **The \"Long Tail\" of Corner Cases:** Models often fail in unpredictable scenarios—crowded elevators, different lighting conditions, partially occluded motocycles, or confusing objects (e.g., wheelchairs vs. motocycles).\n3.  **Edge Constraints:** The solution must operate **offline** with **ultra-low latency**. Sending video streams to the cloud for inference introduces unacceptable lag and dependency on internet connectivity. The system must run on low-power, cost-effective NPU hardware.\n\n## The Solution: A GenAI-First Workflow\n\nWe reimagined the computer vision development lifecycle. Instead of 'collecting' data, we 'generated' it. This approach reduced the development cycle from months to days while improving model robustness.\n\n### 1. Synthetic Data Generation (GenAI)\nWe utilized Multimodal Large Language Models (LLMs) and diffusion models to generate photorealistic scenes.\n![GenAI Samples](/images/showcase/Edge-Computing/GenAI-Samples.jpg)\n* **Domain Randomization:** We used prompts to vary lighting, elevator textures (mirrors, steel), and angles.\n* **Privacy by Design:** Since the humans in the training data are AI-generated, there are no privacy or consent issues.\n* **Edge Case Coverage:** We synthetically generated rare scenarios, such as motocycles covered by raincoats or viewed from extreme top-down angles.\n \n\n* **Industry Validation:** <GifVideo src=\"/videos/GenAI_compressed.mp4\" align=\"left\"  width=\"30%\" />This data-centric strategy mirrors the <Gradient from=\"red\" to=\"orange\">advanced methodologies employed by Tesla, who utilize generative simulation and synthetic data to <a href=\"https://bernardmarr.com/how-tesla-is-using-artificial-intelligence-to-create-the-autonomous-cars-of-the-future/\"> train their Autopilot systems</a> </Gradient> for rare \"corner cases\" that are statistically improbable to capture in the real world.  This proves that synthetic data is not just a workaround, but a superior path to robustness.  \n\n<div style={{ clear: 'both' }} />\n\n### 2. Automated Annotation Pipeline\nManual labeling is the bottleneck of AI training. We integrated the <ColorText color=\"green\">Segment Anything Model</ColorText> [SAM3](https://github.com/facebookresearch/sam3) into our pipeline.\n* **Auto-Segmentation:** SAM automatically generated pixel-perfect bounding boxes and segmentation masks for the synthetic dataset.\n* **Efficiency:** This automation reduced data preparation time by **90%** while ensuring consistent label quality that outperforms human annotators.\n![](/images/showcase/Edge-Computing/SAM.jpg)\n\n## Technical Execution: Edge Optimization\n\nTraining a model is only half the battle; deploying it to a low-power chip is where MOTA ATOM excels.\n\n### NPU Quantization & Compression\nTo run on cost-effective IoT hardware (RISC-V/ARM Architectures), we could not use heavy GPU models.\n* **PTQ (Post-Training Quantization):** We compressed the YOLO-based architecture from FP32 (Floating Point 32) to **INT8 (Integer 8)**.\n* **Result:** This reduced the model size by **75%** and increased inference speed by **300%**, allowing it to run smoothly on edge NPUs with limited RAM.\n![GenAI Samples](/images/showcase/Edge-Computing/Quantization.jpg)\n\n### Real-Time Logic & Control\nThe system serves as an active controller, not just a passive camera.\n* **Latency:** less than 100ms inference time.\n* **Action:** Upon detecting a target with high confidence (>0.85), the edge device triggers a GPIO relay to **hold the elevator doors open** and plays a voice alert (\"Prohibited object detected\").\n* **Safety Loop:** The elevator will not move until the object is removed, physically preventing the hazard.\n![GenAI Samples](/images/showcase/Edge-Computing/CV-Controls.jpg)\n\n## Impact & Results\n\n* **Speed to Market:** Reduced model development time from **3 months to 2 weeks**.\n* **Privacy Compliance:** 100% compliant with data privacy regulations via synthetic data.\n* **Cost Efficiency:** Enabled the use of low-cost edge chips instead of expensive industrial PCs.\n* **Accuracy:** Achieved **99.2%** detection accuracy in pilot deployments, successfully distinguishing between wheelchairs (allowed) and e-motocycles (prohibited).\n\n## The Tech Stack\n\n* **Training Framework:** PyTorch, Ultralytics YOLO\n* **Data Generation:** Stable Diffusion, ControlNet\n* **Annotation:** Meta AI SAM (Segment Anything Model)\n* **Edge Inference:** TensorRT / TFLite Micro / RKNN (Rockchip NPU)\n* **Hardware:** Custom RISC-V / ARM Embedded Board with Camera Module\n\n## Conclusion\n\nThis project demonstrates **MOTA ATOM's** ability to bridge the gap between cutting-edge Generative AI and practical, ruggedized hardware. We solve real-world physical safety problems with software-defined intelligence.\n\n**Looking to deploy AI on the Edge?** [Contact us](#) to learn how we can optimize your computer vision models for embedded devices."
+      },
+      {
+        "filename": "Textile-Logo-QA.md",
+        "slug": "Textile-Logo-QA",
+        "metadata": {
+          "title": "Advanced AI-Powered Quality Assurance for Textile Logos",
+          "meta_title": "AI-Powered Quality Assurance for the Textile Industry",
+          "description": "Overcoming challenges like fabric deformation, lighting variation, and texture interference in textile logo inspection using advanced machine vision.",
+          "date": "2025-12-01T00:00:00.000Z",
+          "youtube_id": "0uf0jkfYprM",
+          "image": "/images/showcase/textile-logo-qa/textile_logo_qa.jpg",
+          "categories": [
+            "AI Engineering",
+            "Edge AI"
+          ],
+          "tags": [
+            "Computer Vision",
+            "Quality Assurance",
+            "Textile",
+            "AI"
+          ],
+          "draft": false
+        },
+        "content": "\n\n### The Challenge: Ensuring Brand Consistency on Textiles\n\nIn the fast-paced apparel industry, maintaining brand consistency is paramount. However, quality control for logos and prints on textiles is a notoriously difficult task. Fabric is not a rigid material; its inherent properties introduce a host of problems for traditional automated inspection systems.\n\nKey challenges include:\n\n*   **Deformation and Displacement:** Textiles can stretch, shrink, and warp during manufacturing, causing the logo to appear distorted or shifted compared to the original design.\n*   **Inconsistent Lighting:** The perceived color and brightness of a logo can change dramatically due to shifting ambient light in a workshop, such as from personnel movement or time of day.\n*   **Texture Interference:** The weave and texture of the fabric itself can create visual noise, confusing algorithms and making it difficult to isolate the logo for accurate comparison.\n\n### The Solution: A Multi-Stage Machine Vision Pipeline\n\nThe DiffScanner project tackles these industry-specific challenges head-on with a sophisticated pipeline that leverages both classic machine vision and modern machine learning techniques. It intelligently preprocesses and aligns images before comparison, ensuring that only meaningful differences are flagged.\n\n<Slider \n  dir=\"images/showcase/textile-logo-qa/challenges\"   \n  interval=\"5000\"\n/>  \n<Slider \n  dir=\"images/showcase/textile-logo-qa/solution\"  \n  interval=\"5000\"\n/>  \nOur approach consists of several key stages:\n\n1.  **Robust Image Alignment:** To counter stretching and displacement, we employ a two-step alignment process.\n    *   **Global Alignment:** Using the Scale-Invariant Feature Transform (SIFT) algorithm, the system identifies unique feature points in both the template and the inspection image. It then computes a homography matrix to correct for large-scale rotation, scaling, and perspective distortion.\n    *   **Fine-Grained Correction:** To handle subtle, non-rigid warping characteristic of fabric, we then apply a Dense Optical Flow algorithm. This technique calculates the precise displacement of each pixel, effectively \"stretching\" the inspection image to perfectly match the template on a local level.\n\n2.  **Adaptive Brightness & Color Correction:** To solve the problem of variable lighting, the system normalizes the images before comparison. By converting images to the L*a*b* color space, we can isolate the Lightness (L*) channel and mathematically adjust it to match the template's brightness, ensuring that color comparisons are accurate regardless of shop floor lighting conditions.\n\n3.  **Texture Suppression:** We use a series of morphological filters and adaptive thresholding techniques to separate the logo from the underlying fabric texture. By enhancing the logo's features while minimizing the high-frequency noise of the weave, we provide a clean, clear image for the final difference analysis.\n\nBy addressing the unique properties of textiles, this solution provides a reliable and automated way to solve a persistent quality control headache in the garment industry, demonstrating the power of applied machine vision.\n"
+      }
+    ],
+    "pages": [],
+    "legal": [
+      {
+        "filename": "cookie.mdx",
+        "slug": "cookie",
+        "metadata": {
+          "title": "Cookie Policy",
+          "date": "2024-05-20",
+          "description": "Information about how we use cookies on MOTA ATOM."
+        },
+        "content": "\n## 1. Introduction\n\nThis Cookie Policy explains how MOTA ATOM (\"we\", \"us\", and \"our\") uses cookies and similar technologies to recognize you when you visit our website at [MOTA ATOM INC.](https://motaiot.com). It explains what these technologies are and why we use them, as well as your rights to control our use of them.\n\n## 2. What are cookies?\n\nCookies are small data files that are placed on your computer or mobile device when you visit a website. Cookies are widely used by website owners in order to make their websites work, or to work more efficiently, as well as to provide reporting information.\n\n## 3. How do we use cookies?\n\nWe use cookies for several reasons. Some cookies are required for technical reasons in order for our Website to operate, and we refer to these as \"essential\" or \"strictly necessary\" cookies. Other cookies also enable us to track and target the interests of our users to enhance the experience on our Online Properties.\n\n### Essential Cookies\nThese cookies are strictly necessary to provide you with services available through our Website and to use some of its features, such as access to secure areas.\n\n### Analytics and Customization Cookies\nThese cookies collect information that is used either in aggregate form to help us understand how our Website is being used or how effective our marketing campaigns are, or to help us customize our Website for you.\n\n## 4. How can I control cookies?\n\nYou have the right to decide whether to accept or reject cookies. You can set or amend your web browser controls to accept or refuse cookies. If you choose to reject cookies, you may still use our website though your access to some functionality and areas of our website may be restricted.\n\n## 5. Updates to this Policy\n\nWe may update this Cookie Policy from time to time in order to reflect, for example, changes to the cookies we use or for other operational, legal, or regulatory reasons. Please therefore re-visit this Cookie Policy regularly to stay informed about our use of cookies and related technologies.\n\n## 6. Contact us\n\nIf you have any questions about our use of cookies or other technologies, please email us at contact@motaiot.com"
+      },
+      {
+        "filename": "privacy.mdx",
+        "slug": "privacy",
+        "metadata": {
+          "title": "Privacy Policy",
+          "date": "2025-11-15T00:00:00.000Z",
+          "draft": false,
+          "layout": "single"
+        },
+        "content": "\n\n**Effective Date:** November 15, 2025\n\nThis Privacy Policy describes how MOTA ATOM (\"the Site,\" \"we,\" \"us,\" or \"our\") collects, uses, and discloses your personal information when you use our website, motaiot.com.\n\n## 1. Information We Collect\n\nWe primarily collect information you provide directly to us when you use our services, specifically through our OAuth (Sign-in) integration.\n\n**Information Collected via Google/Third-Party Login (OAuth):**\n\nWhen you choose to sign in using Google or other third-party providers, we collect only the minimum required information to identify your account and provide service continuity, which includes:\n\n* **Identifier:** The unique user ID provided by the third-party service (e.g., Google `sub` ID).\n* **Name:** Your display name, as provided by the third-party profile.\n* **Email Address:** Your primary email address, used for login and identification purposes.\n\n## 2. How We Use Your Information\n\nWe use the collected information for the following purposes:\n\n* **Service Authentication:** To verify your identity and allow you to log in to our services.\n* **Session Management:** To keep you logged in and maintain your session across different pages.\n* **Conversation History:** To link your unique user ID with your past AI chat conversations (data stored locally in our database).\n* **Account Maintenance:** To manage your account and prevent fraudulent activity.\n\nWe do not use your email address for marketing purposes unless you explicitly opt-in.\n\n## 3. Data Storage and Security\n\n* **Data Location:** Your authentication records, user ID, and chat history are stored on our database (Cloudflare D1), which is located on Cloudflare’s global network infrastructure.\n* **Security:** We implement security measures, including HTTPS encryption and secure JWT session management, to protect your data. All third-party login credentials (passwords, tokens) are handled exclusively by the third-party provider (e.g., Google) and are **never** stored on our servers.\n\n## 4. Data Sharing and Disclosure\n\nWe do not sell, rent, or trade your personal information. We may share your information only in the following limited circumstances:\n\n* **Legal Requirements:** To comply with applicable laws, regulations, or legal processes.\n* **Service Providers:** We use third-party services (like Cloudflare) to host our data and infrastructure. These providers are bound by strict confidentiality obligations.\n\n## 5. Your Rights\n\nYou have the right to request access to or deletion of your personal data we have stored. To exercise these rights, please contact us directly at the email address provided below.\n\n## 6. Contact Us\n\nIf you have any questions about this Privacy Policy, please contact us at:\n\n**Email:** contact@motaiot.com"
+      },
+      {
+        "filename": "terms.mdx",
+        "slug": "terms",
+        "metadata": {
+          "title": "Terms of Service",
+          "date": "2025-11-15T00:00:00.000Z",
+          "draft": false,
+          "layout": "single"
+        },
+        "content": "\n\n**Effective Date:** November 15, 2025\n\nWelcome to motaiot.com (\"the Site,\" \"we,\" \"us,\" or \"our\"). These Terms of Service (\"Terms\") govern your use of our website and services, including the AI Chat service. By accessing or using the Site, you agree to be bound by these Terms.\n\n## 1. Acceptance of Terms\n\nBy using the Site, you confirm that you have read, understood, and agree to these Terms. If you do not agree with any part of these Terms, you must cease use of the Site immediately.\n\n## 2. Service Description\n\nMOTA ATOM provides a platform offering information, resources, and an AI-powered conversational service (\"AI Chat\"). The AI Chat service is for informational and entertainment purposes only. The information provided by the AI Chat service is not guaranteed to be accurate, complete, or current.\n\n## 3. User Accounts and Registration\n\nTo access certain features, including saving chat history, you must register or log in using a third-party OAuth provider (e.g., Google).\n\n* **Accuracy:** You agree to provide accurate and complete information when registering.\n* **Responsibility:** You are responsible for all activities that occur under your account.\n\n## 4. Acceptable Use Policy (User Conduct)\n\nYou agree not to use the Site to:\n\n* Violate any applicable laws or regulations.\n* Infringe upon the rights of others, including intellectual property rights.\n* Transmit any harmful, threatening, abusive, defamatory, or objectionable content.\n* Engage in any activity that could damage, disable, overburden, or impair the Site.\n\n## 5. Intellectual Property Rights\n\n* **Site Content:** All content, graphics, and code on the Site (excluding user submissions) are the property of MOTA ATOM or its licensors.\n* **User Submissions:** You retain ownership of any content you submit or input into the AI Chat service. By submitting content, you grant us a worldwide, royalty-free, non-exclusive license to use, store, and process your submissions solely for the purpose of operating, improving, and providing the service (e.g., saving conversation history).\n\n## 6. Disclaimer of Warranties\n\nThe Site and the AI Chat service are provided on an \"as is\" and \"as available\" basis. We make no warranties, express or implied, regarding the operation of the Site or the accuracy, reliability, or completeness of the AI Chat service output.\n\n## 7. Limitation of Liability\n\nMOTA ATOM shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages resulting from:\n\n* The use or inability to use the Site.\n* The performance or non-performance of the AI Chat service.\n* Unauthorized access to or alteration of your transmissions or data.\n\n## 8. Governing Law\n\nThese Terms shall be governed by and construed in accordance with the laws of U.S.A.\n\n## 9. Changes to Terms\n\nWe reserve the right to revise these Terms at any time. Your continued use of the Site after any changes indicates your acceptance of the new Terms.\n\n## 10. Contact Information\n\nFor questions regarding these Terms of Service, please contact us at:\n\n**Email:** contact@motaiot.com"
+      }
+    ],
+    "products": [
+      {
+        "filename": "mvp.mdx",
+        "slug": "mvp",
+        "metadata": {
+          "title": " Enterprise Knowledge Chatbot",
+          "date": "2024-05-21",
+          "description": "A high-performance, serverless AI chatbot built entirely on Cloudflare's edge network. Features Retrieval-Augmented Generation (RAG), custom OAuth 2.0 security, and real-time streaming, delivering enterprise-grade AI interactions at a fraction of the cost",
+          "category": "local-knowledge-chatbot",
+          "order": 1,
+          "techStack": [
+            "Python",
+            "LangChain",
+            "OpenAI",
+            "Vector DB"
+          ],
+          "gallery": [
+            "/images/showcase/chatbot/chatbot-cover.jpg",
+            "/images/showcase/chatbot/lifegrowth.jpg",
+            "/images/showcase/chatbot/edge-solution.png"
+          ],
+          "relatedShowcases": [
+            "finance-rag-system",
+            "customer-support-bot"
+          ],
+          "pricing": [
+            {
+              "name": "Basic",
+              "price": "$99",
+              "description": "Cost effective and fast deployment, suit for startup team to verify possibility.",
+              "deliveryTime": "1 week",
+              "features": [
+                "标准模型部署",
+                "基础 API 接入",
+                "每月 10k 次调用",
+                "邮件支持"
+              ]
+            },
+            {
+              "name": "Standard",
+              "price": "$2,500",
+              "description": "Customized solution for fast growing enterprise, includes private data fine-tuen.",
+              "deliveryTime": "3 weeks",
+              "features": [
+                "包含 Basic 所有功能",
+                "私有知识库集成 (RAG)",
+                "UI/UX 定制",
+                "Slack/Discord 渠道支持"
+              ]
+            },
+            {
+              "name": "Premium",
+              "price": "$10K+|Custom",
+              "description": "Comprehansive enterprise slution, includes source code and local deployment.",
+              "deliveryTime": "1 month+",
+              "features": [
+                "包含 Standard 所有功能",
+                "本地化私有部署 (On-premise)",
+                "源码交付",
+                "专属客户经理",
+                "SLA 99.9% 保证"
+              ]
+            }
+          ],
+          "faq": [
+            {
+              "question": "这个产品支持哪些语言？",
+              "answer": "目前原生支持中文和英文，其他语言可以通过插件扩展。"
+            },
+            {
+              "question": "数据安全如何保障？",
+              "answer": "我们提供私有化部署选项，数据完全存储在您的本地服务器上，不经过第三方。"
+            }
+          ]
+        },
+        "content": "\n## About This Service\n\n这里开始写正文内容（Markdown 格式）。\n\n### Key Features\n* **Feature A**: Description here.\n* **Feature B**: Description here.\n\n### How It Works\n1.  Step one\n2.  Step two\n\n### Use Cases\n> 引用客户评价或场景描述..."
+      },
+      {
+        "filename": "scalup.mdx",
+        "slug": "scalup",
+        "metadata": {
+          "title": " Enterprise Knowledge Chatbot",
+          "date": "2024-05-21",
+          "description": "A high-performance, serverless AI chatbot built entirely on Cloudflare's edge network. Features Retrieval-Augmented Generation (RAG), custom OAuth 2.0 security, and real-time streaming, delivering enterprise-grade AI interactions at a fraction of the cost",
+          "category": "local-knowledge-chatbot",
+          "order": 1,
+          "techStack": [
+            "Python",
+            "LangChain",
+            "OpenAI",
+            "Vector DB"
+          ],
+          "gallery": [
+            "/images/showcase/chatbot/chatbot-cover.jpg",
+            "/images/showcase/chatbot/lifegrowth.jpg",
+            "/images/showcase/chatbot/edge-solution.png"
+          ],
+          "relatedShowcases": [
+            "finance-rag-system",
+            "customer-support-bot"
+          ],
+          "pricing": [
+            {
+              "name": "Basic",
+              "price": "$99",
+              "description": "Cost effective and fast deployment, suit for startup team to verify possibility.",
+              "deliveryTime": "1 week",
+              "features": [
+                "标准模型部署",
+                "基础 API 接入",
+                "每月 10k 次调用",
+                "邮件支持"
+              ]
+            },
+            {
+              "name": "Standard",
+              "price": "$2,500",
+              "description": "Customized solution for fast growing enterprise, includes private data fine-tuen.",
+              "deliveryTime": "3 weeks",
+              "features": [
+                "包含 Basic 所有功能",
+                "私有知识库集成 (RAG)",
+                "UI/UX 定制",
+                "Slack/Discord 渠道支持"
+              ]
+            },
+            {
+              "name": "Premium",
+              "price": "$10K+|Custom",
+              "description": "Comprehansive enterprise slution, includes source code and local deployment.",
+              "deliveryTime": "1 month+",
+              "features": [
+                "包含 Standard 所有功能",
+                "本地化私有部署 (On-premise)",
+                "源码交付",
+                "专属客户经理",
+                "SLA 99.9% 保证"
+              ]
+            }
+          ],
+          "faq": [
+            {
+              "question": "这个产品支持哪些语言？",
+              "answer": "目前原生支持中文和英文，其他语言可以通过插件扩展。"
+            },
+            {
+              "question": "数据安全如何保障？",
+              "answer": "我们提供私有化部署选项，数据完全存储在您的本地服务器上，不经过第三方。"
+            }
+          ]
+        },
+        "content": "\n## About This Service\n\n这里开始写正文内容（Markdown 格式）。\n\n### Key Features\n* **Feature A**: Description here.\n* **Feature B**: Description here.\n\n### How It Works\n1.  Step one\n2.  Step two\n\n### Use Cases\n> 引用客户评价或场景描述..."
+      },
+      {
+        "filename": "sitebuild.mdx",
+        "slug": "sitebuild",
+        "metadata": {
+          "title": " Enterprise Knowledge Chatbot",
+          "date": "2024-05-21",
+          "description": "A high-performance, serverless AI chatbot built entirely on Cloudflare's edge network. Features Retrieval-Augmented Generation (RAG), custom OAuth 2.0 security, and real-time streaming, delivering enterprise-grade AI interactions at a fraction of the cost",
+          "category": "local-knowledge-chatbot",
+          "order": 1,
+          "techStack": [
+            "Python",
+            "LangChain",
+            "OpenAI",
+            "Vector DB"
+          ],
+          "gallery": [
+            "/images/showcase/chatbot/chatbot-cover.jpg",
+            "/images/showcase/chatbot/lifegrowth.jpg",
+            "/images/showcase/chatbot/edge-solution.png"
+          ],
+          "relatedShowcases": [
+            "finance-rag-system",
+            "customer-support-bot"
+          ],
+          "pricing": [
+            {
+              "name": "Basic",
+              "price": "$99",
+              "description": "Cost effective and fast deployment, suit for startup team to verify possibility.",
+              "deliveryTime": "1 week",
+              "features": [
+                "标准模型部署",
+                "基础 API 接入",
+                "每月 10k 次调用",
+                "邮件支持"
+              ]
+            },
+            {
+              "name": "Standard",
+              "price": "$2,500",
+              "description": "Customized solution for fast growing enterprise, includes private data fine-tuen.",
+              "deliveryTime": "3 weeks",
+              "features": [
+                "包含 Basic 所有功能",
+                "私有知识库集成 (RAG)",
+                "UI/UX 定制",
+                "Slack/Discord 渠道支持"
+              ]
+            },
+            {
+              "name": "Premium",
+              "price": "$10K+|Custom",
+              "description": "Comprehansive enterprise slution, includes source code and local deployment.",
+              "deliveryTime": "1 month+",
+              "features": [
+                "包含 Standard 所有功能",
+                "本地化私有部署 (On-premise)",
+                "源码交付",
+                "专属客户经理",
+                "SLA 99.9% 保证"
+              ]
+            }
+          ],
+          "faq": [
+            {
+              "question": "这个产品支持哪些语言？",
+              "answer": "目前原生支持中文和英文，其他语言可以通过插件扩展。"
+            },
+            {
+              "question": "数据安全如何保障？",
+              "answer": "我们提供私有化部署选项，数据完全存储在您的本地服务器上，不经过第三方。"
+            }
+          ]
+        },
+        "content": "\n## About This Service\n\n这里开始写正文内容（Markdown 格式）。\n\n### Key Features\n* **Feature A**: Description here.\n* **Feature B**: Description here.\n\n### How It Works\n1.  Step one\n2.  Step two\n\n### Use Cases\n> 引用客户评价或场景描述..."
+      }
+    ],
+    "mota-ai": [
+      {
+        "filename": "chatbot.mdx",
+        "slug": "chatbot",
+        "metadata": {
+          "title": " Enterprise Knowledge Chatbot",
+          "date": "2024-05-21",
+          "description": "A high-performance, serverless AI chatbot built entirely on Cloudflare's edge network. Features Retrieval-Augmented Generation (RAG), custom OAuth 2.0 security, and real-time streaming, delivering enterprise-grade AI interactions at a fraction of the cost",
+          "category": "local-knowledge-chatbot",
+          "order": 1,
+          "techStack": [
+            "Python",
+            "LangChain",
+            "OpenAI",
+            "Vector DB"
+          ],
+          "gallery": [
+            "/images/showcase/chatbot/chatbot-cover.jpg",
+            "/images/showcase/chatbot/lifegrowth.jpg",
+            "/images/showcase/chatbot/edge-solution.png"
+          ],
+          "relatedShowcases": [
+            "finance-rag-system",
+            "customer-support-bot"
+          ],
+          "pricing": [
+            {
+              "name": "Basic",
+              "price": "$99",
+              "description": "Cost effective and fast deployment, suit for startup team to verify possibility.",
+              "deliveryTime": "1 week",
+              "features": [
+                "标准模型部署",
+                "基础 API 接入",
+                "每月 10k 次调用",
+                "邮件支持"
+              ]
+            },
+            {
+              "name": "Standard",
+              "price": "$2,500",
+              "description": "Customized solution for fast growing enterprise, includes private data fine-tuen.",
+              "deliveryTime": "3 weeks",
+              "features": [
+                "包含 Basic 所有功能",
+                "私有知识库集成 (RAG)",
+                "UI/UX 定制",
+                "Slack/Discord 渠道支持"
+              ]
+            },
+            {
+              "name": "Premium",
+              "price": "$10K+|Custom",
+              "description": "Comprehansive enterprise slution, includes source code and local deployment.",
+              "deliveryTime": "1 month+",
+              "features": [
+                "包含 Standard 所有功能",
+                "本地化私有部署 (On-premise)",
+                "源码交付",
+                "专属客户经理",
+                "SLA 99.9% 保证"
+              ]
+            }
+          ],
+          "faq": [
+            {
+              "question": "这个产品支持哪些语言？",
+              "answer": "目前原生支持中文和英文，其他语言可以通过插件扩展。"
+            },
+            {
+              "question": "数据安全如何保障？",
+              "answer": "我们提供私有化部署选项，数据完全存储在您的本地服务器上，不经过第三方。"
+            }
+          ]
+        },
+        "content": "\n## About This Service\n\n这里开始写正文内容（Markdown 格式）。\n\n### Key Features\n* **Feature A**: Description here.\n* **Feature B**: Description here.\n\n### How It Works\n1.  Step one\n2.  Step two\n\n### Use Cases\n> 引用客户评价或场景描述..."
+      }
+    ],
+    "docs": [
+      {
+        "filename": "index.mdx",
+        "slug": "index",
+        "metadata": {
+          "title": "Introduction",
+          "description": "Welcome to the MOTA ATOM documentation. Learn how to structure your chaos and build the next generation of SaaS."
+        },
+        "content": "\n## What is Mota Atom?\n\nMota Atom is an open-source portal designed to help developers and enterprises manage their AI assets, models, and SaaS applications with style and efficiency. It provides a robust foundation including authentication, internationalization (i18n), and a high-performance documentation system out of the box.\n\nWhether you are building a simple MVP or a complex enterprise solution, MOTA ATOM helps you **structure the chaos**.\n\n## Explore the Documentation\n\nWe have organized the documentation to help you find what you need quickly.\n\n### 🚀 Getting Started\n\nEverything you need to get up and running.\n\n* **[Installation](/docs/getting-started/installation)** - Step-by-step guide to setting up your first project.\n* **[Configuration](/docs/getting-started/configuration)** - Learn about environment variables and core settings.\n* **[Architecture](/docs/getting-started/architecture)** - Understand the file structure and tech stack.\n\n### ☁️ Deployment\n\nGuides for taking your application to production.\n\n* **[Docker](/docs/deployment/docker)** - Deploy MOTA ATOM using containerization.\n* **[Vercel / Cloudflare](/docs/deployment/hosting)** - Best practices for serverless hosting.\n\n### ✨ Features & Components\n\nDeep dive into the core capabilities.\n\n* **[I18n Support](/docs/features/i18n)** - How to manage multi-language content.\n* **[MDX Components](/docs/features/mdx)** - Use our custom components like Steps, Callouts, and Cards in your docs.\n\n## Community & Support\n\nMOTA ATOM is community-driven. If you get stuck, we are here to help.\n\n* [GitHub Repository](https://github.com/your-repo) - Report bugs or request features.\n* [Discord Server](https://discord.gg/your-link) - Chat with other developers.\n* [Twitter](https://twitter.com/your-handle) - Follow us for the latest updates.\n\n---\n\n**Ready to jump in?** Check out the [Installation](/docs/getting-started/installation) guide to start building."
+      }
+    ]
+  },
+  "images": {
+    "/": [
+      "/file.svg",
+      "/globe.svg",
+      "/next.svg",
+      "/vercel.svg",
+      "/window.svg"
+    ],
+    "images": [],
+    "images/docs": [],
+    "/images/docs": [
+      "/images/docs/2026-02-05-00-05-36.png",
+      "/images/docs/2026-02-05-00-09-37.png"
+    ],
+    "images/showcase": [],
+    "images/showcase/Edge-Computing": [],
+    "/images/showcase/Edge-Computing": [
+      "/images/showcase/Edge-Computing/AI-Workflow-Pipeline.jpg",
+      "/images/showcase/Edge-Computing/CV-Controls.jpg",
+      "/images/showcase/Edge-Computing/GenAI-Cover.png",
+      "/images/showcase/Edge-Computing/GenAI-Samples.jpg",
+      "/images/showcase/Edge-Computing/Quantization.jpg",
+      "/images/showcase/Edge-Computing/SAM.jpg"
+    ],
+    "images/showcase/chatbot": [],
+    "/images/showcase/chatbot": [
+      "/images/showcase/chatbot/chatbot-cover.jpg",
+      "/images/showcase/chatbot/edge-solution.png",
+      "/images/showcase/chatbot/lifegrowth.jpg"
+    ],
+    "images/showcase/textile-logo-qa": [],
+    "images/showcase/textile-logo-qa/challenges": [],
+    "/images/showcase/textile-logo-qa/challenges": [
+      "/images/showcase/textile-logo-qa/challenges/case1.png",
+      "/images/showcase/textile-logo-qa/challenges/case2.png",
+      "/images/showcase/textile-logo-qa/challenges/case3.png",
+      "/images/showcase/textile-logo-qa/challenges/case4.png"
+    ],
+    "images/showcase/textile-logo-qa/solution": [],
+    "/images/showcase/textile-logo-qa/solution": [
+      "/images/showcase/textile-logo-qa/solution/slution1.png",
+      "/images/showcase/textile-logo-qa/solution/slution2.png",
+      "/images/showcase/textile-logo-qa/solution/slution3.png",
+      "/images/showcase/textile-logo-qa/solution/slution4.png"
+    ],
+    "/images/showcase/textile-logo-qa": [
+      "/images/showcase/textile-logo-qa/textile_logo_qa.jpg"
+    ],
+    "logos": [],
+    "/logos": [
+      "/logos/mota-icon-v2-blk.png",
+      "/logos/mota-icon-v2.png",
+      "/logos/mota-logo-v2.png",
+      "/logos/mota-techlink-logo-blk.png",
+      "/logos/mota-techlink-logo-slogan.png",
+      "/logos/mota-techlink-logo-wht.png"
+    ],
+    "videos": []
+  },
+  "generatedAt": "2026-02-05T10:23:40.819Z"
+}

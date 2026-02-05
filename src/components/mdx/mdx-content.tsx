@@ -1,7 +1,13 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import { compileMDX } from 'next-mdx-remote/rsc'; 
 import rehypePrettyCode from 'rehype-pretty-code';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
+import rehypeSlug from 'rehype-slug';
+import { AlertTriangle } from "lucide-react";
+import React from 'react';
+
+// 引入你的自定义组件
 import { CodeBlock } from './code-block';
 import { YouTube } from './youtube';
 import { ImageSlider } from './image-slider';
@@ -10,52 +16,11 @@ import { GifVideo } from './gif-video';
 import { ColorText } from './color-text';
 import { BionicText } from './bionic-text';
 import { BionicWrapper } from './bionic-wrapper';
-// 🟢 新增：引入图标用于错误展示
-import { AlertTriangle } from "lucide-react";
 import { Steps, Step } from "@/components/mdx/steps";
-import rehypeSlug from 'rehype-slug';
 
-// 定义所有 MDX 可用的组件
-const sharedComponents = {
-  // 基础 HTML 覆盖
-  pre: CodeBlock,
-  // 自定义组件
-  Callout: CustomCallout,
-  Highlight: CustomHighlight,
-  YouTube: YouTube,
-  Slider: ImageSlider,  
-  Gradient: (props: any) => (
-    <span data-no-bionic="true">
-      <GradientText {...props} />
-    </span>
-  ),
-  GifVideo: GifVideo,
-  ColorText: ColorText,
-  Bionic: BionicText,
-  // 你甚至可以覆盖 h1, h2 来增加锚点
-  // 🟢 拦截标准 HTML 标签
-  // 所有的段落 <p> 都会变成 <BionicWrapper as="p">
-  p: (props: any) => <BionicWrapper as="p" {...props} />,
-  
-  // 所有的列表项 <li> 都会变成 <BionicWrapper as="li">
-  li: (props: any) => <BionicWrapper as="li" {...props} />,
-  
-  // 引用块也可以加上
-  blockquote: (props: any) => (
-    <BionicWrapper 
-      as="blockquote" 
-      className="mt-6 border-l-2 border-slate-300 pl-6 italic" 
-      {...props} 
-    />
-  ),
-  Steps: Steps,
-  Step: Step,
-};
-
-interface MdxContentProps {
-  content: string;
-  className?: string; // 允许传入额外的样式类
-}
+// -----------------------------------------------------------------------------
+// 1. 定义辅助组件 (CustomHighlight, CustomCallout)
+// -----------------------------------------------------------------------------
 
 export function CustomHighlight({ children, color = "yellow" }: { children: React.ReactNode, color?: string }) {
   const colorMap: Record<string, string> = {
@@ -84,62 +49,75 @@ export function CustomCallout({ children, type = "default" }: { children: React.
     )
 }
 
+// -----------------------------------------------------------------------------
+// 2. 定义 Shared Components (MDX 组件映射)
+// -----------------------------------------------------------------------------
+// 使用泛型或具体类型替换 'any' 以通过 Lint 检查
+const sharedComponents = {
+  // 基础 HTML 覆盖
+  pre: CodeBlock,
+  
+  // 自定义组件
+  Callout: CustomCallout,
+  Highlight: CustomHighlight,
+  YouTube: YouTube,
+  Slider: ImageSlider,  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Gradient: (props: any) => (
+    <span data-no-bionic="true">
+      <GradientText {...props} />
+    </span>
+  ),
+  GifVideo: GifVideo,
+  ColorText: ColorText,
+  Bionic: BionicText,
+  Steps: Steps,
+  Step: Step,
+
+  // 🟢 拦截标准 HTML 标签 (解决 any 报错，使用 HTMLAttributes)
+  p: (props: React.HTMLAttributes<HTMLParagraphElement>) => <BionicWrapper as="p" {...props} />,
+  li: (props: React.HTMLAttributes<HTMLLIElement>) => <BionicWrapper as="li" {...props} />,
+  
+  // 引用块
+  blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => (
+    <BionicWrapper 
+      as="blockquote" 
+      className="mt-6 border-l-2 border-slate-300 pl-6 italic" 
+      {...props} 
+    />
+  ),
+};
+
+// -----------------------------------------------------------------------------
+// 3. 主组件 MdxContent
+// -----------------------------------------------------------------------------
+
+interface MdxContentProps {
+  content: string;
+  className?: string;
+}
+
 export function MdxContent({ content, className }: MdxContentProps) {
-  const options = {
-    theme: 'github-dark-dimmed',
-    keepBackground: false,
-  };
+  // 🛡️ 防御性检查
+  if (!content) return null;
 
-  // 🟢 修改点：使用 try-catch 包裹 MDXRemote
-  try {
-    return (
-      // 这里保留 prose 样式，但允许外部覆盖
-      <div className={`blog-content ${className || ''}`}>
-        <MDXRemote
-          source={content}
-          options={{
-            mdxOptions: {            
-              rehypePlugins: [rehypeSlug,[rehypePrettyCode, options]],
-              remarkPlugins: [remarkGfm, remarkBreaks],
-            },
-          }}
-          components={sharedComponents}
-        />
-      </div>
-    );
-  } catch (error: any) {
-    // 🟢 错误捕获 UI
-    // 当 content 中包含非法 JS 语法（如未转义的花括号 {}）时，Acorn 解析器会抛出错误
-    // 我们在这里捕获它，避免整个页面崩溃 (500 Error)
-    console.error("MDX Compilation Error:", error);
-
-    return (
-      <div className="rounded-lg border border-red-500/50 bg-red-500/10 p-6 my-4 text-red-600 dark:text-red-400">
-        <div className="flex items-center gap-3 mb-4">
-          <AlertTriangle className="h-6 w-6" />
-          <h3 className="font-bold text-lg">Content Rendering Error</h3>
-        </div>
-        
-        <p className="font-mono text-sm bg-black/5 p-2 rounded mb-4 break-words">
-          {error.message || "Failed to compile MDX content"}
-        </p>
-
-        <div className="text-sm mb-4">
-          <p className="font-semibold">Common fixes:</p>
-          <ul className="list-disc list-inside opacity-80">
-            <li>Check for unescaped curly braces <code>{`{ }`}</code>. Use <code>{`\\{ \\}`}</code> instead.</li>
-            <li>Ensure all HTML tags are closed (e.g. <code>{`<br />`}</code> instead of <code>{`<br>`}</code>).</li>
-          </ul>
-        </div>
-
-        {/* 显示原始内容的前 500 个字符，方便调试定位 */}
-        <div className="mt-4">
-          <p className="text-xs font-bold uppercase opacity-50 mb-1">Raw Content Preview:</p>
-          <pre className="text-xs font-mono bg-black/80 text-white p-4 rounded overflow-auto max-h-40 whitespace-pre-wrap">
-            {content}
-          </pre>
-        </div>
-      </div>
-    );
-  }
+  return (
+    <div className={`blog-content ${className || ''}`}>
+      {/* 使用 MDXRemote 而不是 compileMDX。
+        在 Next.js App Router 中，MDXRemote 也是在服务端运行的，
+        但它的内部实现机制对 Edge 更友好。
+      */}
+      <MDXRemote
+        source={content}
+        components={sharedComponents}
+        options={{
+          mdxOptions: {
+            remarkPlugins: [remarkGfm],
+            // 建议先只用 highlight，排除 pretty-code 的 fs 问题
+            // rehypePlugins: [rehypeHighlight], 
+          },
+        }}
+      />
+    </div>
+  );
 }

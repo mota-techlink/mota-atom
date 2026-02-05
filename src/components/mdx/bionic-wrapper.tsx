@@ -105,7 +105,7 @@ export function BionicWrapper({
   className,
   ...props 
 }: { 
-  children: React.ReactNode, 
+  children?: React.ReactNode, 
   as?: any,
   className?: string
   [key: string]: any 

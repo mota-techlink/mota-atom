@@ -1,11 +1,14 @@
 import { getPostBySlug } from '@/lib/mdx';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { MdxContent } from '@/components/mdx/mdx-content';
 import { HeaderMedia } from '@/components/mdx/header-media';
+import { generatePostParams } from "@/lib/static-helper";
 
+export function generateStaticParams() {
+  return generatePostParams('blog'); // 👈 只需要改个参数
+}
 
 export default async function BlogPostPage({ params }: { params: { slug: string, locale: string } }) {
   const { slug, locale } = await params;

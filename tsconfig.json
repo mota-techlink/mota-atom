@@ -35,7 +35,7 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "src/components/mdx/mdx-content.tsx.bak", "src/components/mdx/mdx-content.tsx.bak"  ],
   "exclude": [
     "node_modules"
   ]
