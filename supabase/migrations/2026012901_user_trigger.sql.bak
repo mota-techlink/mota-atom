@@ -1,0 +1,37 @@
+-- 1. 创建 profiles 表（如果之前没建全）
+create table if not exists public.profiles (
+  id uuid references auth.users on delete cascade not null primary key,
+  email text,
+  username text,
+  full_name text,
+  avatar_url text,
+  role text check (role in ('admin', 'user')) default 'user',
+  language text default 'en',
+  updated_at timestamp with time zone
+);
+
+-- 开启 RLS 安全策略
+alter table public.profiles enable row level security;
+create policy "Public profiles are viewable by everyone." on profiles for select using (true);
+create policy "Users can insert their own profile." on profiles for insert with check (auth.uid() = id);
+create policy "Users can update own profile." on profiles for update using (auth.uid() = id);
+
+-- 2. 创建函数：处理新用户
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles (id, email, full_name, avatar_url)
+  values (
+    new.id,
+    new.email,
+    new.raw_user_meta_data->>'full_name',
+    new.raw_user_meta_data->>'avatar_url'
+  );
+  return new;
+end;
+$$ language plpgsql security definer;
+
+-- 3. 创建触发器：绑定到 auth.users
+create or replace trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();

@@ -1,0 +1,86 @@
+{
+  "Index": {
+    "title": "Welcome"
+  },
+  "Auth": {
+    "loginTitle": "Welcome back",
+    "loginDesc": "Enter your email to sign in to your account"
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "nav_dashboard": "Overview",
+    "nav_settings": "Settings",
+    "nav_overview": "Console Overview",
+    "nav_users": "User Management",
+    "nav_audit_logs": "Audit Logs",
+    "collapse_sidebar": "Collapse Sidebar"
+  },
+
+  "Nav": {
+    "products": "Products",
+    "resources": "Resources",
+    "pricing": "Pricing",
+    "login": "Login",
+    "getStarted": "Get Started",
+    "company": "Company",
+    "items": {
+      "motaAI": {
+        "title": "MOTA ATOM",
+        "desc": "A variety of the latest AI products to help you easily achieve business automation."
+      },
+      "sitebuild": {
+        "title": "Site Building",
+        "desc": "Cost-effective site building services to help you get online quickly."
+      },
+      "mvp": {
+        "title": "MVP",
+        "desc": "Minimum Viable Product to validate your ideas quickly."
+      },
+      "scalup": {
+        "title": "Scale Production",
+        "desc": "One-stop solution from samples to products."
+      },
+      "case": {
+        "title": "Case Studies",
+        "desc": "Explore our successful projects and client stories, among the best in the industry."
+      },
+      "blog": {
+        "title": "Blog",
+        "desc": "Read the latest articles and updates."
+      },
+      "help": {
+        "title": "Help Center",
+        "desc": "Get answers to your questions."
+      },
+      "docs": {
+        "title": "Documentation",
+        "desc": "Find in-depth information about our services."
+      },
+      "about": {
+        "title": "About Us",
+        "desc": "Learn about our mission and team."
+      },
+      "privacy": {
+        "title": "Privacy Policy",
+        "desc": "Read our privacy policy."
+      },
+      "terms": {
+        "title": "Terms of Service",
+        "desc": "Read our terms of service."
+      },
+      "cookie": {
+        "title": "Cookie Policy",
+        "desc": "Learn how we use cookies to improve your experience."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "desc": "Get in touch with our team with professional self-service support."
+      }
+    }
+  },
+  "Hero": {
+    "slogan": "Structuring Chaos",
+    "getStarted": "Get Started",
+    "TrustedByCompanies":"Trusted by forward-thinking companies worldwide."
+  }
+}

@@ -1,0 +1,75 @@
+---
+title: Datbase Deployment
+description: How to sync up data model structure
+---
+
+## Intruduction
+To sync up local database structure to remote in one command.
+
+## Operation Steps
+
+<Steps>
+
+<Step title = "Preparation" >
+ 
+```bash
+# Install CLI
+npm install supabase --save-dev
+
+# pop up browser to authriz
+npx supabase login
+```
+![](/images/docs/2026-02-05-00-09-37.png)![](/images/docs/2026-02-05-00-05-36.png)
+
+</Step>
+
+<Step title = "Setup">
+
+> We need to tell local code who is the big bro.
+
+* Copy Reference ID from  Supabase Dashboard -> Settings -> General  (Sort like vjqwxqz... string)。
+
+```bash
+# Init (if first time)
+npx supabase init
+
+# connect remote project (Reference ID)
+npx supabase link --project-ref ReferenceID
+# This step will ask for password of database
+```
+</Step>
+
+<Step title = "Generate transfer doc (Auto diff)">
+
+```bash
+# pull from remote as base line (First time)
+npx supabase db pull
+
+# Create new update (E.g. just added documents table)
+# it will generate new .sql in to supabase/migrations folder
+npx supabase db diff --use-migra -f update_schema
+```
+</Step>
+<Step title = "Automatic">
+
+Add follwoing content into package.json.
+```json
+"scripts": {
+  // ... Others
+  "db:pull": "supabase db pull",
+  "db:push": "supabase db push" 
+}
+```
+</Step>
+
+</Steps>
+
+## Regular Ops
+In the future, the process would be like :
+
+1. Local test done.
+2. run cmd:
+```bash
+npm run db:push
+```
+3. Remote database sync up

@@ -1,0 +1,85 @@
+{
+  "Index": {
+    "title": "欢迎"
+  },
+  "Auth": {
+    "loginTitle": "欢迎回来",
+    "loginDesc": "请输入您的电子邮件以登录您的帐户"
+  },
+  "Dashboard": {
+    "title": "仪表盘",
+    "nav_dashboard": "概览",
+    "nav_settings": "设置",
+    "nav_overview": "控制台概览",
+    "nav_users": "用户管理",
+    "nav_audit_logs": "审计日志",
+    "collapse_sidebar": "收起侧栏"
+  },
+  "Nav": {
+    "products": "产品",
+    "resources": "资源",
+    "pricing": "定价",
+    "login": "登录",
+    "company": "公司",
+    "getStarted": "开始使用",
+    "items": {
+      "motaAI": {
+        "title": "MOTA ATOM",
+        "desc": " 各类最新可用的AI产品,助您轻松实现业务自动化。"
+      },
+      "sitebuild": {
+        "title": "建站服务",
+        "desc": "高性价比的建站服务，助您快速上线。"
+      },
+      "mvp": {
+        "title": "MVP",
+        "desc": "最小可行产品，快速验证您的想法。"
+      },
+      "scalup": {
+        "title": "规模化生产",
+        "desc": "从样品到产品的一站式解决方案。"
+      },
+      "case": {
+        "title": "案例研究",
+        "desc": "探索我们成功的项目和客户故事, 从业界最佳中脱颖而出。"
+      },
+      "blog": {
+        "title": "博客",
+        "desc": "阅读最新的文章和更新。"
+      },
+      "help": {
+        "title": "帮助中心",
+        "desc": "获取问题的答案。"
+      },
+      "docs": {
+        "title": "文档",
+        "desc": "查找有关我们服务的深入信息。"
+      },
+      "about": {
+        "title": "关于我们",
+        "desc": "了解我们的使命和团队。"
+      },
+      "privacy": {
+        "title": "隐私政策",
+        "desc": "了解我们如何处理您的数据。"
+      },
+      "terms": {
+        "title": "服务条款",
+        "desc": "了解使用我们服务的条款和条件。"
+      },
+      "cookie": {
+        "title": "Cookie政策",
+        "desc": "了解我们如何使用Cookie来改善您的体验。"
+      },
+      "contact": {
+        "title": "联系我们",
+        "desc": "获取我们的联系信息,并且提供自助式支持选项。"
+      }
+    }
+  },
+  "Hero": {
+    "slogan": "重构混乱",
+    "getStarted": "开始使用",
+    "TrustedByCompanies": "受到全球前瞻性公司的信赖。"
+  }
+}

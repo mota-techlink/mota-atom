@@ -1,0 +1,38 @@
+import createNextIntlPlugin from 'next-intl/plugin';
+
+// 1. 初始化 next-intl 插件
+// 默认它会自动查找 src/i18n.ts 或 i18n.ts
+const withNextIntl = createNextIntlPlugin();
+
+/** @type {import('next').NextConfig} */
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // 1. 开启 React 严格模式 (Next.js 默认推荐)
+  // 有助于在开发阶段发现组件潜在的 Bug
+  reactStrictMode: true,
+
+  // 2. Webpack 配置 (核心修复)
+  // 这里解决了 "Module not found: Package path ./v3 is not exported from package zod" 的问题
+  webpack: (config) => {
+    // 强制将引入 'zod/v3' 的请求重定向到主包 'zod'
+    config.resolve.alias['zod/v3'] = 'zod';
+    return config;
+  },
+
+  // 3. (可选) 图片域名配置
+  // 如果你的文档或博客文章里有引用外部图片 (例如来自 GitHub, Supabase, Cloudflare)，
+  // 你需要在下面添加对应的域名，否则 Next.js Image 组件会报错。
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com', // 示例：允许 GitHub 头像
+      },
+      // 如果你有其他图片源，继续在这里添加对象
+    ],
+  },
+};
+
+
+export default withNextIntl(nextConfig);

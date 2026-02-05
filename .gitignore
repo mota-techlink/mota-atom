@@ -1,41 +1,91 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ==============================================
+# Dependencies (依赖包)
+# ==============================================
+node_modules/
+.pnpm-store
+.npm/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# ==============================================
+# Next.js & React Build Output (构建产物)
+# ==============================================
+.next/
+out/
+build/
+dist/
+.vercel/
 
-# testing
-/coverage
+# ==============================================
+# Environment Variables (🔒 绝对核心：环境变量)
+# 必须忽略，防止 API Key 泄露！
+# ==============================================
+.env
+.env*.local
+.env.development
+.env.test
+.env.production
+.dev.vars
+# 允许提交示例文件，方便社区开发者参考
+!.env.example
 
-# next.js
-/.next/
-/out/
+# ==============================================
+# Cloudflare Pages / Workers
+# ==============================================
+.wrangler/
+.cargo-ok
 
-# production
-/build
+# ==============================================
+# Supabase (Local Dev)
+# ==============================================
+# 忽略本地分支配置和临时文件
+supabase/.branches
+supabase/.temp
+# 注意：supabase/migrations 和 config.toml 应该被提交，所以不要忽略它们
 
-# misc
+# ==============================================
+# Python / Data Pipeline (你的数据处理部分)
+# ==============================================
+# Python 缓存
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# 虚拟环境 (Conda / Venv)
+venv/
+.venv/
+env/
+# 忽略你在截图里创建的 conda 目录
+dh_pipeline/
+
+# ==============================================
+# OS & IDE System Files (系统垃圾文件)
+# ==============================================
 .DS_Store
-*.pem
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
 
-# debug
+# ==============================================
+# Logs & Debug
+# ==============================================
 npm-debug.log*
-yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+*.log
 
-# env files (can opt-in for committing if needed)
-.env*
+# ==============================================
+# Testing
+# ==============================================
+/coverage/
 
-# vercel
-.vercel
-
-# typescript
+# ==============================================
+# TypeScript
+# ==============================================
 *.tsbuildinfo
 next-env.d.ts
+# 注意：next-env.d.ts 通常建议提交，但如果你想保持仓库极其干净也可以忽略，
+# 它是 Next.js 自动生成的。一般保留在 Git 中比较好，这里我不列入忽略。
