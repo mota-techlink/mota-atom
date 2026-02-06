@@ -77,6 +77,7 @@ export async function signInWithGoogle() {
   } else {
     // 添加日志：未获取到 URL 的异常情况
     console.error('[OAuth Debug] No redirect URL returned from signInWithOAuth. Data:', data);
-    return redirect(`/login?error=oauth_no_url`);
+    // return redirect(`/login?error=oauth_no_url`);
+    return { error: 'No url returned' };
   }
 }
