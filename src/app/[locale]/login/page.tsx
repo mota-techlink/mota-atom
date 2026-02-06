@@ -111,20 +111,18 @@ export default function LoginPage() {
               provider="google"
               label="Google"
               iconUrl="/logos/google-icon.svg"
-              // ✅ 修改 onClick 处理逻辑
-              onClick={async (e) => {
+              onClick={async (e) => { // 🟢 Make async
                 e.preventDefault(); 
-                // 1. 等待 Server Action 执行结果
+                // 🟢 Call the action and wait for result
                 const result = await signInWithGoogle();
                 
-                // 2. 检查是否有返回的 URL
                 if (result?.url) {
-                  console.log("Redirecting to:", result.url);
-                  // 3. 在客户端进行跳转，确保完全脱离 Next.js 的路由劫持
+                  // 🟢 Navigate manually on the client side
+                  // This is safer for external redirects than server-side redirect()
                   window.location.href = result.url;
                 } else if (result?.error) {
                   console.error("OAuth Error:", result.error);
-                  // 可选：这里可以用 toast 显示错误
+                  // Optional: You could use a toast or set an error state here
                 }
               }}
             />

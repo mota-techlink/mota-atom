@@ -49,12 +49,14 @@ export async function signInWithGoogle() {
   const supabase = await createClient();
   const origin = (await headers()).get('origin');
   const redirectTo = `${origin}/auth/callback`;
+  const headerStore = await headers();
+  const host = headerStore.get('host'); // 检查 host 和 origin 是否匹配
 
-  // 添加日志：打印关键信息
   console.log('--- [OAuth Debug] Starting Google Sign-In ---');
   console.log(`[OAuth Debug] Origin: ${origin}`);
-  console.log(`[OAuth Debug] Redirect To: ${redirectTo}`);
-
+  console.log(`[OAuth Debug] Host: ${host}`);
+  console.log(`[OAuth Debug] Configured RedirectTo: ${redirectTo}`);
+  
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -63,21 +65,18 @@ export async function signInWithGoogle() {
   });
 
   if (error) {
-    // 添加日志：打印详细错误信息
     console.error('[OAuth Debug] Error during signInWithOAuth:', error);
-    // 返回错误信息到前端
-    return redirect(`/login?error=${encodeURIComponent(error.message)}`);
+    // Return the error so the client can handle it or show a message
+    return { error: error.message };
   }
   
   if (data.url) {
-    // 添加日志：打印成功获取到的重定向 URL
     console.log(`[OAuth Debug] Successfully got redirect URL: ${data.url}`);
-    // redirect(data.url);
+    // 🟢 FIX: Return the URL instead of throwing redirect()
+    // This ensures cookies (PKCE verifier) are successfully set in the response headers
     return { url: data.url };
   } else {
-    // 添加日志：未获取到 URL 的异常情况
-    console.error('[OAuth Debug] No redirect URL returned from signInWithOAuth. Data:', data);
-    // return redirect(`/login?error=oauth_no_url`);
-    return { error: 'No url returned' };
+    console.error('[OAuth Debug] No redirect URL returned.');
+    return { error: 'No redirect URL returned' };
   }
 }
