@@ -7,12 +7,12 @@ import { generatePostParams } from "@/lib/static-helper";
 export function generateStaticParams() {
   return generatePostParams('mota-ai'); // 👈 只需要改个参数
 }
-
+export const dynamicParams = false;
 
 export default async function AIProductPage({ params }: { params: { slug: string, locale: string } }) {
   
   const { slug, locale } =  await params;
-  const product = await getMotaAiProductBySlug(slug, locale);
+  const product = getMotaAiProductBySlug(slug, locale);
 
   if (!product) notFound();
 

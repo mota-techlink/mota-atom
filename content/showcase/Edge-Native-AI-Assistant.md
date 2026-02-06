@@ -16,7 +16,7 @@ In the era of Generative AI, businesses need
 
 **MOTA ATOM** engineered a full-stack, edge-native AI solutionthat leverages **Retrieval-Augmented Generation (RAG)** to provide accurate, context-aware answers based on private corporate data. By bypassing traditional heavy servers and utilizing Cloudflare's global edge network, we achieved unparalleled performance and cost efficiency.
 
-##### <Gradient from="orange" to="blue">  TALK to BOT  </Gradient>[🤖](https://motaiot.com/chatbot/)
+##### <Gradient from="orange" to="green">  TALK to BOT  </Gradient>[🤖](/help)
 
 ## The Challenge
 

@@ -1,78 +1,73 @@
 ---
 # === Basic information (for list & SEO) ===
-title: " Enterprise Knowledge Chatbot"
-date: "2024-05-21"
-description: "A high-performance, serverless AI chatbot built entirely on Cloudflare's edge network. Features Retrieval-Augmented Generation (RAG), custom OAuth 2.0 security, and real-time streaming, delivering enterprise-grade AI interactions at a fraction of the cost"
-category: "local-knowledge-chatbot" # 对应你的三大分类：视觉与交互 / 企业效能 / 硬核技术
-order: 1 # 排序权重，数字越小越靠前 (备用，虽然我们有 page.tsx 的配置，但写在这里方便查找)
-techStack: ["Python", "LangChain", "OpenAI", "Vector DB"] # 列表页和详情页都会显示的标签
+title: "Scal up"
+date: "YYYY-MM-DD"
+description: "[Short Description] A high-level summary of the product (150-160 characters recommended for SEO)."
+category: "[category-slug]" # e.g., visual-interaction, enterprise-efficiency, hardcore-tech
+order: 10 # Adjust order as needed
+techStack: ["[Tech 1]", "[Tech 2]", "[Tech 3]"] # e.g., Next.js, Python, AWS
 
-# === 详情页媒体 (用于左侧相册) ===
-# 建议尺寸: 16:9 (例如 1280x720)
+# === Detail Page Media (Left Column) ===
+# Recommended: 16:9 Aspect Ratio
 gallery:
-  - "/images/showcase/chatbot/chatbot-cover.jpg" # 第一张为主图
-  - "/images/showcase/chatbot/lifegrowth.jpg"
-  - "/images/showcase/chatbot/edge-solution.png"
+  - "/images/products/[folder]/cover.jpg" # Main image
+  - "/images/products/[folder]/screenshot-1.jpg"
+  - "/images/products/[folder]/screenshot-2.jpg"
 
-# === 关联案例 (用于底部 Success Stories) ===
-# 填写 showcase 目录下对应的 slug
+# === Related Showcases (Bottom Section) ===
+# Use the slugs of other .mdx files you want to link to
 relatedShowcases:
-  - "finance-rag-system"
-  - "customer-support-bot"
 
-# === 定价策略 (对应右侧 Sticky Tab) ===
-# 必须包含 basic, standard, premium 三个层级
+# === Pricing Strategy (Right Sticky Column) ===
 pricing:
   - name: "Basic"
-    price: "$99"
-    description: "Cost effective and fast deployment, suit for startup team to verify possibility."
-    deliveryTime: "1 week"
+    price: "$[Amount]"
+    description: "[Short description for entry-level users]"
+    deliveryTime: "[X] days"
     features:
-      - "标准模型部署"
-      - "基础 API 接入"
-      - "每月 10k 次调用"
-      - "邮件支持"
+      - "[Feature 1]"
+      - "[Feature 2]"
+      - "[Feature 3]"
   
   - name: "Standard"
-    price: "$2,500"
-    description: "Customized solution for fast growing enterprise, includes private data fine-tuen."
-    deliveryTime: "3 weeks"
+    price: "$[Amount]"
+    description: "[Short description for most users/businesses]"
+    deliveryTime: "[X] weeks"
     features:
-      - "包含 Basic 所有功能"
-      - "私有知识库集成 (RAG)"
-      - "UI/UX 定制"
-      - "Slack/Discord 渠道支持"
+      - "Everything in Basic"
+      - "[Advanced Feature 1]"
+      - "[Advanced Feature 2]"
   
   - name: "Premium"
-    price: "$10K+|Custom" # 或者具体金额 "$10,000+"
-    description: "Comprehansive enterprise slution, includes source code and local deployment."
-    deliveryTime: "1 month+"
+    price: "Custom" 
+    description: "[Short description for large enterprises]"
+    deliveryTime: "[X] months"
     features:
-      - "包含 Standard 所有功能"
-      - "本地化私有部署 (On-premise)"
-      - "源码交付"
-      - "专属客户经理"
-      - "SLA 99.9% 保证"
+      - "Everything in Standard"
+      - "[Exclusive Feature 1]"
+      - "[Exclusive Feature 2]"
+      - "24/7 Support"
 
-# === FAQ (用于详情页折叠问答) ===
+# === FAQ (Accordion Section) ===
 faq:
-  - question: "这个产品支持哪些语言？"
-    answer: "目前原生支持中文和英文，其他语言可以通过插件扩展。"
-  - question: "数据安全如何保障？"
-    answer: "我们提供私有化部署选项，数据完全存储在您的本地服务器上，不经过第三方。"
+  - question: "[Common Question 1]?"
+    answer: "[Clear and concise answer]."
+  - question: "[Common Question 2]?"
+    answer: "[Clear and concise answer]."
 ---
 
-## About This Service
-
-这里开始写正文内容（Markdown 格式）。
+### About This Service
+[Detailed description of the service or product. Explain the value proposition, the problem it solves, and why the client should choose it.]
 
 ### Key Features
-* **Feature A**: Description here.
-* **Feature B**: Description here.
+* **[Feature Name]**: [Description of the feature]
+* **[Feature Name]**: [Description of the feature]
+* **[Feature Name]**: [Description of the feature]
 
 ### How It Works
-1.  Step one
-2.  Step two
+1.  **[Step 1 Name]**: [Brief explanation]
+2.  **[Step 2 Name]**: [Brief explanation]
+3.  **[Step 3 Name]**: [Brief explanation]
 
 ### Use Cases
-> 引用客户评价或场景描述...
+> "[Insert a powerful quote, a testimonial, or a specific scenario where this product shines.]"

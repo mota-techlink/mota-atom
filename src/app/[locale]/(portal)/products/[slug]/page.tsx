@@ -9,9 +9,10 @@ export function generateStaticParams() {
 }
 
 export default async function AIProductPage({ params }: { params: { slug: string, locale: string } }) {
-  const { slug, locale } = params;
-  const product = await getProductBySlug(slug, locale);
+  const { slug, locale } = await params;
+  const product =  getProductBySlug(slug, locale);
 
+  
   if (!product) notFound();
 
   return (

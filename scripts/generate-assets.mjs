@@ -21,7 +21,7 @@ if (!fs.existsSync(OUTPUT_DIR)) {
 }
 
 // ---------------------------------------------------------
-// 清洗逻辑 (保持不变)
+// 清洗逻辑
 // ---------------------------------------------------------
 function cleanMDXContent(content, metadata) {
   let cleaned = content;
@@ -129,7 +129,7 @@ async function scanContent() {
 }
 
 // ---------------------------------------------------------
-// 任务 B: 扫描图片 (保持不变)
+// 任务 B: 扫描图片 
 // ---------------------------------------------------------
 function scanImages() {
   const imageMap = {};
@@ -157,14 +157,77 @@ function scanImages() {
 }
 
 // ---------------------------------------------------------
+// 🟢 数据增强函数 (关联 Showcase 到 Product)
+// ---------------------------------------------------------
+function enrichRelationship(contentMap) {
+  // 1. 定义需要遍历的产品目录列表
+  const productCategories = ['products', 'mota-ai']; 
+  
+  // 2. 合并所有产品到一个数组中
+  let allProducts = [];
+  productCategories.forEach(cat => {
+    if (contentMap[cat] && Array.isArray(contentMap[cat])) {
+      allProducts = allProducts.concat(contentMap[cat]);
+    }
+  });
+
+
+  const showcases = contentMap['showcase'];
+
+  if (!allProducts || !showcases) return;
+
+  // 遍历每一个产品
+  allProducts.forEach(product => {
+    if (!product || !product.metadata) return;
+    const relatedSlugs = product.metadata.relatedShowcases;
+    if (!relatedSlugs || !Array.isArray(relatedSlugs) || relatedSlugs.length === 0) {
+      return; 
+    }
+    console.log(`${product.metadata.title} relatedSlugs length ${relatedSlugs.length}`);
+    // 如果该产品配置了关联案例
+    if (Array.isArray(relatedSlugs) && relatedSlugs.length > 0) {
+      
+      // 在 Showcase 列表中查找对应的数据
+      const enrichedData = relatedSlugs.map(slug => {
+        // 查找匹配的 showcase (忽略大小写)
+        const found = showcases.find(s => s.slug.toLowerCase() === slug.toLowerCase());
+        
+        if (found) {
+          // 只提取前端展示需要的轻量级数据，避免 JSON 太大
+          return {
+            slug: found.slug,
+            title: found.metadata.title,
+            description: found.metadata.description,
+            cover: found.metadata.image, // 取第一张图做封面
+          };
+        }else {
+          console.warn(`   ⚠️ [Warning] Related showcase not found: "${slug}" (in: ${product.metadata.title})`);
+          return null;
+        }
+        return null;
+      }).filter(item => item !== null); // 过滤掉找不到的
+
+      // 🟢 将增强后的数据注入到 metadata 中，供前端直接使用
+      product.metadata.relatedShowcasesData = enrichedData;
+    }
+  });
+}
+
+
+
+// ---------------------------------------------------------
 // 执行并保存
 // ---------------------------------------------------------
 console.log('📦 Generating assets manifest...');
 // 必须在一个 async 函数里执行
 (async () => {
   try {
+    const content = await scanContent();
+
+    enrichRelationship(content)
+    
     const assets = {
-      content: await scanContent(), // 等待编译完成
+      content: content, // 等待编译完成
       images: scanImages(),
       generatedAt: new Date().toISOString()
     };

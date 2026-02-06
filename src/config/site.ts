@@ -6,6 +6,8 @@ export const siteConfig = {
   logoDark: "/logos/mota-techlink-logo-blk.png",   // 暗色模式 Logo
   Icon: "/logos/mota-icon-v2.png",    // 网站图标 Favicon
   logo: "/logos/mota-logo-v2.png",
+  banner: "/images/mota-banner.png",
+  
   description:
     "Launch Your Dream Startup with AI Support, Zero Cost and Infinite Scale...",
   url: "https://motaiot.com", 

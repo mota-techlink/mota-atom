@@ -1,4 +1,6 @@
 import { Metadata } from "next"
+import { siteConfig } from "@/config/site"
+import Image from "next/image"
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -34,8 +36,16 @@ export default function AboutPage() {
           </p>
         </div>
         <div className="relative aspect-square md:aspect-video overflow-hidden rounded-2xl border bg-muted/50">
-           <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-             About Us Image Placeholder
+           <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">            
+            
+                  <Image 
+                    src={siteConfig.banner}
+                    alt="Mota Techlink" 
+                    fill 
+                    className="object-contain object-center" 
+                    priority
+                  />
+            
            </div>
         </div>
       </div>
