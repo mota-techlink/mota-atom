@@ -3,7 +3,7 @@
     "title": "Welcome"
   },
   "Auth": {
-    "loginTitle": "Welcome back",
+    "loginTitle": "Login to",
     "loginDesc": "Enter your email to sign in to your account"
   },
   "Dashboard": {
