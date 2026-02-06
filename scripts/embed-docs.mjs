@@ -78,6 +78,7 @@ async function getEmbedding(text) {
 }
 
 async function processDocs() {
+  console.log('🚀 Getting Started to embedding docs.');
   const docsDir = path.join(process.cwd(), 'content/');
   // 确保目录存在
   if (!fs.existsSync(docsDir)) {

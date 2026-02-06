@@ -42,6 +42,10 @@ export const docsConfig: { sidebarNav: SidebarNavItem[] } = {
           href: "/docs/deployment/database",
         },
         {
+          title: "OAuth",
+          href: "/docs/deployment/oauth",
+        },
+        {
           title: "Docker",
           href: "/docs/deployment/docker",
         },

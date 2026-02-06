@@ -39,6 +39,7 @@ dist/
 # 忽略本地分支配置和临时文件
 supabase/.branches
 supabase/.temp
+supabase/config.toml
 # 注意：supabase/migrations 和 config.toml 应该被提交，所以不要忽略它们
 
 # ==============================================

@@ -1,7 +1,7 @@
 import Link from "next/link"
-import Image from "next/image"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import Image from "next/image"
 import { siteConfig } from "@/config/site"
 import { MainNav } from "@/components/main-nav"
 import { ModeToggle } from "@/components/mode-toggle"

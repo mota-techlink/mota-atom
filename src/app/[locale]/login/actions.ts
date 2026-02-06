@@ -1,8 +1,10 @@
+// app/[locale]/login/actions.ts
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
+import { Provider } from '@supabase/supabase-js';
 
 export async function login(formData: FormData) {
   const email = formData.get('email') as string;
@@ -15,13 +17,9 @@ export async function login(formData: FormData) {
   });
 
   if (error) {
-    // 实际项目中这里应该返回错误信息给前端显示
-    // 为了简化，暂时重定向回登录页并带上错误参数
-    return redirect('/login?error=auth');
+    return redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
-  // 登录成功，重定向到后台
-  // 注意：需要使用 next/navigation 的 redirect
   redirect('/dashboard');
 }
 
@@ -30,7 +28,6 @@ export async function signup(formData: FormData) {
   const password = formData.get('password') as string;
   const supabase = await createClient();
   
-  // 获取当前 origin 用于生成确认链接
   const origin = (await headers()).get('origin');
 
   const { error } = await supabase.auth.signUp({
@@ -42,8 +39,44 @@ export async function signup(formData: FormData) {
   });
 
   if (error) {
-    return redirect('/login?error=signup');
+    return redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
   return redirect('/login?message=check_email');
+}
+
+export async function signInWithGoogle() {
+  const supabase = await createClient();
+  const origin = (await headers()).get('origin');
+  const redirectTo = `${origin}/auth/callback`;
+
+  // 添加日志：打印关键信息
+  console.log('--- [OAuth Debug] Starting Google Sign-In ---');
+  console.log(`[OAuth Debug] Origin: ${origin}`);
+  console.log(`[OAuth Debug] Redirect To: ${redirectTo}`);
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: redirectTo,
+    },
+  });
+
+  if (error) {
+    // 添加日志：打印详细错误信息
+    console.error('[OAuth Debug] Error during signInWithOAuth:', error);
+    // 返回错误信息到前端
+    return redirect(`/login?error=${encodeURIComponent(error.message)}`);
+  }
+  
+  if (data.url) {
+    // 添加日志：打印成功获取到的重定向 URL
+    console.log(`[OAuth Debug] Successfully got redirect URL: ${data.url}`);
+    // redirect(data.url);
+    return { url: data.url };
+  } else {
+    // 添加日志：未获取到 URL 的异常情况
+    console.error('[OAuth Debug] No redirect URL returned from signInWithOAuth. Data:', data);
+    return redirect(`/login?error=oauth_no_url`);
+  }
 }

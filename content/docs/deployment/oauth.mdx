@@ -1,0 +1,88 @@
+---
+title: OAuth Setup
+description: How to leverage 3rd party account to login 
+---
+
+## Google Side
+1. 创建 Google Cloud 项目：访问 Google Cloud Console 创建一个新项目。
+
+2. 配置 OAuth 同意屏幕：在 "API 和服务" -> "OAuth 同意屏幕" 中，选择 "外部"，填写必要信息。
+
+3. 创建凭据：在 "凭据" 页面，点击 "创建凭据" -> "OAuth 客户端 ID"。
+
+- 应用类型选择 "Web 应用"。
+
+- 已获授权的 JavaScript 来源：添加 http://localhost:3000。
+
+- 已获授权的重定向 URI：添加本地 Supabase 的回调地址，格式为 http://127.0.0.1:54321/auth/v1/callback。
+
+4. 获取 Client ID 和 Secret：创建成功后，你会得到一个 Client ID 和 Client Secret。
+
+5. 配置本地 Supabase：打开本地 Supabase Studio (http://127.0.0.1:54323)，进入 "Authentication" -> "Providers"，启用 "Google"，并填入刚才获取的 Client ID 和 Client Secret。
+
+
+## Local Supabase Setup
+
+在本地使用 Supabase 时，Authentication 的第三方登录提供商（Providers，如 Google, GitHub 等）不能直接在本地的 Studio UI 界面中开启。
+
+你需要通过编辑项目中的 Supabase 配置文件来启用它们。
+
+以下是开启本地 Supabase Auth Providers 的详细步骤：
+
+** 核心步骤：修改 config.toml 文件 **
+本地 Supabase 的所有配置都位于你的项目根目录下的 supabase/config.toml 文件中。你需要在这个文件中找到或添加相应的 OAuth 提供商配置块，并填入你的 Client ID 和 Secret。
+
+1. 找到配置文件
+打开你的项目，找到以下文件： 你的项目根目录/supabase/config.toml
+
+2. 获取第三方提供商的凭据
+在配置之前，你必须先去你要开启的第三方服务商（例如 Google Cloud Console, GitHub Developer Settings 等）注册一个应用，并获取到以下两个关键信息：
+
+- Client ID (客户端 ID)
+
+- Client Secret (客户端密钥)
+
+关于本地开发的重要提示： 在配置第三方应用的 "Authorized redirect URIs"（已授权的重定向 URI）时，本地 Supabase 的默认回调地址通常是： http://127.0.0.1:54321/auth/v1/callback (请确保端口号与你启动 supabase 时显示的 API URL 端口一致)
+
+3. 编辑 config.toml
+在 config.toml 文件中，向下滚动，找到 [auth.external] 相关区域。如果没有，你需要手动添加。
+
+示例：开启 Google 登录
+
+在文件中添加或修改以下内容，将 your_client_id 和 your_client_secret 替换为你实际获取到的值：
+
+```Ini, TOML
+# supabase/config.toml
+
+# ... 其他配置 ...
+
+[auth.external.google]
+enabled = true
+client_id = "填写你的Google Client ID"
+secret = "填写你的Google Client Secret"
+# redirect_uri 通常不需要在本地显式设置，Supabase 会自动处理，
+# 但确保你在 Google控制台 配置了正确的 localhost 回调地址。
+
+# 示例：开启 GitHub 登录
+# [auth.external.github]
+# enabled = true
+# client_id = "填写你的GitHub Client ID"
+# secret = "填写你的GitHub Client Secret"
+
+# ... 其他配置 ...
+```
+确保 enabled = true。
+
+4. 重启本地 Supabase
+修改配置文件后，必须重启本地 Supabase 服务才能使更改生效。
+
+在你的终端中运行：
+
+```Bash
+npx supabase stop
+npx supabase start
+```
+5. 验证
+重启完成后，再次访问本地的 Supabase Studio 面板（通常是 http://127.0.0.1:54323）。
+
+进入 Authentication -> Providers 页面。现在你应该能看到你刚刚在配置文件中添加的提供商（例如 Google）已经显示为 "Enabled"（已启用）状态，并且可以展开查看你配置的 Client ID。
