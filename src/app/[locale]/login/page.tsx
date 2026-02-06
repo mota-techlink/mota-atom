@@ -1,5 +1,6 @@
 // app/[locale]/login/page.tsx
 'use client'; // 需要改为 client component 来使用 useSearchParams 和 onClick
+export const runtime = 'edge'
 
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
