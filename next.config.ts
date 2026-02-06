@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   // 因为表单提交 (Server Actions) 有独立的安全检查
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:3000", "dev.motaiot.com","192.168.50.188:3000"],
+      allowedOrigins: ["localhost:3000", "atom.motaiot.com","dev.motaiot.com","192.168.50.188:3000"],
     },
   },
 

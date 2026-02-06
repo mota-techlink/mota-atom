@@ -1,7 +1,5 @@
 // app/[locale]/login/page.tsx
 'use client'; // 需要改为 client component 来使用 useSearchParams 和 onClick
-export const runtime = 'edge'
-
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,7 +21,8 @@ import Image from "next/image"
 import { siteConfig } from "@/config/site"
 import Link from 'next/link';
 
-// export const runtime = 'edge'; // client component 不需要 edge runtime
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
 export default function LoginPage() {
   const t = useTranslations('Auth');
