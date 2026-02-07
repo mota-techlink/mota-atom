@@ -112,19 +112,22 @@ export default function LoginPage() {
               provider="google"
               label="Google"
               iconUrl="/logos/google-icon.svg"
-              onClick={async (e) => { // 🟢 Make async
-                e.preventDefault(); 
-                // 🟢 Call the action and wait for result
-                const result = await signInWithGoogle();
+              // onClick={async (e) => { // 🟢 Make async
+              //   e.preventDefault(); 
+              //   // 🟢 Call the action and wait for result
+              //   const result = await signInWithGoogle();
                 
-                if (result?.url) {
-                  // 🟢 Navigate manually on the client side
-                  // This is safer for external redirects than server-side redirect()
-                  window.location.href = result.url;
-                } else if (result?.error) {
-                  console.error("OAuth Error:", result.error);
-                  // Optional: You could use a toast or set an error state here
-                }
+              //   if (result?.url) {
+              //     // 🟢 Navigate manually on the client side
+              //     // This is safer for external redirects than server-side redirect()
+              //     window.location.href = result.url;
+              //   } else if (result?.error) {
+              //     console.error("OAuth Error:", result.error);
+              //     // Optional: You could use a toast or set an error state here
+              //   }
+              // }}
+              onClick={() => {
+                window.location.href = '/auth/google';
               }}
             />
 
