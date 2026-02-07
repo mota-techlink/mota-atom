@@ -4,9 +4,10 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
-import { Provider } from '@supabase/supabase-js';
 
-export async function login(formData: FormData) {
+export const runtime = 'edge';
+
+export async function oAuthLogin(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
   const supabase = await createClient();

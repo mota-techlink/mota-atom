@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { login, signup, signInWithGoogle } from './actions';
+import { oAuthLogin, signup, signInWithGoogle } from '@/app/auth/actions';
 import { OAuthButton } from '@/components/oauth-button';
 import { useSearchParams } from 'next/navigation';
 import { AlertCircle } from 'lucide-react';
@@ -92,7 +92,7 @@ export default function LoginPage() {
               />
             </div>
             
-            <Button formAction={login} className="w-full bg-black text-white hover:bg-slate-800 dark:bg-white dark:text-black">
+            <Button formAction={oAuthLogin} className="w-full bg-black text-white hover:bg-slate-800 dark:bg-white dark:text-black">
               Sign In
             </Button>
              </form>
