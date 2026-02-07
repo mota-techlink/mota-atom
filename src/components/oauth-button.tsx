@@ -28,20 +28,20 @@ export function OAuthButton({
       disabled={!enable || isLoading}
       onClick={enable ? onClick : undefined}
       className={cn(
-        "h-14 w-14 p-3 rounded-full flex items-center justify-center aspect-square relative overflow-hidden", // relative 用于定位
+        "h-13 w-13 p-1 rounded-full flex items-center justify-center aspect-square relative overflow-hidden", // relative 用于定位
         "bg-transparent border-none shadow-none",
         // 启用时的 hover 样式
         enable && "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 transition-all",
         // 禁用时的样式 (降低透明度，显示不可用感)
-        !enable && "opacity-70 cursor-not-allowed bg-slate-100/50 dark:bg-slate-800/50"
+        !enable && "opacity-70 cursor-not-allowed bg-slate-100/50 dark:bg-slate-800/50 "
       )}
       title={enable ? `Sign in with ${label}` : `${label} is currently unavailable`}
-      aria-label={`Sign in with ${label}`}
+      // aria-label={`Sign in with ${label}`}
     >
       {/* 🟢 图标容器 
          如果禁用了，原图标变灰、变淡，作为背景衬托
       */}
-      <div className={cn("relative flex items-center justify-center", !enable && " blur-[1px]")}>
+      <div className={cn("relative flex items-center justify-center", !enable && " blur-[3px]")}>
         {iconUrl && (
           <Image
             src={iconUrl}

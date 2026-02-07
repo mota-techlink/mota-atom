@@ -7,7 +7,7 @@ import { headers } from 'next/headers';
 import { Provider } from '@supabase/supabase-js';
 import { ExtendedProvider } from '@/config/site';
 
-export async function oAuthLogin(formData: FormData) {
+export async function emailLogin(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
   const supabase = await createClient();

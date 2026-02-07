@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { siteConfig } from "@/config/site";
-import { oAuthLogin, signup } from "@/app/auth/actions";
+import { emailLogin, signup } from "@/app/auth/actions";
 import { getTranslations } from 'next-intl/server';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,7 @@ import Image from "next/image";
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import ClientOAuthHandler from "./client-oauth-handler";
+import { TypewriterText } from "@/components/ui/typewriter-text"; 
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -69,9 +70,16 @@ export default async function LoginPage({
               />
             )}
             </Link>
-            <h2 className="text-2xl font-bold tracking-tight">ATOM Platform</h2>
-            <p className="text-slate-300 text-sm max-w-[240px] leading-relaxed">
-              {siteConfig.description || "Launch Your Dream Startup with AI Support"}
+            <h2 className="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-400">ATOM Platform</h2>
+            <p className="text-slate-300 text-[16px] max-w-[240px] leading-relaxed">
+              {"Launch Your Dream Startup with "}            
+             <span className="text-[16px] inline-block">
+                <TypewriterText
+                  words={["AI Support", " Zero Cost", "Infinite Scale"]}
+                  className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-600"
+                  cursorClassName="bg-blue-500 h-[0.8em]"
+                />
+            </span>
             </p>
           </div>
         </div>
@@ -91,8 +99,10 @@ export default async function LoginPage({
             
             {/* 移动端 Logo (横屏时为了省空间，建议隐藏或缩小) */}
             <div className="md:hidden flex justify-center mb-6 landscape:hidden">
-               {siteConfig.logoDark && <Image src={siteConfig.logoDark} alt="Logo" width={48} height={48} className="object-contain dark:hidden" />}
-               {siteConfig.logoDark && <Image src={siteConfig.logoDark} alt="Logo" width={48} height={48} className="object-contain hidden dark:block" />}
+              <Link href="/" > 
+               {siteConfig.logoDark && <Image src={siteConfig.logoDark} alt="Logo" width={100} height={100} className="object-contain dark:hidden" />}
+               {siteConfig.logoDark && <Image src={siteConfig.logoDark} alt="Logo" width={100} height={100} className="object-contain hidden dark:block" />}
+               </Link>
             </div>
 
             {/* 标题 */}
@@ -119,7 +129,7 @@ export default async function LoginPage({
 
 
           {/* ==================== 第二板块 (分割线/表单/注册) ==================== */}
-          <div className="w-full flex flex-col justify-center">
+          <div className="w-full flex flex-col justify-center pt-5">
             
             {/* 分割线 OR (横屏隐藏) */}
             <div className="relative mb-6 landscape:hidden md:landscape:block">
@@ -136,9 +146,8 @@ export default async function LoginPage({
             {/* 错误提示 */}
             {errorMessage && (
               <Alert variant="destructive" className="mb-4 py-2">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle className="text-xs">Error</AlertTitle>
-                <AlertDescription className="text-xs">{errorMessage}</AlertDescription>
+                <AlertCircle className="h-4 w-4" />                
+                <AlertDescription className="text-s">{errorMessage}</AlertDescription>
               </Alert>
             )}
              {msgString && (
@@ -150,7 +159,7 @@ export default async function LoginPage({
             {/* 邮箱表单 */}
             <form className="space-y-3 landscape:space-y-2">
               <div className="grid gap-1.5">
-                <Label htmlFor="email" className="text-xs font-medium text-slate-700 dark:text-slate-300">Email</Label>
+                <Label htmlFor="email" className="text-s font-medium text-slate-700 dark:text-slate-300">Email</Label>
                 <Input
                   id="email"
                   name="email"
@@ -161,7 +170,7 @@ export default async function LoginPage({
                 />
               </div>
               <div className="grid gap-1.5">
-                <Label htmlFor="password" className="text-xs font-medium text-slate-700 dark:text-slate-300">Password</Label>
+                <Label htmlFor="password" className="text-s font-medium text-slate-700 dark:text-slate-300">Password</Label>
                 <Input
                   id="password"
                   name="password"
@@ -172,7 +181,7 @@ export default async function LoginPage({
               </div>
 
               <Button 
-                formAction={oAuthLogin} 
+                formAction={emailLogin} 
                 className="w-full h-10 landscape:h-9 text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-black dark:hover:bg-slate-200 transition-colors mt-2"
               >
                 Sign In

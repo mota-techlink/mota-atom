@@ -4,7 +4,7 @@
   },
   "Auth": {
     "loginTitle": "欢迎回来",
-    "loginDesc": "请输入您的电子邮件以登录您的帐户"
+    "loginDesc": "请登录您的帐户"
   },
   "Dashboard": {
     "title": "仪表盘",

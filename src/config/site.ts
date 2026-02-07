@@ -77,11 +77,8 @@ export const siteConfig = {
       { id: 'x', label: 'Twitter', icon: '/icons/twitter.svg', enable:false },
       { id: 'facebook', label:'Facebook', icon: '/icons/facebook.svg', enable:false},
       { id: 'linkedin', label:'linkedin', icon: '/icons/linkedin.svg', enable:false},
-      { id: 'discord', label:'discord', icon: '/icons/discord.svg', enable:false},
-      { id: 'spotify', label:'spotify', icon: '/icons/spotify.svg', enable:false },
-      
-      
-      
+      // { id: 'discord', label:'discord', icon: '/icons/discord.svg', enable:false},
+      // { id: 'spotify', label:'spotify', icon: '/icons/spotify.svg', enable:false },
     ] as OAuthProviderConfig[],
 
     // 📍 2. 地区特定 (显示在第一排)
