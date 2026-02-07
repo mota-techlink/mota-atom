@@ -1,4 +1,14 @@
-import { log } from "console"
+import { Provider } from "@supabase/supabase-js";
+
+
+export type ExtendedProvider = Provider | 'wechat' | 'feishu' | 'alibaba';
+
+export type OAuthProviderConfig = {
+  id: ExtendedProvider ; 
+  label: string;
+  icon: string; // 图标路径
+  enable: boolean;
+};
 
 export const siteConfig = {
   name: "MOTA TECHLINK",
@@ -58,7 +68,30 @@ export const siteConfig = {
       title: "Taxonomy Inspired",
       description: "Built using the design principles from the popular Taxonomy template.",
     },
-  ]
+  ],
+  oauth: {
+    // 🌍 1. 全球通用 (显示在第二排)
+    common: [
+      { id: 'google', label: 'Google', icon: '/icons/google.svg',enable:true }, // 建议使用彩色 SVG
+      { id: 'github', label: 'GitHub', icon: '/icons/github.svg',enable:true },
+      { id: 'x', label: 'Twitter', icon: '/icons/twitter.svg', enable:false },
+      { id: 'facebook', label:'Facebook', icon: '/icons/facebook.svg', enable:false},
+      { id: 'linkedin', label:'linkedin', icon: '/icons/linkedin.svg', enable:false},
+      { id: 'discord', label:'discord', icon: '/icons/discord.svg', enable:false},
+      { id: 'spotify', label:'spotify', icon: '/icons/spotify.svg', enable:false },
+      
+      
+      
+    ] as OAuthProviderConfig[],
+
+    // 📍 2. 地区特定 (显示在第一排)
+    regionSpecific: {
+      zh: [
+        { id: 'wechat', label: '微信', icon: '/icons/wechat.svg', enable:false }, // 注意：Supabase原生不支持WeChat，需走OIDC或自定义        
+        { id: 'alibaba', label: '阿里', icon: '/icons/alibaba.svg',enable: false }, 
+      ]      
+    } as Record<string, OAuthProviderConfig[]>,
+  }
 }
 
 export type SiteConfig = typeof siteConfig
