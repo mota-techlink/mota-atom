@@ -1,6 +1,6 @@
 // app/[locale]/login/page.tsx
 'use client'; // 需要改为 client component 来使用 useSearchParams 和 onClick
-// import { useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,7 +25,7 @@ export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 export default function LoginPage() {
-  // const t = useTranslations('Auth');
+  const t = useTranslations('Auth');
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
   const message = searchParams.get('message');
@@ -38,8 +38,8 @@ export default function LoginPage() {
           {/* 🟢 修改开始：使用 Flex 布局使 Logo 和文字水平排列 */}
           <CardTitle className="text-2xl font-semibold tracking-tight flex mx-auto items-center  gap-3">
             {/* Logo 容器：限制大小，仅在暗色模式显示 */}
-            {/* <span>{t('loginTitle', { defaultMessage: 'Login to ' })}</span> */}
-            <span>Login to </span>
+            <span>{t('loginTitle', { defaultMessage: 'Login to ' })}</span>
+            
             <div className="relative w-30 h-20 hidden dark:block shrink-0">
               <Image 
                 src={siteConfig.logoDark}
@@ -53,7 +53,7 @@ export default function LoginPage() {
           </CardTitle>
           {/* 🔴 修改结束 */}
           <CardDescription className="flex mx-auto items-center">
-            {/* {t('loginDesc', { defaultMessage: 'Enter your email to sign in to your account' })} */}
+            {t('loginDesc', { defaultMessage: 'Enter your email to sign in to your account' })}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">

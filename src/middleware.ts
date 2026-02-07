@@ -7,7 +7,7 @@ import { locales } from './i18n'; // 确保引入了你定义的 locales
 const intlMiddleware = createMiddleware({
   locales,
   defaultLocale: 'en',
-  localePrefix: 'as-needed' // 建议显式显示语言前缀，利于 SEO 和逻辑统一
+  localePrefix: 'always' // 建议显式显示语言前缀，利于 SEO 和逻辑统一
   
 });
 
@@ -47,7 +47,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   // 匹配规则：跳过内部路径、静态资源等
   matcher: [
-    '/((?!login|_next/static|_next/image|videos|search.json|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!auth|_next/static|_next/image|videos|search.json|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     
   ],
 };
