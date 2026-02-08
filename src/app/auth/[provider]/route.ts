@@ -1,5 +1,5 @@
 // src/app/auth/[provider]/route.ts
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/supabase/client';
 import { NextResponse } from 'next/server';
 import { Provider } from '@supabase/supabase-js';
 

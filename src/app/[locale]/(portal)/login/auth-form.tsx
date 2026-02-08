@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent } from 'react';
+import { createBwClient } from '@/lib/supabase/client';
 import { emailLogin, signup } from "@/app/auth/actions";
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -30,6 +31,8 @@ export default function AuthForm({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const supabase = createBwClient();
 
   // URL 参数判断视图
   const isLogin = searchParams.get('view') !== 'signup';
@@ -107,32 +110,48 @@ export default function AuthForm({
     setIsLoading(true);
     try {
       if (isLogin) {
-        // 登录
-        await emailLogin(formData);
+        // 🟢 登录逻辑：直接调用 Supabase 客户端
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (error) {
+          setGlobalError(error.message);
+        } else {
+          // 登录成功，刷新页面或跳转
+          router.push('/dashboard'); // 或者 router.refresh()
+          router.refresh(); 
+        }
+
       } else {
-        // 注册
-        const result = await signup(formData);
-        if (result?.error) {
-          setGlobalError(result.error);
-        } else if (result?.success) {
-          router.push('/login?message=check_email');
+        // 🟢 注册逻辑：直接调用 Supabase 客户端
+        // 获取当前域名用于重定向
+        const origin = window.location.origin;
+        
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${origin}/auth/callback`,
+          },
+        });
+
+        if (error) {
+          setGlobalError(error.message);
+        } else {
+          // 注册成功，提示查收邮件
+          setGlobalMessage("Please check your email to activate account.");
+          // 这里可以选择跳回登录页，或者停留在当前页显示消息
+          const params = new URLSearchParams(searchParams.toString());
+          params.delete('view'); // 切换回登录视图
+          router.replace(`${pathname}?${params.toString()}`);
         }
       }
-    } catch (err: any) {
-      // 🟢 修复 2：解决跳转时的闪烁报错问题
-      // Next.js 的 redirect() 是通过抛出一个特定的错误来实现的
-      // 这个错误的 digest 属性通常包含 'NEXT_REDIRECT'
-      if (err?.digest?.includes('NEXT_REDIRECT')) {
-        // 这是一个正常的重定向，不是错误，直接抛出让 Next.js 处理
-        throw err;
-      }
-
-      // 只有不是重定向的错误，才显示报错信息
-      console.error("Login Error:", err);
+    } catch (err) {
+      console.error("Auth Error:", err);
       setGlobalError("Something went wrong. Please try again.");
     } finally {
-      // 注意：如果发生了 redirect (throw err)，finally 依然会执行
-      // 但因为页面即将跳转卸载，这里设为 false 也无妨
       setIsLoading(false);
     }
   };
