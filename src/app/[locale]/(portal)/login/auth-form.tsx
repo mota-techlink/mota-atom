@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent } from 'react';
-import { createBwClient } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import { emailLogin, signup } from "@/app/auth/actions";
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -32,7 +32,7 @@ export default function AuthForm({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const supabase = createBwClient();
+  const supabase = createClient();
 
   // URL 参数判断视图
   const isLogin = searchParams.get('view') !== 'signup';

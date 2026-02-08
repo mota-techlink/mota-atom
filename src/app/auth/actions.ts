@@ -1,7 +1,7 @@
 // app/[locale]/login/actions.ts
 'use server';
 
-import { createClient } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 
