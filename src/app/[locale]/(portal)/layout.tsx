@@ -3,12 +3,12 @@ import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { siteConfig } from "@/config/site"
-import { MainNav } from "@/components/main-nav"
+import { MainNav } from "@/components/sections/main-nav"
 import { ModeToggle } from "@/components/mode-toggle"
-import { MobileNav } from "@/components/mobile-nav" 
+import { MobileNav } from "@/components/sections/mobile-nav" 
 import { ScrollToTop } from "@/components/scroll-to-top" 
 import { BionicToggle } from '@/components/ui/bionic-toggle';
-import { SiteFooter } from "@/components/site-footer"
+import { SiteFooter } from "@/components/sections/site-footer"
 import { useTranslations } from 'next-intl';
 import { LanguageToggle } from '@/components/language-toggle';
 

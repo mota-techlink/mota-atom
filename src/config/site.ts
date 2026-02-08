@@ -74,7 +74,7 @@ export const siteConfig = {
     common: [
       { id: 'google', label: 'Google', icon: '/icons/google.svg',enable:true }, // 建议使用彩色 SVG
       { id: 'github', label: 'GitHub', icon: '/icons/github.svg',enable:true },
-      { id: 'x', label: 'Twitter', icon: '/icons/twitter.svg', enable:false },
+      { id: 'x', label: 'Twitter', icon: '/icons/twitter.svg', enable:true },
       { id: 'facebook', label:'Facebook', icon: '/icons/facebook.svg', enable:false},
       { id: 'linkedin', label:'linkedin', icon: '/icons/linkedin.svg', enable:false},
       // { id: 'discord', label:'discord', icon: '/icons/discord.svg', enable:false},

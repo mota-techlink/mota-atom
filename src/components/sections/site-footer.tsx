@@ -31,7 +31,7 @@ export function SiteFooter({ className }: { className?: string }) {
               </span>
               
             </Link>
-            <p className="mt-4 text-md  text-muted-foreground max-w-xs mx-auto lg:mx-0 lg:pl-[5%]">
+            <p className="mt-4 text-md  text-muted-foreground max-w-xs mx-auto lg:mx-0 lg:pl-[10%]">
               <a href={`tel:${siteConfig.contact.phone}`} className="hover:underline">{siteConfig.contact.phone}</a><br />
               <a href={siteConfig.google_map.mapURL} target="_blank" rel="noreferrer" className="hover:underline">
                 {siteConfig.contact.address}
@@ -39,7 +39,7 @@ export function SiteFooter({ className }: { className?: string }) {
             </p>
             
             {/* Social Links */}
-            <div className="pl-10 mt-6  flex items-center gap-6">
+            <div className="lg:pl-[10%] mt-2  flex items-center gap-6">
               <Link href={siteConfig.links.github} target="_blank" rel="noreferrer">
                 <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-muted">
                   <Github className="h-4 w-4" />
