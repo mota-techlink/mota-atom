@@ -51,7 +51,7 @@ export default async function LoginPage({
   return (
     <div className="flex w-full flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 landscape:justify-start landscape:py-6 md:landscape:justify-center relative overflow-y-auto">
 
-      <div className="z-50 w-full max-w-[1000px] grid grid-cols-1 md:grid-cols-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden rounded-2xl md:rounded-3xl min-h-[500px]">
+      <div className="z-45 w-full max-w-[1000px] grid grid-cols-1 md:grid-cols-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden rounded-2xl md:rounded-3xl min-h-[500px]">
 
         {/* 左侧品牌区 (保持不变) */}
         <div className="hidden md:flex md:col-span-2 relative bg-slate-900 items-center justify-center p-8 text-white overflow-hidden">
