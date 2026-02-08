@@ -43,7 +43,7 @@ const LogoContent = ({ collapsed = false }: { collapsed?: boolean }) => (
     {/* Logo 图片 */}
     <div className="relative w-8 h-8 shrink-0 overflow-hidden rounded-md">
       <Image 
-        src="/logos/mota-icon-v2.png" 
+        src="/logos/mota-icon-v2.webp" 
         alt="Mota Logo" 
         fill 
         className="object-cover"
