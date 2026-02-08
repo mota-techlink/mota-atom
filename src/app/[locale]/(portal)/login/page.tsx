@@ -62,7 +62,7 @@ export default async function LoginPage({
               {siteConfig.logoDark && (
                 <Image
                   src={siteConfig.logoDark}
-                  alt="Logo"
+                  alt="Logo"                  
                   width={150}
                   height={100}
                   className="object-contain opacity-90 drop-shadow-2xl"
@@ -70,7 +70,7 @@ export default async function LoginPage({
                 />
               )}
             </Link>
-            <h2 className="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-400">ATOM Platform</h2>
+            <h2 className="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-400">Member Console</h2>
             <p className="text-slate-300 text-[16px] max-w-[240px] leading-relaxed">
               {"Launch Your Dream Startup with "}            
              <span className="text-[16px] inline-block">
