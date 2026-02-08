@@ -32,7 +32,8 @@ export default function AuthForm({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const supabase = createClient();
+  const supabase = createClient();  
+  const allProviders = [ ...commonProviders,...specificProviders];
 
   // URL 参数判断视图
   const isLogin = searchParams.get('view') !== 'signup';
@@ -161,7 +162,7 @@ export default function AuthForm({
   const displayMessage = globalMessage;
 
   return (
-    <div className="col-span-1 md:col-span-3 p-4 md:p-10 lg:p-12 relative 
+    <div className="col-span-1 md:col-span-3 p-4 md:p-8 lg:p-8 relative 
                     flex flex-col justify-center 
                     landscape:grid landscape:grid-cols-2 landscape:gap-x-8 landscape:content-center
                     md:landscape:flex md:landscape:flex-col md:landscape:gap-0">
@@ -177,34 +178,35 @@ export default function AuthForm({
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center md:justify-start landscape:justify-start gap-3 mb-6 landscape:mb-0">
-          {commonProviders.map((provider) => (
+        <div className="flex flex-wrap justify-center md:justify-start landscape:justify-start gap-2 mb-6 landscape:mb-0">
+          {allProviders.map((provider) => (
             <ClientOAuthHandler key={provider.id} provider={provider} />
           ))}              
+          
         </div>            
 
-        {specificProviders.length > 0 && (
+        {/* {specificProviders.length > 0 && (
           <div className="flex flex-wrap justify-center md:justify-start landscape:justify-start gap-3 mb-6 landscape:mb-0">
             {specificProviders.map((provider) => (
               <ClientOAuthHandler key={provider.id} provider={provider} />
             ))}
           </div>
-        )} 
-        <div className="hidden landscape:block md:landscape:hidden absolute right-0 top-12 bottom-12 w-[1px] bg-slate-100 dark:bg-slate-800" />
+        )}  */}
+        <div className="hidden landscape:block md:landscape:hidden absolute right-0 top-10 bottom-12 w-[1px] bg-slate-100 dark:bg-slate-800" />
       </div>
 
       {/* 第二板块 (Form) */}
-      <div className="w-full flex flex-col justify-center pt-5">
+      <div className="w-full flex flex-col justify-center pt-2">
         
-        <div className="relative mb-6 landscape:hidden md:landscape:block">
+        <div className="relative mb-2 landscape:hidden md:landscape:block">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-slate-200 dark:border-slate-800" />
           </div>
-          <div className="relative flex justify-center text-[10px] uppercase">
+          {/* <div className="relative flex justify-center text-[10px] uppercase">
             <span className="bg-white dark:bg-slate-900 px-3 text-slate-500">
               {dict.orEmail}
             </span>
-          </div>
+          </div> */}
         </div>
 
         {/* 错误提示 */}

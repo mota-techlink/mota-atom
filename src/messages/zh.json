@@ -14,7 +14,7 @@
     "password": "密码",
     "confirmPassword":"密码确认",
     "hasAccount":"已经有账号了?",
-    "signInNow":"登陆",
+    "signInNow":"登录",
     "signUp":"注册"
   },
   "Dashboard": {

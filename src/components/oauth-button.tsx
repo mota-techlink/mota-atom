@@ -28,7 +28,7 @@ export function OAuthButton({
       disabled={!enable || isLoading}
       onClick={enable ? onClick : undefined}
       className={cn(
-        "h-13 w-13 p-1 rounded-full flex items-center justify-center aspect-square relative overflow-hidden", // relative 用于定位
+        "h-12 w-12 p-1 rounded-full flex items-center justify-center aspect-square relative overflow-hidden", // relative 用于定位
         "bg-transparent border-none shadow-none",
         // 启用时的 hover 样式
         enable && "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 transition-all",
@@ -46,8 +46,8 @@ export function OAuthButton({
           <Image
             src={iconUrl}
             alt={label}
-            width={50}
-            height={50}
+            width={35}
+            height={35}
             className="object-contain"
           />
         )}

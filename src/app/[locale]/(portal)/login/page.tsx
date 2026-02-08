@@ -45,7 +45,7 @@ export default async function LoginPage({
     hasAccount: t('hasAccount', { defaultMessage: 'Already have an account?' }),
     signUpNow: t('signUpNow', { defaultMessage: 'Sign Up Now' }),
     signInNow: t('signInNow', { defaultMessage: 'Sign In Now' }),
-    orEmail: t('orEmail', { defaultMessage: 'Or continue with email' }),
+    // orEmail: t('orEmail', { defaultMessage: 'Or continue with email' }),
   };
 
   return (
@@ -97,7 +97,7 @@ export default async function LoginPage({
 
       </div>
       
-      <p className="mt-8 mb-2 text-[10px] text-slate-400 text-center px-4 max-w-md mx-auto leading-relaxed">
+      <p className="mt-8 mb-2 text-[15px] text-slate-400 text-center px-4 max-w-md mx-auto leading-relaxed pb-20">
           © {new Date().getFullYear()} {siteConfig.name}. By continuing, you agree to our Terms of Service and Privacy Policy.
       </p>
 
