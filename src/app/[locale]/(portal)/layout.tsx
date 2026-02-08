@@ -90,7 +90,7 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
                   {t('login')}
                 </Link>
                 <Link
-                  href="/register"
+                  href="/login?view=signup"
                   className={cn(
                     buttonVariants({ variant: "default", size: "sm" }),
                     "px-4"

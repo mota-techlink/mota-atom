@@ -4,8 +4,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
-import { Provider } from '@supabase/supabase-js';
-import { ExtendedProvider } from '@/config/site';
+
 
 export async function emailLogin(formData: FormData) {
   const email = formData.get('email') as string;
@@ -29,101 +28,29 @@ export async function signup(formData: FormData) {
   const password = formData.get('password') as string;
   const supabase = await createClient();
   
+  // 获取当前域名的 origin，确保邮件里的链接跳回正确的环境 (localhost 或 生产环境)
   const origin = (await headers()).get('origin');
 
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${origin}/auth/callback`,
+      // 注册成功后，用户点击邮件链接会跳回这个地址
+      // Supabase 会在这里设置 Session
+      emailRedirectTo: `${origin}/auth/callback`, 
     },
   });
 
   if (error) {
-    return redirect(`/login?error=${encodeURIComponent(error.message)}`);
+    // 注册失败，跳回注册页并显示错误
+    return { error: error.message };
+    // return redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
-  return redirect('/login?message=check_email');
+  // 注册成功 (默认 Supabase 需要验证邮箱)
+  // 跳转回登录页，并提示用户去查收邮件
+  // return redirect(`/login?message=check_email`);
+  return { success: true };
 }
 
-// export async function signInWithProvider(providerId: ExtendedProvider) {
-//   const supabase = await createClient();
-//   const headerStore = await headers();
-//   const origin = headerStore.get('origin');
-  
-//   // 动态构建回调地址
-//   const redirectTo = `${origin}/auth/callback`;
-
-//   console.log(`--- [OAuth Debug] Starting Sign-In with ${providerId} ---`);
-//   console.log(`[OAuth Debug] Origin: ${origin}`);
-//   console.log(`[OAuth Debug] RedirectTo: ${redirectTo}`);
-
-//   // 🟢 特殊处理：如果 Provider 是 wechat，可能需要映射到 oidc 或者特殊处理
-//   // 这里为了演示，我们假设它通过 standard OAuth 调用，但需要类型断言
-//   let actualProvider = providerId as Provider;
-//   let queryParams = {};
-
-//   if (providerId === 'wechat') {
-//     // 如果您使用的是 Casdoor 等 OIDC 中台，这里可能需要改为 'oidc'
-//     // actualProvider = 'oidc'; 
-//     // queryParams = { ... };
-//   }
-
-//   const { data, error } = await supabase.auth.signInWithOAuth({
-//     provider: actualProvider, 
-//     options: {
-//       redirectTo: redirectTo,
-//       queryParams: queryParams,
-//     },
-//   });
-
-//   if (error) {
-//     console.error(`[OAuth Debug] Error with ${providerId}:`, error);
-//     return { error: error.message };
-//   }
-  
-//   if (data.url) {
-//     console.log(`[OAuth Debug] Success URL: ${data.url}`);
-//     return { url: data.url };
-//   } else {
-//     console.error('[OAuth Debug] No redirect URL returned.');
-//     return { error: 'No redirect URL returned' };
-//   }
-// }
-
-// export async function signInWithGoogle() {
-//   const supabase = await createClient();
-//   const origin = (await headers()).get('origin');
-//   const redirectTo = `${origin}/auth/callback`;
-//   const headerStore = await headers();
-//   const host = headerStore.get('host'); // 检查 host 和 origin 是否匹配
-
-//   console.log('--- [OAuth Debug] Starting Google Sign-In ---');
-//   console.log(`[OAuth Debug] Origin: ${origin}`);
-//   console.log(`[OAuth Debug] Host: ${host}`);
-//   console.log(`[OAuth Debug] Configured RedirectTo: ${redirectTo}`);
-  
-//   const { data, error } = await supabase.auth.signInWithOAuth({
-//     provider: 'google',
-//     options: {
-//       redirectTo: redirectTo,
-//     },
-//   });
-
-//   if (error) {
-//     console.error('[OAuth Debug] Error during signInWithOAuth:', error);
-//     // Return the error so the client can handle it or show a message
-//     return { error: error.message };
-//   }
-  
-//   if (data.url) {
-//     console.log(`[OAuth Debug] Successfully got redirect URL: ${data.url}`);
-//     // 🟢 FIX: Return the URL instead of throwing redirect()
-//     // This ensures cookies (PKCE verifier) are successfully set in the response headers
-//     return { url: data.url };
-//   } else {
-//     console.error('[OAuth Debug] No redirect URL returned.');
-//     return { error: 'No redirect URL returned' };
-//   }
-// }
 

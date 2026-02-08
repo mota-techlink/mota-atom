@@ -18,7 +18,7 @@ export function HeroSection() {
 
       {/* --- Part 1: Hero 主体 --- */}
       {/* 🟢 关键修改 1: 确保 container 自身居中，并增加上下 padding 让呼吸感更好 */}
-      <div className="container mx-auto px-4 md:px-6 pt-16 pb-16 md:pt-16 md:pb-16 flex justify-center">
+      <div className="container mx-auto px-4 md:px-6 pt-16 pb-16 md:pt-16 md:pb-10 flex justify-center">
         
         {/* 🟢 关键修改 2: Grid 布局
            - justify-between: 将左右两边推向两端
@@ -63,7 +63,7 @@ export function HeroSection() {
             {/* 按钮组 */}
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center landscape:justify-start lg:justify-start">
               <Link 
-                href="/login" 
+                href="/login?view=signup"
                 className={cn(
                   buttonVariants({ size: "lg" }), 
                   "rounded-full px-8 h-12 text-base shadow-lg shadow-blue-500/20 w-full sm:w-auto font-semibold"

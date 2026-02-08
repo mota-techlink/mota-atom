@@ -19,7 +19,7 @@ export async function FeaturesSection() {
   
   const content = featuresContent;
   return (
-    <section className="container space-y-16 py-24 md:py-32">
+    <section className="container space-y-16 py-24 ">
       {/* 头部区域：Headline & Sub-headline */}
       <div className="mx-auto max-w-[58rem] text-center space-y-4">
         <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">

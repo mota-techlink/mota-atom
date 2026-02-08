@@ -4,7 +4,18 @@
   },
   "Auth": {
     "loginTitle": "WELCOME BACK",
-    "loginDesc": "Sign in to your account"
+    "signupTitle": "Welcome to become our member",
+    "signIn":"Sign In",
+    "signupDesc":"Create a MOTA ATOM Account",
+    "noAccount": "Don't have an account?",
+    "signUpNow":"Sign Up Now",
+    "loginDesc": "Sign in to your account",
+    "email": "Account(email)",
+    "password": "password",
+    "confirmPassword":"Confirm password",
+    "hasAccount":"Already have an account?",
+    "signInNow":"Log In",
+    "signUp":"Create Account"
   },
   "Dashboard": {
     "title": "Dashboard",

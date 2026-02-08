@@ -4,7 +4,18 @@
   },
   "Auth": {
     "loginTitle": "欢迎回来",
-    "loginDesc": "请登录您的帐户"
+    "signupTitle": "欢迎成为我们的会员",
+    "signupDesc":"创建一个MOTA ATOM账号",
+    "signIn":"登陆",
+    "noAccount": "还没有账号吗?",
+    "signUpNow":"立刻注册",
+    "loginDesc": "请登录您的帐户",
+    "email": "账号(电子邮件)",
+    "password": "密码",
+    "confirmPassword":"密码确认",
+    "hasAccount":"已经有账号了?",
+    "signInNow":"登陆",
+    "signUp":"注册"
   },
   "Dashboard": {
     "title": "仪表盘",
