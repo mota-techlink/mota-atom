@@ -14,8 +14,8 @@ import { GlobalToggles } from '@/components/global-toggles';
 
 import { generateLocaleParams } from "@/lib/static-helper";
 
-// 🔴 1. 先删掉这行，不要强制 force-static
-// export const dynamic = staticMode; 
+// 支持完整的 React API（Radix UI 等）
+export const runtime = 'nodejs'; 
 
 
 // 🟢 2. 保留这个，Next.js 会自动识别并做 SSG
