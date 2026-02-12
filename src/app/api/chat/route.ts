@@ -3,6 +3,8 @@ import { google } from '@ai-sdk/google';
 import { streamText, convertToCoreMessages } from 'ai'; // 🟢 确保从 'ai' 引入
 import { createOpenAI } from '@ai-sdk/openai';
 
+export const runtime = 'edge';
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
