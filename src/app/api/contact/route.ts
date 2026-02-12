@@ -3,9 +3,6 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { siteConfig } from "@/config/site"
 
-// 🟢 1. 强制使用 Edge Runtime (Cloudflare 友好)
-export const runtime = 'edge';
-
 // 2. 定义校验规则 (适配前端字段)
 const schema = z.object({
   firstName: z.string().min(1, 'First name is required'),

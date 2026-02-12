@@ -5,8 +5,6 @@ import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 import { getPaymentMethodAddedEmailHtml, getOrderConfirmationEmailHtml } from '@/lib/email-templates';
 
-export const runtime = 'edge';
-
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!

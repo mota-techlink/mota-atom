@@ -3,8 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@/lib/supabase/server'
 
-export const runtime = 'edge'; // ⚡️ 适配 Cloudflare Pages
-
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing STRIPE_SECRET_KEY in environment variables');
 }
