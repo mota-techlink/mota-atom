@@ -20,6 +20,7 @@ import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
 import { CreditCard, LogOut, Plus, Settings, User } from "lucide-react";
 import { useState, useEffect } from "react";
+import Link from "next/link"
 
 export function UserNav() {
   const router = useRouter();
@@ -46,6 +47,8 @@ export function UserNav() {
     router.push("/login"); // 或者你的登录路由
   };
 
+
+  
   // 提取用户首字母用于头像 Fallback
   const initials = user?.email?.slice(0, 2).toUpperCase() || "ME";
 
@@ -72,27 +75,27 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
+          {/* 🟢 使用 asChild 将 Link 的行为赋给父级 MenuItem，同时保持 UI 样式 */}
+          <Link href={`/dashboard/profile`} className="flex w-full items-center cursor-pointer">
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CreditCard className="mr-2 h-4 w-4" />
-            <span>Billing</span>
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={`/dashboard/settings`} className="flex w-full items-center cursor-pointer">
+            <User className="mr-2 h-4 w-4" />
             <span>Settings</span>
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          </Link>          
+        </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        {/* <DropdownMenuItem>
           <Plus className="mr-2 h-4 w-4" />
           <span>New Team</span>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut} className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400">
           <LogOut className="mr-2 h-4 w-4" />

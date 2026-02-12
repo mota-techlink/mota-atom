@@ -52,7 +52,7 @@ npx supabase db diff --use-migra -f update_schema
 </Step>
 <Step title = "Automatic">
 
-Add follwoing content into package.json.
+(Option) Add follwoing content into package.json.
 ```json
 "scripts": {
   // ... Others
@@ -67,9 +67,15 @@ Add follwoing content into package.json.
 ## Regular Ops
 In the future, the process would be like :
 
-1. Local test done.
-2. run cmd:
+1. Update DB at local console[Table Editor](http://127.0.0.1:54323/project/default/editor/) or [SQL Edit](http://127.0.0.1:54323/project/default/sql/)
+2. Local test done.
+3. run diff
 ```bash
-npm run db:push
+npx supabase db diff -f feature_name
 ```
-3. Remote database sync up
+4. run cmd to syncn up remote 
+```bash
+npx supabase db push
+# or shotcut onlyif defined in package.json
+# npm run db:push
+```

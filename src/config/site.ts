@@ -24,6 +24,7 @@ export const siteConfig = {
   ogImage: "https://motaiot.com/og.jpg",
   contact: {
     email: "contract@motaiot.com",
+    toMail: "harling@motaiot.com",
     phone: "+1 (917) 310-2808",
     address: "1329 Willoughby Ave Brooklyn, NY 11237-3177, USA",  
   },

@@ -2,13 +2,14 @@
 
 // 1. 定义允许的图标名称类型 (这能提供很好的智能提示)
 export type IconName = 
-  | "dashboard" 
-  | "settings" 
+  | "dashboard"    
+  | "settings"     
   | "users" 
   | "logs" 
   | "video" 
   | "eye" 
-  | "newspaper";
+  | "newspaper"
+  | "orderList";
 
 export type NavItem = {
   titleKey: string;
@@ -22,6 +23,11 @@ export const userNavItems: NavItem[] = [
     titleKey: 'nav_dashboard',
     href: '/dashboard',
     icon: "dashboard", // 🔴 传入字符串
+  },
+  {
+    titleKey: 'nav_orderList',
+    href: '/dashboard/orders',
+    icon: "orderList", // 🔴 传入字符串
   },
   {
     titleKey: 'nav_settings',

@@ -1,16 +1,16 @@
+//// src/app/[locale]/(partal)/layout.tsx
 import Link from "next/link"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { siteConfig } from "@/config/site"
 import { MainNav } from "@/components/sections/main-nav"
-import { ModeToggle } from "@/components/mode-toggle"
 import { MobileNav } from "@/components/sections/mobile-nav" 
 import { ScrollToTop } from "@/components/scroll-to-top" 
 import { BionicToggle } from '@/components/ui/bionic-toggle';
 import { SiteFooter } from "@/components/sections/site-footer"
 import { useTranslations } from 'next-intl';
-import { LanguageToggle } from '@/components/language-toggle';
+import { GlobalToggles } from '@/components/global-toggles';
 
 import { generateLocaleParams } from "@/lib/static-helper";
 
@@ -99,8 +99,7 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
                   {t('getStarted')}
                 </Link>
               </div>
-              <LanguageToggle />
-              <ModeToggle />
+              <GlobalToggles position="inline" zIndex={51} />
               <BionicToggle />
               
               

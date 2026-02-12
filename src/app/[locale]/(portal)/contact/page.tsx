@@ -1,62 +1,41 @@
 "use client"
 
-import { useState, useTransition } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Mail, MapPin, Phone, Loader2, CheckCircle2, Send } from "lucide-react"
+import { Mail, MapPin, Phone, Loader2, CheckCircle2, Send, AlertCircle } from "lucide-react"
 import { siteConfig } from "@/config/site"
-
 import { GoogleMapView } from "@/components/ui/google-map-view"
 
+// 🟢 引入我们刚刚封装的 Hook
+import { useContactForm } from "@/hooks/use-contact-form"
 
 export default function ContactPage() {
-  const [isPending, startTransition] = useTransition()
-  const [success, setSuccess] = useState(false)
+  // 🟢 使用 Hook 接管状态和逻辑
+  const { isPending, success, error, submitForm, resetForm } = useContactForm()
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handlePageSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    // 获取表单数据
     const formData = new FormData(event.currentTarget)
-    // 转为 JSON 对象
-    const data = Object.fromEntries(formData.entries())
     
-    startTransition(async () => {
-      try {
-        // 🟢 改为请求 API Route
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-
-        const result = await res.json();
-
-        if (res.ok && result.success) {
-          setSuccess(true);
-        } else {
-          alert(result.message || "Failed to send message");
-        }
-      } catch (error) {
-        console.error(error);
-        alert("An unexpected error occurred.");
-      }
+    // 🟢 调用 Hook 的 submitForm
+    submitForm({
+      firstName: formData.get('firstName') as string,
+      lastName: formData.get('lastName') as string,
+      email: formData.get('email') as string,
+      message: formData.get('message') as string,
+      type: 'general' // 🟢 明确标记这是普通联系表单
     })
   }
 
   return (
-    // 🟢 调整 1: 减小整体页面的垂直内边距 (py-4 lg:py-8)
-    // 使用 min-h-[calc(100vh-140px)] 试图让内容在单屏内显示 (减去header和padding的大致高度)
     <div className="container mx-auto lg:py-6 h-full flex flex-col justify-center">
       
-      {/* 🟢 调整 2: 减小 Grid 间距 (gap-6 lg:gap-10) */}
       <div className="grid lg:grid-cols-2 gap-6 lg:gap-10 items-stretch">
         
-        {/* --- Left Column: Info & Map --- */}
+        {/* --- Left Column: Info & Map (保持不变) --- */}
         <div className="flex flex-col h-full gap-6">
-          
-          {/* 标题区域: 紧凑化 */}
           <div className="space-y-2">
             <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl">
               Contact Us
@@ -66,11 +45,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          {/* 联系方式列表: 紧凑化 */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-            
-            
-            {/* Phone */}
             <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-muted/50 transition-colors">
               <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full shrink-0">
                 <Phone className="h-5 w-5 text-blue-600" />
@@ -83,7 +58,6 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Address */}
             <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-muted/50 transition-colors sm:col-span-2 lg:col-span-1">
               <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full shrink-0">
                 <MapPin className="h-5 w-5 text-blue-600" />
@@ -95,10 +69,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* 🟢 调整 3: 地图区域
-             flex-grow: 让地图自动占据剩余高度
-             min-h-[200px]: 保证在极小屏幕也有最小高度
-          */}
           <div className="flex-grow w-full bg-muted rounded-xl border overflow-hidden min-h-[200px] lg:min-h-[250px] relative shadow-sm">
             <GoogleMapView />
           </div>
@@ -106,8 +76,8 @@ export default function ContactPage() {
 
         {/* --- Right Column: Form --- */}
         <div className="bg-card border rounded-2xl p-6 lg:p-8 shadow-sm h-full flex flex-col justify-center">
-            {/* Email */}
-            <div className="flex items-center gap-3 pb-4 rounded-lg  hover:bg-muted/50 transition-colors">
+            {/* Email Info */}
+            <div className="flex items-center gap-3 pb-4 rounded-lg hover:bg-muted/50 transition-colors">
               <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full shrink-0">
                 <Mail className="h-5 w-5 text-blue-600" />
               </div>
@@ -118,6 +88,8 @@ export default function ContactPage() {
                 </a>
               </div>
             </div>
+
+          {/* 🟢 成功状态视图 */}
           {success ? (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-4 animate-in fade-in zoom-in py-10">
               <div className="bg-green-100 dark:bg-green-900/30 p-4 rounded-full">
@@ -125,14 +97,24 @@ export default function ContactPage() {
               </div>
               <h3 className="text-2xl font-bold">Message Sent!</h3>
               <p className="text-muted-foreground max-w-xs mx-auto">
-                Thank you. We'll get back to you at {siteConfig.contact.email} shortly.
+                Thank you. We'll get back to you shortly.
               </p>
-              <Button onClick={() => setSuccess(false)} variant="outline" className="mt-4">
+              {/* 🟢 使用 resetForm 重置状态 */}
+              <Button onClick={resetForm} variant="outline" className="mt-4">
                 Send another
               </Button>
             </div>
           ) : (
-            <form className="space-y-4" onSubmit={handleSubmit}>
+            <form className="space-y-4" onSubmit={handlePageSubmit}>
+              
+              {/* 🟢 新增：错误提示 UI */}
+              {error && (
+                <div className="flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 rounded-md dark:bg-red-900/20 animate-in slide-in-from-top-2">
+                   <AlertCircle className="w-4 h-4 shrink-0" />
+                   <span>{error}</span>
+                </div>
+              )}
+
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName" className="text-xs font-medium uppercase text-muted-foreground">First name</Label>
@@ -151,7 +133,6 @@ export default function ContactPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="message" className="text-xs font-medium uppercase text-muted-foreground">Message</Label>
-                {/* 🟢 调整 4: 减小 Textarea 高度 */}
                 <Textarea 
                   id="message" 
                   name="message"

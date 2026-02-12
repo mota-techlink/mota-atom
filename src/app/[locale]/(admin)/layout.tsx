@@ -2,10 +2,11 @@ import { SidebarProvider } from "@/components/layout/sidebar-context";
 import { Sidebar } from "@/components/layout/sidebar";
 import PageWrapper from "@/components/layout/page-wrapper";
 import { adminNavItems } from "@/config/menu"; // 👈 使用管理员菜单
-import { UserNav } from "@/components/user-nav";
+import { UserNav } from "@/components/sections/user-nav";
 import { requireAdmin } from "@/lib/auth/admin"; // 👈 引入鉴权函数
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
+import { GlobalToggles } from '@/components/global-toggles';
 
 export default async function AdminLayout({
   children,
@@ -31,7 +32,8 @@ export default async function AdminLayout({
                   {/* 用红色标记这是管理员环境，防止混淆 */}
                   Administrator
                </div>
-               <div className="flex items-center gap-4">
+               <div className="flex items-center gap-4">  
+                  <GlobalToggles position="inline" />
                   <UserNav />
                </div>
             </header>

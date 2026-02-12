@@ -21,6 +21,7 @@
     "title": "Dashboard",
     "nav_dashboard": "Overview",
     "nav_settings": "Settings",
+    "nav_orderList": "Orders",
     "nav_overview": "Console Overview",
     "nav_users": "User Management",
     "nav_audit_logs": "Audit Logs",

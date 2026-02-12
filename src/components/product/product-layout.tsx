@@ -1,5 +1,5 @@
 "use client"
-
+import { useContactForm } from "@/hooks/use-contact-form"
 import React, { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -14,6 +14,163 @@ import {
 } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger,
+  DialogFooter,
+  DialogClose
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Loader2, CheckCircle2 } from "lucide-react"
+import { usePathname } from 'next/navigation';
+
+function ContactSalesDialog({ 
+  productName, 
+  tierName 
+}: { 
+  productName: string, 
+  tierName: string 
+}) {
+  const { isPending, success, error, submitForm } = useContactForm()
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const fullName = formData.get('name') as string || '';
+    
+    // 简单拆分姓名，适配 API 的 firstName/lastName 需求
+    const nameParts = fullName.trim().split(' ');
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ') || '';
+
+    submitForm({
+      firstName,
+      lastName,
+      email: formData.get('email') as string,
+      message: formData.get('message') as string,
+      type: 'sales',     
+      productName,       
+      tier: tierName     
+    });
+  }
+
+  if (success) {
+    return (
+      <DialogContent className="sm:max-w-[425px]">
+        <div className="flex flex-col items-center justify-center py-6 text-center space-y-4">
+          <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
+            <CheckCircle2 className="h-8 w-8 text-green-600" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold">Request Sent!</h3>
+            <p className="text-sm text-muted-foreground mt-2">
+              Our team has received your inquiry about the <span className="font-semibold">{tierName}</span> plan.
+            </p>
+          </div>
+          <DialogClose asChild>
+             <Button variant="outline" className="mt-4">Close</Button>
+          </DialogClose>
+        </div>
+      </DialogContent>
+    )
+  }
+
+  return (
+    <DialogContent className="sm:max-w-[425px]">
+      <DialogHeader>
+        <DialogTitle>Contact Sales Team</DialogTitle>
+        <DialogDescription>
+          Inquiring about: <span className="font-semibold text-primary">{productName} - {tierName}</span>
+        </DialogDescription>
+      </DialogHeader>
+      
+      <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+        {/* 错误提示 */}
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 text-red-600 text-xs p-3 rounded-md break-all">
+            {error}
+          </div>
+        )}
+        
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="name" className="text-right">Name</Label>
+          <Input id="name" name="name" className="col-span-3" placeholder="Your Name" required disabled={isPending} />
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="email" className="text-right">Email</Label>
+          <Input id="email" name="email" type="email" className="col-span-3" placeholder="work@company.com" required disabled={isPending} />
+        </div>
+         <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="message" className="text-right">Needs</Label>
+          <Textarea 
+            id="message" 
+            name="message" 
+            className="col-span-3" 
+            placeholder="Tell us about your project requirements..." 
+            required 
+            minLength={5}
+            disabled={isPending} 
+          />
+        </div>
+
+        <DialogFooter>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+            {isPending ? "Sending..." : "Send Request"}
+          </Button>
+        </DialogFooter>
+      </form>
+    </DialogContent>
+  )
+}
+
+function TierActionButton({ 
+  productName, 
+  tierData 
+}: { 
+  productName: string, 
+  tierData: any 
+}) {
+  const tierName = tierData.name; // e.g. "Basic", "Standard", "Premium"
+  const price = tierData.price;
+  const pathname = usePathname();
+
+  // 🟢 逻辑判断：如果是 Premium，则是 "Contact Sales"
+  const isHighTier = tierName.toLowerCase().includes('premium') || tierName.toLowerCase().includes('enterprise');
+
+  // 情况 A: 高级套餐 -> 弹窗 (Dialog)
+  if (isHighTier) {
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="w-full h-12 text-base bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-black" size="lg">
+            Contact Sales
+          </Button>
+        </DialogTrigger>
+        {/* 传入参数 */}
+        <ContactSalesDialog productName={productName} tierName={tierName} />
+      </Dialog>
+    )
+  }
+  // 情况 B: 普通套餐 -> 直接 GET 跳转 Stripe
+  // 构造 API URL
+  // const checkoutUrl = `/api/checkout?tier=${encodeURIComponent(tierName)}&price=${encodeURIComponent(price)}&product=${encodeURIComponent(productName)}`;
+  const checkoutUrl = `/api/checkout?tier=${encodeURIComponent(tierName)}&price=${encodeURIComponent(price)}&product=${encodeURIComponent(productName)}&return_path=${encodeURIComponent(pathname)}`;
+  return (
+    <Button asChild className="w-full h-12 text-base" size="lg">
+      {/* 使用 a 标签包裹 Button，实现最原始的 GET 跳转，完美避开 404 */}
+      <a href={checkoutUrl}>
+        Order Now
+      </a>
+    </Button>
+  );
+}
 
 // 模拟 props，实际使用时替换为你的 MDX 数据
 interface ProductLayoutProps {
@@ -73,13 +230,11 @@ function PricingWidget({ data }: { data: any }) {
                         ))}
                       </ul>
 
-                      <Button className="w-full h-12 text-base" size="lg">
-                        Request to Order
-                      </Button>
-                      
-                      <Button variant="outline" className="w-full">
-                        Contact Sales
-                      </Button>
+                      <TierActionButton 
+                        productName={data.title} 
+                        tierData={tierData} 
+                      />
+                                            
                     </TabsContent>
                    )
                 })}

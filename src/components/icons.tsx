@@ -8,7 +8,8 @@ import {
   Glasses, 
   Zap,
   Globe,
-  LayoutDashboard
+  LayoutDashboard,
+  ListOrdered
 } from "lucide-react";
 
 export const Icons = {
@@ -21,6 +22,7 @@ export const Icons = {
   zap: Zap,
   globe: Globe,
   dashboard: LayoutDashboard,
+  orderList:ListOrdered
 };
 
 export type IconKey = keyof typeof Icons;

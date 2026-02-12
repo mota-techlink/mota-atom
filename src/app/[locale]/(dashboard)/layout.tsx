@@ -2,7 +2,9 @@ import { SidebarProvider } from "@/components/layout/sidebar-context";
 import { Sidebar } from "@/components/layout/sidebar";
 import PageWrapper from "@/components/layout/page-wrapper";
 import { userNavItems } from "@/config/menu";
-import { UserNav } from "@/components/user-nav"; // 假设你已有这个组件
+import { UserNav } from "@/components/sections/user-nav"; // 假设你已有这个组件
+import { GlobalToggles } from '@/components/global-toggles';
+
 
 export default function DashboardLayout({
   children,
@@ -24,8 +26,13 @@ export default function DashboardLayout({
             <div>
                {/* 这里可以放 Breadcrumb */}
                <h2 className="text-lg font-semibold">Dashboard</h2>
+               
             </div>
-            <UserNav />
+            
+            <div className="flex items-center space-x-4">
+              <GlobalToggles position="inline" />
+              <UserNav />
+            </div>
           </header>
 
           {/* 页面具体内容 */}

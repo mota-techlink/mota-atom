@@ -47,7 +47,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   // 匹配规则：跳过内部路径、静态资源等
   matcher: [
-    '/((?!auth|_next/static|_next/image|videos|search.json|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!auth|api|_next/static|_next/image|videos|search.json|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     
   ],
 };

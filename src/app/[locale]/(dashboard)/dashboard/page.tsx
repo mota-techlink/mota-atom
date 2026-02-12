@@ -1,133 +1,44 @@
-import { Metadata } from "next";
-import { useTranslations } from "next-intl";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import { CalendarDateRangePicker } from "@/components/date-range-picker"; // 稍后提供或先注释掉
-import { Overview } from "@/components/dashboard/overview";
-import { RecentSales } from "@/components/dashboard/recent-sales";
-import { Download, Activity, CreditCard, DollarSign, Users } from "lucide-react";
+import { createClient } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
+import DashboardContent from "./dashboard-content"
 
-export const runtime = 'edge';
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Example dashboard app built using the components.",
-};
+export default async function DashboardPage() {
+  const supabase = await createClient()
 
-export default function DashboardPage() {
-  const t = useTranslations('Dashboard');
+  // 1. 获取用户信息
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect("/login")
+
+  // 2. 并行获取各项统计数据
+  const [
+    { data: payments }, 
+    { count: totalOrders },
+    { count: activeOrders },
+    { data: recentOrders }
+  ] = await Promise.all([
+    // 计算已支付总额
+    supabase.from("orders").select("amount_total").eq("user_id", user.id).eq("status", "paid"),
+    // 总订单数
+    supabase.from("orders").select("*", { count: 'exact', head: true }).eq("user_id", user.id),
+    // 活跃订单数 (未交付的)
+    supabase.from("orders").select("*", { count: 'exact', head: true }).eq("user_id", user.id).in("status", ["paid", "processing", "shipped"]),
+    // 最近 5 条订单记录
+    supabase.from("orders").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5)
+  ])
+
+  // 计算总金额
+  const totalPayment = payments?.reduce((acc, curr) => acc + Number(curr.amount_total), 0) || 0
 
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-      {/* 顶部 Header */}
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">{t('title', { defaultMessage: 'Dashboard' })}</h2>
-        <div className="flex items-center space-x-2">
-          {/* 这里可以放日期选择器 */}
-          {/* <CalendarDateRangePicker /> */}
-          <Button size="sm" variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Download
-          </Button>
-        </div>
-      </div>
-
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="analytics" disabled>Analytics</TabsTrigger>
-          <TabsTrigger value="reports" disabled>Reports</TabsTrigger>
-        </TabsList>
-        
-        <TabsContent value="overview" className="space-y-4">
-          
-          {/* 核心指标卡片区域 */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">$45,231.89</div>
-                <p className="text-xs text-muted-foreground">+20.1% from last month</p>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">+2350</div>
-                <p className="text-xs text-muted-foreground">+180.1% from last month</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                <CreditCard className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">+12,234</div>
-                <p className="text-xs text-muted-foreground">+19% from last month</p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Now</CardTitle>
-                <Activity className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">+573</div>
-                <p className="text-xs text-muted-foreground">+201 since last hour</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* 图表与列表区域 */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            {/* 左侧柱状图 */}
-            <Card className="col-span-4">
-              <CardHeader>
-                <CardTitle>Overview</CardTitle>
-              </CardHeader>
-              <CardContent className="pl-2">
-                <Overview />
-              </CardContent>
-            </Card>
-            
-            {/* 右侧列表 */}
-            <Card className="col-span-3">
-              <CardHeader>
-                <CardTitle>Recent Sales</CardTitle>
-                <CardDescription>
-                  You made 265 sales this month.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RecentSales />
-              </CardContent>
-            </Card>
-          </div>
-
-        </TabsContent>
-        <TabsContent value="analytics" className="space-y-4">
-            
-        </TabsContent>
-        <TabsContent value="reports" className="space-y-4">
-
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
+    <DashboardContent 
+      user={user}
+      stats={{
+        totalPayment,
+        totalOrders: totalOrders || 0,
+        activeOrders: activeOrders || 0,
+        supportTickets: 0 // 假设目前为0
+      }}
+      recentOrders={recentOrders || []}
+    />
+  )
 }

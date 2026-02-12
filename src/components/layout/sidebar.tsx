@@ -20,12 +20,14 @@ import {
   FileText,
   ListVideo,
   Eye,
+  ListOrdered,
   Newspaper
 } from "lucide-react";
 
 // 🔴 2. 定义映射表 (String -> Component)
 const IconMap = {
-  dashboard: LayoutDashboard,
+  dashboard: LayoutDashboard,  
+  order: ListOrdered,
   settings: Settings,
   users: Users,
   logs: FileText,
