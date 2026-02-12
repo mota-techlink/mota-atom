@@ -25,6 +25,47 @@ function generateOrderNumber() {
   return `ORD-${date}-${random}`;
 }
 
+// 辅助函数：更新或创建用户 Profile 并关联 Stripe Customer ID
+async function upsertProfileWithStripeId(userId: string, customerId: string) {
+  if (!userId || !customerId) return;
+
+  // 检查 profile 是否存在
+  const { data: existingProfile } = await supabaseAdmin
+    .from('profiles')
+    .select('id')
+    .eq('id', userId)
+    .single();
+
+  if (existingProfile) {
+    // Profile 存在，更新 stripe_customer_id
+    const { error: updateError } = await supabaseAdmin
+      .from('profiles')
+      .update({ stripe_customer_id: customerId })
+      .eq('id', userId);
+
+    if (updateError) {
+      console.error(`❌ Error updating profile for user ${userId}:`, updateError);
+    } else {
+      console.log(`✅ Profile updated with stripe_customer_id for user ${userId}`);
+    }
+  } else {
+    // Profile 不存在，创建新的 profile
+    const { error: insertError } = await supabaseAdmin
+      .from('profiles')
+      .insert({
+        id: userId,
+        stripe_customer_id: customerId,
+        updated_at: new Date().toISOString(),
+      });
+
+    if (insertError) {
+      console.error(`❌ Error creating profile for user ${userId}:`, insertError);
+    } else {
+      console.log(`✅ New profile created for user ${userId} with stripe_customer_id`);
+    }
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.text();
@@ -58,6 +99,11 @@ export async function POST(req: Request) {
       // 🟢 场景 A：仅仅是绑卡 (Setup Mode)
       if (session.mode === 'setup') {
         console.log(`💳 New payment method added by ${customerEmail}`);
+        
+        // 更新或创建用户 Profile 并关联 Stripe Customer ID
+        if (userId && customerId) {
+          await upsertProfileWithStripeId(userId, customerId);
+        }
         
         if (customerEmail) {
           try {
@@ -104,11 +150,10 @@ export async function POST(req: Request) {
             .single();
           if (existingUser) finalUserId = existingUser.id;
         }
-        if (userId && customerId) {
-          await supabaseAdmin
-            .from('profiles')
-            .update({ stripe_customer_id: customerId })
-            .eq('id', userId);
+        
+        // 更新或创建用户 Profile 并关联 Stripe Customer ID
+        if (finalUserId) {
+          await upsertProfileWithStripeId(finalUserId, customerId);
         }
 
         // 4. 创建订单 (Insert into Orders)
