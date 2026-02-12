@@ -5,8 +5,6 @@ import { userNavItems } from "@/config/menu";
 import { UserNav } from "@/components/sections/user-nav"; // 假设你已有这个组件
 import { GlobalToggles } from '@/components/global-toggles';
 
-// 支持完整的 React API（Radix UI 等）
-export const runtime = 'nodejs';
 
 export default function DashboardLayout({
   children,

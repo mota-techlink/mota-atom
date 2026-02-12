@@ -8,9 +8,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { GlobalToggles } from '@/components/global-toggles';
 
-// 覆盖全局 edge runtime，允许使用 Radix UI 等完整 React API
-export const runtime = 'nodejs';
-
 export default async function AdminLayout({
   children,
 }: {
