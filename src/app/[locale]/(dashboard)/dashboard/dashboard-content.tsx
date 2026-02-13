@@ -9,6 +9,22 @@ import { Wallet, Package, CreditCard, Clock, TrendingUp, ChevronRight, ChevronLe
 import Link from "next/link"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
+const scrollbarStyles = `
+  .orders-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .orders-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .orders-scroll::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 3px;
+  }
+  .orders-scroll::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+`
+
 export default function DashboardContent({ user, stats, recentOrders }: any) {
   type ChartDataItem = {
     name: string
@@ -41,6 +57,7 @@ export default function DashboardContent({ user, stats, recentOrders }: any) {
 
   return (
     <div className="p-6 space-y-8 bg-slate-950 text-slate-50 min-h-screen">
+      <style>{scrollbarStyles}</style>
       {/* 1. Header & User Info */}
       <div className="flex justify-between items-center">
         <div>
@@ -126,21 +143,22 @@ export default function DashboardContent({ user, stats, recentOrders }: any) {
         </Card>
 
         {/* 3. Recent Orders Card */}
-        <Card className="md:col-span-3 bg-slate-900 border-slate-800 text-slate-50">
+        <Card className="md:col-span-3 bg-slate-900 border-slate-800 text-slate-50 flex flex-col">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Recent Orders</CardTitle>
             <Button variant="ghost" size="sm" asChild className="text-blue-400">
               <Link href="/dashboard/orders">View All</Link>
             </Button>
           </CardHeader>
-          <CardContent className="space-y-6">
-            {recentOrders.map((order: any) => (
-              // 3. 这里的跳转带上 order_number 参数
-              <Link 
-                key={order.id} 
-                href={`/dashboard/orders?open=${order.order_number}`}
-                className="flex items-center gap-4 group hover:bg-slate-800/50 p-2 -mx-2 rounded-lg transition-colors"
-              >
+          <CardContent className="flex-1 overflow-hidden p-6 pt-0">
+            <div className="orders-scroll space-y-6 overflow-y-auto pr-2" style={{ maxHeight: '300px' }}>
+              {recentOrders.map((order: any) => (
+                // 3. 这里的跳转带上 order_number 参数
+                <Link 
+                  key={order.id} 
+                  href={`/dashboard/orders?open=${order.order_number}`}
+                  className="flex items-center gap-4 group hover:bg-slate-800/50 p-2 -mx-2 rounded-lg transition-colors"
+                >
                 <div className="h-9 w-9 rounded-lg bg-slate-800 flex items-center justify-center shrink-0">
                   <Package className="h-5 w-5 text-slate-400" />
                 </div>
@@ -157,6 +175,7 @@ export default function DashboardContent({ user, stats, recentOrders }: any) {
                 <ChevronRight className="h-4 w-4 text-slate-600 group-hover:text-blue-500 transition-colors" />
               </Link>
             ))}
+            </div>
           </CardContent>
         </Card>
       </div>

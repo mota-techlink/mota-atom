@@ -45,6 +45,7 @@ export default async function LoginPage({
     hasAccount: t('hasAccount', { defaultMessage: 'Already have an account?' }),
     signUpNow: t('signUpNow', { defaultMessage: 'Sign Up Now' }),
     signInNow: t('signInNow', { defaultMessage: 'Sign In Now' }),
+    forgotPassword: t('forgotPassword', { defaultMessage: 'Forgot password?' }),
     // orEmail: t('orEmail', { defaultMessage: 'Or continue with email' }),
   };
 

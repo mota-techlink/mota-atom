@@ -244,9 +244,19 @@ export default function AuthForm({
           </div>
           
           <div className="grid gap-1.5">
-            <Label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              {dict.password}
-            </Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                {dict.password}
+              </Label>
+              {isLogin && (
+                <a 
+                  href="/forgot-password" 
+                  className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  {dict.forgotPassword || "Forgot password?"}
+                </a>
+              )}
+            </div>
             <Input
               id="password"
               name="password"

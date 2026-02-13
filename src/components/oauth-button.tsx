@@ -29,9 +29,9 @@ export function OAuthButton({
       onClick={enable ? onClick : undefined}
       className={cn(
         "h-12 w-12 p-1 rounded-full flex items-center justify-center aspect-square relative overflow-hidden", // relative 用于定位
-        "bg-transparent border-none shadow-none",
-        // 启用时的 hover 样式
-        enable && "hover:bg-slate-100/80 dark:hover:bg-slate-800/80 transition-all",
+        "bg-transparent border border-transparent shadow-none transition-all duration-200",
+        // 启用时的 hover 样式 - 使用 ! 标记强制覆盖 ghost 变体的默认 hover 样式
+        enable && "!hover:bg-slate-100/80 dark:!hover:bg-slate-800/80 !hover:border-slate-300 dark:!hover:border-slate-600 !hover:shadow-sm hover:cursor-pointer",
         // 禁用时的样式 (降低透明度，显示不可用感)
         !enable && "opacity-70 cursor-not-allowed bg-slate-100/50 dark:bg-slate-800/50 "
       )}

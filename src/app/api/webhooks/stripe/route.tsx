@@ -27,6 +27,7 @@ function generateOrderNumber() {
 
 // 辅助函数：更新或创建用户 Profile 并关联 Stripe Customer ID
 async function upsertProfileWithStripeId(userId: string, customerId: string) {
+  console.log(` upsertProfileWithStripeId userId: ${userId}, customerId: ${customerId}`);
   if (!userId || !customerId) return;
 
   // 检查 profile 是否存在
@@ -86,11 +87,24 @@ export async function POST(req: Request) {
       const session = event.data.object as Stripe.Checkout.Session;
 
       // 1. 数据提取与准备
-      const userId = session.metadata?.userId;
+      let userId = session.metadata?.userId as string;
       const customerId = session.customer as string;
       const tier = session.metadata?.tier || 'Standard';
       const productName = session.metadata?.product || 'Mota Service';
       const returnPath = session.metadata?.returnPath || '';
+      
+      // 如果 session.metadata 中没有 userId，尝试从 customer 对象的 metadata 中获取
+      if (!userId && customerId) {
+        try {
+          const customer = await stripe.customers.retrieve(customerId);
+          if ('metadata' in customer && customer.metadata?.userId) {
+            userId = customer.metadata.userId as string;
+            console.log(`✅ Retrieved userId from customer metadata: ${userId}`);
+          }
+        } catch (err) {
+          console.warn(`⚠️ Failed to retrieve customer metadata:`, err);
+        }
+      }
       
       // 客户信息
       const customerEmail = session.customer_details?.email || session.customer_email;
@@ -101,9 +115,8 @@ export async function POST(req: Request) {
         console.log(`💳 New payment method added by ${customerEmail}`);
         
         // 更新或创建用户 Profile 并关联 Stripe Customer ID
-        if (userId && customerId) {
-          await upsertProfileWithStripeId(userId, customerId);
-        }
+        await upsertProfileWithStripeId(userId, customerId);
+        
         
         if (customerEmail) {
           try {
@@ -151,11 +164,6 @@ export async function POST(req: Request) {
           if (existingUser) finalUserId = existingUser.id;
         }
         
-        // 更新或创建用户 Profile 并关联 Stripe Customer ID
-        if (finalUserId) {
-          await upsertProfileWithStripeId(finalUserId, customerId);
-        }
-
         // 4. 创建订单 (Insert into Orders)
         const { error: dbError } = await supabaseAdmin.from('orders').insert({
           order_number: orderNumber,
@@ -181,7 +189,12 @@ export async function POST(req: Request) {
           // 即使存库失败，仍尝试发邮件，或者在此处 return 500 让 Stripe 重试
         } else {
           console.log('✅ Order saved to database.');
+          // 更新或创建用户 Profile 并关联 Stripe Customer ID
+          await upsertProfileWithStripeId(userId, customerId);
         }
+
+        
+        
 
         if (customerEmail) {
           try {

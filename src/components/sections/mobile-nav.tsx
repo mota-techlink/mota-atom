@@ -17,86 +17,143 @@ import {
 import { Menu } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { mainNavConfig } from "@/config/nav" // 🟢 引入同一个配置
+import { LoginModal } from "@/components/auth/login-modal"
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false)
+  const [loginModalOpen, setLoginModalOpen] = React.useState(false)
+  const [signupModalOpen, setSignupModalOpen] = React.useState(false)
   const t = useTranslations('Nav') // 🟢 引入翻译
 
+  // Provider 配置
+  const specificProviders = siteConfig.oauth.regionSpecific['en'] || [];
+  const commonProviders = siteConfig.oauth.common;
+
+  const dict = {
+    loginTitle: 'Welcome back',
+    signupTitle: 'Create an account',
+    loginDesc: 'Sign in to your account',
+    signupDesc: 'Enter your email below to create your account',
+    email: 'Email',
+    password: 'Password',
+    confirmPassword: 'Confirm Password',
+    signIn: 'Sign In',
+    signUp: 'Sign Up',
+    noAccount: "Don't have an account?",
+    hasAccount: 'Already have an account?',
+    signUpNow: 'Sign Up Now',
+    signInNow: 'Sign In Now',
+    forgotPassword: 'Forgot password?',
+  };
+
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button
-          variant="ghost"
-          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
-        >
-          <Menu className="h-6 w-6" />
-          <span className="sr-only">Toggle Menu</span>
-        </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="pr-0">
-        <MobileLink
-          href="/"
-          className="flex items-center"
-          onOpenChange={setOpen}
-        >
-          <span className="font-bold">{siteConfig.name}</span>
-        </MobileLink>
-        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
-          <div className="flex flex-col space-y-3">
-            <Accordion type="single" collapsible className="w-full">
-              {mainNavConfig.map((item, index) => {
-                // 情况 1: 有子菜单
-                if ("items" in item && item.items) {
+    <>
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button
+            variant="ghost"
+            className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+          >
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Toggle Menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="pr-0">
+          <MobileLink
+            href="/"
+            className="flex items-center"
+            onOpenChange={setOpen}
+          >
+            <span className="font-bold">{siteConfig.name}</span>
+          </MobileLink>
+          <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
+            <div className="flex flex-col space-y-3">
+              <Accordion type="single" collapsible className="w-full">
+                {mainNavConfig.map((item, index) => {
+                  // 情况 1: 有子菜单
+                  if ("items" in item && item.items) {
+                    return (
+                      <AccordionItem value={item.title} key={index} className="border-b-0">
+                        <AccordionTrigger className="text-base font-medium py-4 hover:no-underline">
+                          {t(item.title)}
+                        </AccordionTrigger>
+                        <AccordionContent className="flex flex-col space-y-2 pb-4 pl-4">
+                          {item.items.map((subItem) => (
+                            <MobileLink
+                              key={subItem.href}
+                              href={subItem.href || "#"}
+                              onOpenChange={setOpen}
+                              className="text-muted-foreground hover:text-foreground"
+                            >
+                              {/* 移动端通常不需要描述，只显示标题 */}
+                              {t(`items.${subItem.title}.title`)}
+                            </MobileLink>
+                          ))}
+                        </AccordionContent>
+                      </AccordionItem>
+                    )
+                  }
+
+                  // 情况 2: 普通链接
                   return (
-                    <AccordionItem value={item.title} key={index} className="border-b-0">
-                      <AccordionTrigger className="text-base font-medium py-4 hover:no-underline">
+                    <div key={index} className="py-4 border-b border-muted/20 last:border-0">
+                       <MobileLink
+                        href={item.href || "#"}
+                        onOpenChange={setOpen}
+                        className="text-base font-medium"
+                      >
                         {t(item.title)}
-                      </AccordionTrigger>
-                      <AccordionContent className="flex flex-col space-y-2 pb-4 pl-4">
-                        {item.items.map((subItem) => (
-                          <MobileLink
-                            key={subItem.href}
-                            href={subItem.href || "#"}
-                            onOpenChange={setOpen}
-                            className="text-muted-foreground hover:text-foreground"
-                          >
-                            {/* 移动端通常不需要描述，只显示标题 */}
-                            {t(`items.${subItem.title}.title`)}
-                          </MobileLink>
-                        ))}
-                      </AccordionContent>
-                    </AccordionItem>
+                      </MobileLink>
+                    </div>
                   )
-                }
+                })}
+              </Accordion>
+            </div>
+            
+            <div className="flex flex-col gap-4 mt-8 pr-6">
+               <Button 
+                 variant="outline" 
+                 className="w-full"
+                 onClick={() => {
+                   setLoginModalOpen(true);
+                   setOpen(false);
+                 }}
+               >
+                 Log In
+               </Button>
+               <Button 
+                 className="w-full"
+                 onClick={() => {
+                   setSignupModalOpen(true);
+                   setOpen(false);
+                 }}
+               >
+                 Get Started
+               </Button>
+            </div>
 
-                // 情况 2: 普通链接
-                return (
-                  <div key={index} className="py-4 border-b border-muted/20 last:border-0">
-                     <MobileLink
-                      href={item.href || "#"}
-                      onOpenChange={setOpen}
-                      className="text-base font-medium"
-                    >
-                      {t(item.title)}
-                    </MobileLink>
-                  </div>
-                )
-              })}
-            </Accordion>
-          </div>
-          
-          <div className="flex flex-col gap-4 mt-8 pr-6">
-             <Link href="/login" onClick={() => setOpen(false)}>
-                <Button variant="outline" className="w-full">Log In</Button>
-             </Link>
-             <Link href="/login?view=signup" onClick={() => setOpen(false)}>
-                <Button className="w-full">Get Started</Button>
-             </Link>
-          </div>
+          </ScrollArea>
+        </SheetContent>
+      </Sheet>
 
-        </ScrollArea>
-      </SheetContent>
-    </Sheet>
+      <LoginModal
+        open={loginModalOpen}
+        onOpenChange={setLoginModalOpen}
+        specificProviders={specificProviders}
+        commonProviders={commonProviders}
+        isSignup={false}
+        dict={dict}
+      />
+
+      <LoginModal
+        open={signupModalOpen}
+        onOpenChange={setSignupModalOpen}
+        specificProviders={specificProviders}
+        commonProviders={commonProviders}
+        isSignup={true}
+        dict={dict}
+      />
+    </>
   )
 }
 

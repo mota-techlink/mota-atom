@@ -23,7 +23,7 @@ export default async function DashboardPage() {
     // 活跃订单数 (未交付的)
     supabase.from("orders").select("*", { count: 'exact', head: true }).eq("user_id", user.id).in("status", ["paid", "processing", "shipped"]),
     // 最近 5 条订单记录
-    supabase.from("orders").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(5)
+    supabase.from("orders").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(10)
   ])
 
   // 计算总金额

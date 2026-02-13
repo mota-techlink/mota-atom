@@ -18,13 +18,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { createBrowserClient } from "@supabase/ssr";
 import { useRouter } from "next/navigation";
-import { CreditCard, LogOut, Plus, Settings, User } from "lucide-react";
+import { CreditCard, LogOut, Plus, Settings, User, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link"
 
-export function UserNav() {
+interface UserNavProps {
+  user?: any; // 可选，如果不提供则自己获取
+}
+
+export function UserNav({ user: userProp }: UserNavProps) {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null); // 这里可以使用具体的 User 类型
+  const [user, setUser] = useState<any>(userProp || null);
   
   // 初始化 Supabase 客户端
   const supabase = createBrowserClient(
@@ -32,19 +36,29 @@ export function UserNav() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
-  // 获取当前用户信息 (实际项目中建议通过 Context 或 Layout 传入，避免重复请求)
+  // 如果没有提供 user prop，则自己获取用户信息（用于 dashboard 内部）
   useEffect(() => {
+    if (userProp) {
+      setUser(userProp);
+      return;
+    }
+
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
+      } catch (error) {
+        console.error("Failed to get user:", error);
+      }
     };
+
     getUser();
-  }, [supabase]);
+  }, [userProp, supabase]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     router.refresh();
-    router.push("/login"); // 或者你的登录路由
+    router.push("/"); // 登出后跳转到主页
   };
 
 
@@ -73,6 +87,15 @@ export function UserNav() {
             </p>
           </div>
         </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link href={`/dashboard`} className="flex w-full items-center cursor-pointer">
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              <span>Dashboard</span>
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>

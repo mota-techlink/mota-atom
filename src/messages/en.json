@@ -15,7 +15,19 @@
     "confirmPassword":"Confirm password",
     "hasAccount":"Already have an account?",
     "signInNow":"Log In",
-    "signUp":"Create Account"
+    "signUp":"Create Account",
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordTitle": "Reset Your Password",
+    "forgotPasswordDesc": "Enter your email address and we will send you a link to reset your password.",
+    "sendReset": "Send Reset Link",
+    "backToLogin": "Back to Login",
+    "emailSent": "Check your email for a password reset link.",
+    "invalidEmail": "Invalid email address",
+    "resetPasswordTitle": "Set New Password",
+    "resetPasswordDesc": "Enter your new password below.",
+    "resetPassword": "Reset Password",
+    "passwordMismatch": "Passwords do not match",
+    "invalidPassword": "Password must be at least 8 characters"
   },
   "Dashboard": {
     "title": "Dashboard",

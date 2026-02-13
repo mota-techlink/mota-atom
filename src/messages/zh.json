@@ -15,7 +15,19 @@
     "confirmPassword":"密码确认",
     "hasAccount":"已经有账号了?",
     "signInNow":"登录",
-    "signUp":"注册"
+    "signUp":"注册",
+    "forgotPassword": "忘记密码？",
+    "forgotPasswordTitle": "重置您的密码",
+    "forgotPasswordDesc": "请输入您的电子邮件地址，我们将向您发送密码重置链接。",
+    "sendReset": "发送重置链接",
+    "backToLogin": "返回登录",
+    "emailSent": "请检查您的电子邮件以获取密码重置链接。",
+    "invalidEmail": "无效的电子邮件地址",
+    "resetPasswordTitle": "设置新密码",
+    "resetPasswordDesc": "请在下方输入您的新密码。",
+    "resetPassword": "重置密码",
+    "passwordMismatch": "密码不匹配",
+    "invalidPassword": "密码必须至少8个字符"
   },
   "Dashboard": {
     "title": "仪表盘",

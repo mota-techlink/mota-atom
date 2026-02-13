@@ -56,6 +56,9 @@ export async function POST(req: Request) {
       mode: 'setup', // 🟢 关键：这表示“只绑卡，不扣款”
       success_url: successUrl,
       cancel_url: cancelUrl,
+      metadata: {
+        userId: user.id, // 传递 userId 到 webhook
+      },
     });
 
     return NextResponse.json({ url: session.url });

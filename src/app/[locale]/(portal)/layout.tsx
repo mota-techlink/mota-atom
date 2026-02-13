@@ -1,19 +1,9 @@
 //// src/app/[locale]/(partal)/layout.tsx
-import Link from "next/link"
-import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import Image from "next/image"
-import { siteConfig } from "@/config/site"
-import { MainNav } from "@/components/sections/main-nav"
-import { MobileNav } from "@/components/sections/mobile-nav" 
+import { PortalHeader } from "@/components/sections/portal-header"
 import { ScrollToTop } from "@/components/scroll-to-top" 
-import { BionicToggle } from '@/components/ui/bionic-toggle';
 import { SiteFooter } from "@/components/sections/site-footer"
-import { useTranslations } from 'next-intl';
-import { GlobalToggles } from '@/components/global-toggles';
-
 import { generateLocaleParams } from "@/lib/static-helper";
-
+import { siteConfig } from "@/config/site";
 
 // 🟢 2. 保留这个，Next.js 会自动识别并做 SSG
 export function generateStaticParams() {
@@ -27,87 +17,26 @@ export function generateStaticParams() {
 }
 
 interface PortalLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }
 
-export default function PortalLayout({ children }: PortalLayoutProps) {
-  const t = useTranslations('Nav')
+export default async function PortalLayout({ children, params }: PortalLayoutProps) {
+  const { locale } = await params;
+
+  // Provider 配置
+  const specificProviders = siteConfig.oauth.regionSpecific[locale] || [];
+  const commonProviders = siteConfig.oauth.common;
+
   return (
     <div className="flex min-h-screen flex-col bg-background ">
       
-      {/* --- Header --- */}
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        
-        {/* 🔴 关键修改：添加 max-w-screen-xl 和 mx-auto */}
-        {/* 这样在大屏幕上，内容区也不会超过 1280px */}
-        <div className="container flex h-14 items-center max-w-screen-xl mx-auto pl-[2%] pr-[2%] ">          
-          <Link href="/" className="mr-6 pt-2 flex items-center space-x-2"> 
-          {/* 1. Left: Logo*/}
-          {/* 🌞 Light Mode Logo (亮色模式显示黑色 Logo) */}          
-
-          <div className="relative w-[140px] h-[55px] dark:hidden mar-2">
-              <Image 
-                src={siteConfig.logoLight}
-                alt="Mota Techlink" 
-                fill 
-                className="object-contain object-left" // object-left 确保 Logo 靠左对齐
-                priority
-              />
-          </div>
-
-          {/* 🌙 Dark Mode Logo (暗色模式显示白色 Logo) */}
-          <div className="relative w-[140px] h-[55px] hidden dark:block">
-              <Image 
-                src={siteConfig.logoDark}
-                alt="Mota Techlink" 
-                fill 
-                className="object-contain object-left"
-                priority
-              />
-          </div>
-          </Link> 
-
-          {/* 2. Center: Navigation */}
-          <div className="hidden md:flex flex-1 justify-center">
-             <MainNav />
-          </div>
-
-          {/* 3. Right: Actions */}
-          <div className="flex flex-1 items-center justify-end space-x-2 md:justify-end">
-            <nav className="flex items-center space-x-2">
-              
-              <div className="hidden md:flex items-center space-x-2">
-                <Link
-                  href="/login"
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "sm" }),
-                    "px-4"
-                  )}
-                >
-                  {t('login')}
-                </Link>
-                <Link
-                  href="/login?view=signup"
-                  className={cn(
-                    buttonVariants({ variant: "default", size: "sm" }),
-                    "px-4"
-                  )}
-                >
-                  {t('getStarted')}
-                </Link>
-              </div>
-              <GlobalToggles position="inline" zIndex={51} />
-              <BionicToggle />
-              
-              
-              {/* 🔴 Mobile Menu Trigger (仅在小屏显示) */}
-              <div className="md:hidden">
-                 <MobileNav />
-              </div>
-            </nav>
-          </div>
-        </div>
-      </header>
+      {/* --- Header with Modal --- */}
+      <PortalHeader
+        locale={locale}
+        specificProviders={specificProviders}
+        commonProviders={commonProviders}
+      />
 
       {/* --- Main Content --- */}
       <main className="flex-1 relative">

@@ -3,14 +3,24 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { Github, LayoutDashboard } from "lucide-react"
-import { HeroSection } from "@/components/sections/hero-section";
+import { HeroSection } from "@/components/sections/hero-section-modal";
 import { FeaturesSection } from "@/components/sections/features";
 
-export default function IndexPage() {
+interface IndexPageProps {
+  params: Promise<{ locale: string }>;
+}
+
+export default async function IndexPage({ params }: IndexPageProps) {
+  const { locale } = await params;
+  
+  // Provider 配置
+  const specificProviders = siteConfig.oauth.regionSpecific[locale] || [];
+  const commonProviders = siteConfig.oauth.common;
+
   return (
     <>
       {/* --- Hero Section --- */}
-      <HeroSection />
+      <HeroSection specificProviders={specificProviders} commonProviders={commonProviders} />
 
       {/* --- Features Grid Section --- */}
       <section id="features" className="container space-y-6 bg-slate-50 dark:bg-transparent  mx-auto">        
