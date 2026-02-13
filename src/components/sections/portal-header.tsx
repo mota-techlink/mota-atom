@@ -17,6 +17,7 @@ import { GlobalToggles } from '@/components/global-toggles';
 import { LoginModal } from '@/components/auth/login-modal';
 import { UserNav } from "@/components/sections/user-nav";
 import { createBrowserClient } from "@supabase/ssr";
+import { DashboardLogo } from '../dashboard-logo';
 
 interface PortalHeaderProps {
   locale: string;
@@ -90,7 +91,7 @@ export function PortalHeader({
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center max-w-screen-xl mx-auto pl-[2%] pr-[2%] ">          
-          <Link href="/" className="mr-6 pt-2 flex items-center space-x-2"> 
+          {/* <Link href="/" className="mr-6 pt-2 flex items-center space-x-2"> 
             <div className="relative w-[140px] h-[55px] dark:hidden mar-2">
               <Image 
                 src={siteConfig.logoLight}
@@ -110,7 +111,8 @@ export function PortalHeader({
                 priority
               />
             </div>
-          </Link> 
+          </Link>  */}
+          <DashboardLogo/>
 
           <div className="hidden md:flex flex-1 justify-center">
              <MainNav />
