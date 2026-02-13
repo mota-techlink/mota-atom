@@ -90,28 +90,7 @@ export function PortalHeader({
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center max-w-screen-xl mx-auto pl-[2%] pr-[2%] ">          
-          {/* <Link href="/" className="mr-6 pt-2 flex items-center space-x-2"> 
-            <div className="relative w-[140px] h-[55px] dark:hidden mar-2">
-              <Image 
-                src={siteConfig.logoLight}
-                alt="Mota Techlink" 
-                fill 
-                className="object-contain object-left"
-                priority
-              />
-            </div>
-
-            <div className="relative w-[140px] h-[55px] hidden dark:block">
-              <Image 
-                src={siteConfig.logoDark}
-                alt="Mota Techlink" 
-                fill 
-                className="object-contain object-left"
-                priority
-              />
-            </div>
-          </Link>  */}
+        <div className="container flex h-14 items-center max-w-screen-xl mx-auto pl-[2%] pr-[2%] ">                    
           <DashboardLogo/>
 
           <div className="hidden md:flex flex-1 justify-center">
