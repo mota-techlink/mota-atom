@@ -23,7 +23,7 @@ export function GlobalToggles({
     'relative': 'relative'
   };
 
-  const baseClasses = `${positionClasses[position]} flex items-center space-x-2`;
+  const baseClasses = `${positionClasses[position]} flex items-center gap-0.5`;
 
   return (
     <div className={`${baseClasses} ${className}`} style={{ zIndex }}>

@@ -49,11 +49,15 @@ export function DashboardBreadcrumb() {
   return (
     <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm">
       <Link
-        href="/dashboard"
-        className="flex items-center gap-1 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
-        aria-label="Dashboard home"
+        href="/"
+        className="relative flex items-center gap-1 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 transition-colors group"
+        aria-label="back to homepage"
+        title="Homepage"
       >
-        <Home className="w-4 h-4" />
+        <Home className="w-6 h-6" />
+        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-slate-900 dark:bg-slate-50 text-white dark:text-slate-900 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+          Back Homepage
+        </span>
       </Link>
 
       {breadcrumbs.slice(1).map((item, index) => (

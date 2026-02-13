@@ -17,7 +17,7 @@ import { GlobalToggles } from '@/components/global-toggles';
 import { LoginModal } from '@/components/auth/login-modal';
 import { UserNav } from "@/components/sections/user-nav";
 import { createBrowserClient } from "@supabase/ssr";
-import { DashboardLogo } from '../dashboard-logo';
+import { GlobalLogo } from '../GlobalLogo';
 
 interface PortalHeaderProps {
   locale: string;
@@ -91,16 +91,16 @@ export function PortalHeader({
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center max-w-screen-xl mx-auto pl-[2%] pr-[2%] ">                    
-          <DashboardLogo/>
+          <GlobalLogo/>
 
           <div className="hidden md:flex flex-1 justify-center">
              <MainNav />
           </div>
 
-          <div className="flex flex-1 items-center justify-end space-x-2 md:justify-end">
-            <nav className="flex items-center space-x-2">
+          <div className="flex flex-1 items-center justify-end gap-1 md:justify-end">
+            <nav className="flex items-center gap-1">
               
-              <div className="hidden md:flex items-center space-x-2">
+              <div className="hidden md:flex items-center gap-1">
                 {user !== undefined ? (
                   // 已完成加载：要么有用户，要么没有用户
                   user ? (
@@ -133,6 +133,15 @@ export function PortalHeader({
                   // 还在加载中，显示空（不显示任何东西，避免闪烁）
                   null
                 )}
+              </div>
+
+              <div className="md:hidden flex items-center">
+                {user !== undefined ? (
+                  user ? (
+                    // 用户已登录，显示 UserNav
+                    <UserNav user={user} />
+                  ) : null
+                ) : null}
               </div>
               <GlobalToggles position="inline" zIndex={51} />
               <BionicToggle />

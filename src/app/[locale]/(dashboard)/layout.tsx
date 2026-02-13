@@ -4,7 +4,6 @@ import PageWrapper from "@/components/layout/page-wrapper";
 import { userNavItems } from "@/config/menu";
 import { UserNav } from "@/components/sections/user-nav"; // 假设你已有这个组件
 import { GlobalToggles } from '@/components/global-toggles';
-import { DashboardLogo } from "@/components/dashboard-logo";
 import { DashboardBreadcrumb } from "@/components/dashboard-breadcrumb";
 
 
@@ -23,9 +22,7 @@ export default function DashboardLayout({
         <PageWrapper>
           {/* 可选：顶部 Header (面包屑 + 用户头像) */}
           <header className="mb-6 flex items-center justify-between gap-6">
-            <div className="flex items-center gap-6 flex-1">
-              {/* 跳转主页 Logo */}
-              <DashboardLogo />
+            <div className="flex items-center gap-6 flex-1">              
               {/* Breadcrumb 导航 */}
               <DashboardBreadcrumb />
             </div>

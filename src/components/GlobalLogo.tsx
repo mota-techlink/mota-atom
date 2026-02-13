@@ -6,7 +6,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { siteConfig } from "@/config/site"
 
-export function DashboardLogo() {
+export function GlobalLogo() {
   const { theme } = useTheme()
   const [mounted, setMounted] = useState(false)
 

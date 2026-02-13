@@ -18,12 +18,49 @@ import { Menu } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { mainNavConfig } from "@/config/nav" // 🟢 引入同一个配置
 import { LoginModal } from "@/components/auth/login-modal"
+import { createBrowserClient } from "@supabase/ssr"
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false)
   const [loginModalOpen, setLoginModalOpen] = React.useState(false)
   const [signupModalOpen, setSignupModalOpen] = React.useState(false)
+  const [user, setUser] = React.useState<any>(undefined) // 🟢 新增：用户状态
   const t = useTranslations('Nav') // 🟢 引入翻译
+
+  // 🟢 初始化 Supabase 客户端
+  const supabase = React.useMemo(() => 
+    createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    ),
+    []
+  )
+
+  // 🟢 获取当前用户信息
+  React.useEffect(() => {
+    const getUser = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        setUser(user)
+      } catch (error) {
+        console.error("Failed to get user:", error)
+      }
+    }
+    getUser()
+
+    // 监听认证状态变化
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        setUser(null)
+      } else if (event === 'SIGNED_IN') {
+        setUser(session?.user || null)
+      }
+    })
+
+    return () => {
+      subscription?.unsubscribe()
+    }
+  }, [supabase])
 
   // Provider 配置
   const specificProviders = siteConfig.oauth.regionSpecific['en'] || [];
@@ -52,7 +89,7 @@ export function MobileNav() {
         <SheetTrigger asChild>
           <Button
             variant="ghost"
-            className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+            className="mr-1 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
           >
             <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle Menu</span>
@@ -110,27 +147,30 @@ export function MobileNav() {
               </Accordion>
             </div>
             
-            <div className="flex flex-col gap-4 mt-8 pr-6">
-               <Button 
-                 variant="outline" 
-                 className="w-full"
-                 onClick={() => {
-                   setLoginModalOpen(true);
-                   setOpen(false);
-                 }}
-               >
-                 Log In
-               </Button>
-               <Button 
-                 className="w-full"
-                 onClick={() => {
-                   setSignupModalOpen(true);
-                   setOpen(false);
-                 }}
-               >
-                 Get Started
-               </Button>
-            </div>
+            {/* 🟢 只在未登录时显示登录和注册按钮 */}
+            {user === null && (
+              <div className="flex flex-col gap-4 mt-8 pr-6">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => {
+                    setLoginModalOpen(true);
+                    setOpen(false);
+                  }}
+                >
+                  Log In
+                </Button>
+                <Button 
+                  className="w-full"
+                  onClick={() => {
+                    setSignupModalOpen(true);
+                    setOpen(false);
+                  }}
+                >
+                  Get Started
+                </Button>
+              </div>
+            )}
 
           </ScrollArea>
         </SheetContent>
