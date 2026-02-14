@@ -7,6 +7,7 @@ import { requireAdmin } from "@/lib/auth/admin"; // 👈 引入鉴权函数
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { GlobalToggles } from '@/components/global-toggles';
+import { AdminBreadcrumb } from "@/components/admin-breadcrumb";
 
 export default async function AdminLayout({
   children,
@@ -28,10 +29,14 @@ export default async function AdminLayout({
           <Sidebar items={adminNavItems} title="Admin Console" />
 
           <PageWrapper>
-            <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-6 lg:h-[60px] justify-between">
-               <div className="flex items-center font-semibold text-red-600 dark:text-red-400">
+            <header className="mb-6 flex items-center justify-between gap-6">
+               <div className="flex items-center gap-6 flex-1">
+                  {/* Breadcrumb 导航 */}
+                  <AdminBreadcrumb />
                   {/* 用红色标记这是管理员环境，防止混淆 */}
-                  Administrator
+                  <span className="text-xs font-semibold text-red-600 dark:text-red-400 border border-red-600/30 dark:border-red-400/30 rounded px-2 py-0.5">
+                    ADMIN
+                  </span>
                </div>
                <div className="flex items-center gap-4">  
                   <GlobalToggles position="inline" />

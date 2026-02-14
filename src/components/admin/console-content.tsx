@@ -171,9 +171,9 @@ export function ConsoleContent({ orders, stats }: any) {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
+            <div className="space-y-4 max-h-85 overflow-y-auto pr-1">
               {orders.length > 0 ? (
-                orders.slice(0, 8).map((order: any) => (
+                orders.map((order: any) => (
                   <div
                     key={order.id}
                     className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition"
