@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import AuthFormModal from '@/components/auth/auth-form-modal';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { LoginPanel } from '@/components/auth/login-panel';
 import { OAuthProviderConfig } from '@/config/site';
 
 interface LoginModalProps {
@@ -32,20 +32,16 @@ export function LoginModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>
-            {isSignup ? dict.signupTitle : dict.loginTitle}
-          </DialogTitle>
-          <p className="text-sm text-muted-foreground">
-            {isSignup ? dict.signupDesc : dict.loginDesc}
-          </p>
-        </DialogHeader>
-        <AuthFormModal
+      <DialogContent
+        className="max-w-[calc(100%-2rem)] sm:max-w-3xl p-0 border-0 bg-transparent shadow-none overflow-hidden [&>button]:hidden"
+        showCloseButton={false}
+      >
+        <LoginPanel
           specificProviders={specificProviders}
           commonProviders={commonProviders}
-          isSignup={isSignup}
           dict={dict}
+          mode="modal"
+          isSignup={isSignup}
           onClose={() => onOpenChange(false)}
         />
       </DialogContent>

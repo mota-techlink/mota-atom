@@ -1,4 +1,4 @@
-// app/[locale]/login/auth-form.tsx
+// src/components/auth/unified-auth-form.tsx
 'use client';
 
 import { useState, useEffect, FormEvent } from 'react';
@@ -8,76 +8,92 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import ClientOAuthHandler from "./client-oauth-handler";
+import ClientOAuthHandler from '@/app/[locale]/login/client-oauth-handler';
 import { OAuthProviderConfig } from '@/config/site';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 
-interface AuthFormProps {
+interface UnifiedAuthFormProps {
   specificProviders: OAuthProviderConfig[];
   commonProviders: OAuthProviderConfig[];
+  /** Initial error from server (URL param) — page mode only */
   error?: string;
+  /** Initial message from server (URL param) — page mode only */
   message?: string;
+  /** Translation dictionary */
   dict: any;
+  /** 
+   * 'page' = standalone login page (uses URL params for view toggle, redirects to /dashboard)
+   * 'modal' = dialog modal (uses local state, calls onClose, refreshes in-place)
+   */
+  mode?: 'page' | 'modal';
+  /** Whether to start in signup mode (modal mode only) */
+  isSignup?: boolean;
+  /** Called when the modal should close (modal mode only) */
+  onClose?: () => void;
 }
 
-export default function AuthForm({
+export default function UnifiedAuthForm({
   specificProviders,
   commonProviders,
   error,
   message,
   dict,
-}: AuthFormProps) {
+  mode = 'page',
+  isSignup = false,
+  onClose,
+}: UnifiedAuthFormProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const supabase = createClient();  
-  const allProviders = [ ...commonProviders,...specificProviders];
+  const supabase = createClient();
+  const allProviders = [...commonProviders, ...specificProviders];
 
-  // URL 参数判断视图
-  const isLogin = searchParams.get('view') !== 'signup';
+  // View toggle: page mode uses URL params, modal mode uses local state
+  const [localIsSignup, setLocalIsSignup] = useState(isSignup);
+  const isLogin = mode === 'page'
+    ? searchParams.get('view') !== 'signup'
+    : !localIsSignup;
 
-  // 状态管理
+  // State management
   const [globalError, setGlobalError] = useState<string | null>(error || null);
   const [globalMessage, setGlobalMessage] = useState<string | null>(message || null);
-  
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // 🟢 修复 1：初始化状态并清洗 URL
+  // Page mode: clean up URL params after reading them
   useEffect(() => {
-    // 1. 如果 props 有值，同步到本地 state (确保 URL 清洗后提示框不消失)
+    if (mode !== 'page') return;
     if (error) setGlobalError(error);
     if (message) setGlobalMessage(message);
 
-    // 2. 如果 URL 中包含 message 或 error，使用 replaceState 无感清除
-    // 这样地址栏干净了，但 React 组件因为没有重新渲染，state 里的提示还在
     const params = new URLSearchParams(searchParams.toString());
     if (params.has('error') || params.has('message')) {
       params.delete('error');
       params.delete('message');
-      
-      // 构造新 URL
       const newUrl = `${pathname}${params.toString() ? `?${params.toString()}` : ''}`;
-      
-      // 替换历史记录 (不刷新页面，不触发 Next.js 导航)
       window.history.replaceState({}, '', newUrl);
     }
-  }, [error, message, pathname, searchParams]);
+  }, [error, message, pathname, searchParams, mode]);
 
   const toggleMode = () => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (isLogin) {
-      params.set('view', 'signup');
-    } else {
-      params.delete('view');
-    }
     setGlobalError(null);
-    setGlobalMessage(null); // 切换模式时清空消息
+    setGlobalMessage(null);
     setPasswordError(null);
     setEmailError(null);
-    router.replace(`${pathname}?${params.toString()}`);
+
+    if (mode === 'page') {
+      const params = new URLSearchParams(searchParams.toString());
+      if (isLogin) {
+        params.set('view', 'signup');
+      } else {
+        params.delete('view');
+      }
+      router.replace(`${pathname}?${params.toString()}`);
+    } else {
+      setLocalIsSignup(!localIsSignup);
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -86,23 +102,28 @@ export default function AuthForm({
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    // 重置错误
+    // Reset errors
     setGlobalError(null);
     setGlobalMessage(null);
     setPasswordError(null);
     setEmailError(null);
 
-    // 客户端校验
+    // Client-side validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
-      setEmailError(dict.invalidEmail || "Invalid email address");
+      setEmailError(dict.invalidEmail || 'Invalid email address');
+      return;
+    }
+
+    if (!password || password.length < 6) {
+      setPasswordError(dict.passwordTooShort || 'Password must be at least 6 characters');
       return;
     }
 
     if (!isLogin) {
       const confirmPassword = formData.get('confirmPassword') as string;
       if (password !== confirmPassword) {
-        setPasswordError(dict.passwordMismatch || "Passwords do not match");
+        setPasswordError(dict.passwordMismatch || 'Passwords do not match');
         return;
       }
     }
@@ -110,25 +131,28 @@ export default function AuthForm({
     setIsLoading(true);
     try {
       if (isLogin) {
-        // 🟢 登录逻辑：直接调用 Supabase 客户端
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
 
         if (error) {
-          setGlobalError(error.message);
+          if (error.message.includes('Invalid login credentials')) {
+            setGlobalError(dict.invalidCredentials || 'Invalid email or password');
+          } else {
+            setGlobalError(error.message);
+          }
         } else {
-          // 登录成功，刷新页面或跳转
-          router.push('/dashboard'); // 或者 router.refresh()
-          router.refresh(); 
+          setGlobalMessage(dict.loginSuccess || 'Logged in successfully!');
+          if (mode === 'modal') {
+            setTimeout(() => {
+              onClose?.();
+              router.refresh();
+            }, 800);
+          } else {
+            router.push('/dashboard');
+            router.refresh();
+          }
         }
-
       } else {
-        // 🟢 注册逻辑：直接调用 Supabase 客户端
-        // 获取当前域名用于重定向
         const origin = window.location.origin;
-        
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -140,33 +164,30 @@ export default function AuthForm({
         if (error) {
           setGlobalError(error.message);
         } else {
-          // 注册成功，提示查收邮件
-          setGlobalMessage("Please check your email to activate account.");
-          // 这里可以选择跳回登录页，或者停留在当前页显示消息
-          const params = new URLSearchParams(searchParams.toString());
-          params.delete('view'); // 切换回登录视图
-          router.replace(`${pathname}?${params.toString()}`);
+          setGlobalMessage('Please check your email to activate account.');
+          if (mode === 'page') {
+            const params = new URLSearchParams(searchParams.toString());
+            params.delete('view');
+            router.replace(`${pathname}?${params.toString()}`);
+          } else {
+            // Stay in modal, show success message
+          }
         }
       }
     } catch (err) {
-      console.error("Auth Error:", err);
-      setGlobalError("Something went wrong. Please try again.");
+      console.error('Auth Error:', err);
+      setGlobalError('Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
-
-  // 优先显示本地状态，其次是 props
-  const displayError = globalError;
-  const displayMessage = globalMessage;
 
   return (
     <div className="col-span-1 md:col-span-3 p-4 md:p-8 lg:p-8 relative 
                     flex flex-col justify-center 
                     landscape:grid landscape:grid-cols-2 landscape:gap-x-8 landscape:content-center
                     md:landscape:flex md:landscape:flex-col md:landscape:gap-0">
-
-      {/* 第一板块 (Title & OAuth) */}
+      {/* Section 1: Title & OAuth */}
       <div className="w-full flex flex-col justify-center landscape:justify-start">
         <div className="flex flex-col space-y-1 text-center md:text-left landscape:text-left mb-6 landscape:mb-3">
           <h1 className="text-2xl font-bold tracking-tight landscape:text-xl">
@@ -177,52 +198,39 @@ export default function AuthForm({
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center md:justify-start landscape:justify-start gap-2 mb-6 landscape:mb-0">
+        <div className="flex flex-nowrap justify-center md:justify-start landscape:justify-start gap-2 mb-6 landscape:mb-0">
           {allProviders.map((provider) => (
             <ClientOAuthHandler key={provider.id} provider={provider} />
-          ))}              
-          
-        </div>            
+          ))}
+        </div>
 
-        {/* {specificProviders.length > 0 && (
-          <div className="flex flex-wrap justify-center md:justify-start landscape:justify-start gap-3 mb-6 landscape:mb-0">
-            {specificProviders.map((provider) => (
-              <ClientOAuthHandler key={provider.id} provider={provider} />
-            ))}
-          </div>
-        )}  */}
-        <div className="hidden landscape:block md:landscape:hidden absolute right-0 top-10 bottom-12 w-[1px] bg-slate-100 dark:bg-slate-800" />
+        <div className="hidden landscape:block md:landscape:hidden absolute right-0 top-10 bottom-12 w-px bg-slate-100 dark:bg-slate-800" />
       </div>
 
-      {/* 第二板块 (Form) */}
+      {/* Section 2: Email/Password Form */}
       <div className="w-full flex flex-col justify-center pt-2">
-        
         <div className="relative mb-2 landscape:hidden md:landscape:block">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-slate-200 dark:border-slate-800" />
           </div>
-          {/* <div className="relative flex justify-center text-[10px] uppercase">
-            <span className="bg-white dark:bg-slate-900 px-3 text-slate-500">
-              {dict.orEmail}
-            </span>
-          </div> */}
         </div>
 
-        {/* 错误提示 */}
-        {displayError && (
+        {/* Error alert */}
+        {globalError && (
           <Alert variant="destructive" className="mb-4 py-2 animate-in fade-in slide-in-from-top-2">
-            <AlertCircle className="h-4 w-4" />                
-            <AlertDescription className="text-xs">{displayError}</AlertDescription>
-          </Alert>
-        )}
-        {/* 成功/普通消息提示 */}
-        {displayMessage && !displayError && (
-          <Alert className="mb-4 py-2 border-green-500 text-green-600 bg-green-50 dark:bg-green-900/20 animate-in fade-in slide-in-from-top-2">
-            <AlertDescription className="text-xs">{displayMessage}</AlertDescription>
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription className="text-xs">{globalError}</AlertDescription>
           </Alert>
         )}
 
-        {/* 表单 */}
+        {/* Success/info message */}
+        {globalMessage && !globalError && (
+          <Alert className="mb-4 py-2 border-green-500 text-green-600 bg-green-50 dark:bg-green-900/20 animate-in fade-in slide-in-from-top-2">
+            <AlertDescription className="text-xs">{globalMessage}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-3 landscape:space-y-2">
           <div className="grid gap-1.5">
             <Label htmlFor="email" className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -234,6 +242,7 @@ export default function AuthForm({
               type="email"
               placeholder="name@example.com"
               required
+              disabled={isLoading}
               className={`h-10 landscape:h-9 bg-slate-50 dark:bg-slate-950/50 border-slate-200 dark:border-slate-800 text-sm ${emailError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
             />
             {emailError && (
@@ -242,18 +251,18 @@ export default function AuthForm({
               </p>
             )}
           </div>
-          
+
           <div className="grid gap-1.5">
             <div className="flex items-center justify-between">
               <Label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 {dict.password}
               </Label>
               {isLogin && (
-                <a 
-                  href="/forgot-password" 
+                <a
+                  href="/forgot-password"
                   className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
                 >
-                  {dict.forgotPassword || "Forgot password?"}
+                  {dict.forgotPassword || 'Forgot password?'}
                 </a>
               )}
             </div>
@@ -262,6 +271,7 @@ export default function AuthForm({
               name="password"
               type="password"
               required
+              disabled={isLoading}
               className="h-10 landscape:h-9 bg-slate-50 dark:bg-slate-950/50 border-slate-200 dark:border-slate-800 text-sm"
             />
           </div>
@@ -276,28 +286,29 @@ export default function AuthForm({
                 name="confirmPassword"
                 type="password"
                 required
+                disabled={isLoading}
                 className={`h-10 landscape:h-9 bg-slate-50 dark:bg-slate-950/50 border-slate-200 dark:border-slate-800 text-sm ${passwordError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
               />
               {passwordError && (
-                <p className="text-[20px] text-red-500 font-medium ml-1 animate-in slide-in-from-top-1">
+                <p className="text-[11px] text-red-500 font-medium ml-1 animate-in slide-in-from-top-1">
                   {passwordError}
                 </p>
               )}
             </div>
           )}
 
-          <Button 
+          <Button
             type="submit"
             disabled={isLoading}
             className="w-full h-10 landscape:h-9 text-sm font-medium bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-black dark:hover:bg-slate-200 transition-colors mt-2"
           >
-            {isLoading ? "Wait a moment..." : (isLogin ? dict.signIn : dict.signUp)}
+            {isLoading ? 'Wait a moment...' : isLogin ? dict.signIn : dict.signUp}
           </Button>
         </form>
 
         <div className="mt-6 landscape:mt-3 text-center text-xs">
           <span className="text-slate-500 dark:text-slate-400">
-            {isLogin ? dict.noAccount : dict.hasAccount}{" "}
+            {isLogin ? dict.noAccount : dict.hasAccount}{' '}
           </span>
           <button
             type="button"

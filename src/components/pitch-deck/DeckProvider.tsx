@@ -44,7 +44,7 @@ export function DeckProvider({
   children,
   totalSlides,
   initialTransition = "fade",
-  maxPreviewSlides = 3,
+  maxPreviewSlides = 5,
   isAuthenticated = false,
 }: DeckProviderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
