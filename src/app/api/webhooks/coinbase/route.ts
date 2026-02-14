@@ -1,11 +1,28 @@
 // src/app/api/webhooks/coinbase/route.ts
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
-import crypto from "crypto";
 
 export const runtime = 'edge';
 
 const WEBHOOK_SECRET = process.env.COINBASE_COMMERCE_WEBHOOK_SECRET!;
+
+/**
+ * 使用 Web Crypto API 计算 HMAC-SHA256（Edge Runtime 兼容）
+ */
+async function hmacSha256(secret: string, message: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(message));
+  return Array.from(new Uint8Array(signature))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
 
 /**
  * Coinbase Commerce Webhook Handler
@@ -34,10 +51,7 @@ export async function POST(req: Request) {
     // 2. 验证 Webhook 签名
     // Coinbase 使用 HMAC-SHA256 签名：
     // signature = HMAC-SHA256(body, secret)
-    const expectedSignature = crypto
-      .createHmac("sha256", WEBHOOK_SECRET)
-      .update(body)
-      .digest("hex");
+    const expectedSignature = await hmacSha256(WEBHOOK_SECRET, body);
 
     if (signature !== expectedSignature) {
       console.warn("Invalid webhook signature", {
