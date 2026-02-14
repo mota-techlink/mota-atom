@@ -25,7 +25,7 @@ export default async function OrdersPage({
   const queryTerm = params.q || ""
   
   let query = supabase
-    .from("orders")
+    .from("order_details_view")
     .select("*")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })

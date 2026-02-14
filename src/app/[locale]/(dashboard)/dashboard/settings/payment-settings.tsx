@@ -173,7 +173,8 @@ export function PaymentSettings({ user, initialCards, initialWallets }: PaymentS
         </CardContent>
       </Card>
 
-      {/* 2. Crypto Wallets Section */}
+          
+      {/* 3. Crypto Wallets Section (History) */}
       <Card className="bg-[#0b101a] border-slate-800 text-slate-50">
         <CardHeader className="flex flex-row items-center justify-between">
           <div className="space-y-1">
@@ -184,10 +185,6 @@ export function PaymentSettings({ user, initialCards, initialWallets }: PaymentS
               Wallets used in previous transactions.
             </CardDescription>
           </div>
-          {/* 连接钱包功能需要 Web3 库支持，这里先保留 UI */}
-          <Button className="bg-orange-600 hover:bg-orange-700 text-white">
-            Connect New Wallet
-          </Button>
         </CardHeader>
         <CardContent className="space-y-4">
           {initialWallets.length === 0 ? (
@@ -202,7 +199,7 @@ export function PaymentSettings({ user, initialCards, initialWallets }: PaymentS
                      <Bitcoin className="h-5 w-5 text-orange-500" />
                   </div>
                   <div className="overflow-hidden">
-                    <p className="font-mono text-sm truncate w-[150px] sm:w-auto" title={wallet.address}>
+                    <p className="font-mono text-sm truncate w-37.5 sm:w-auto" title={wallet.address}>
                       {wallet.address}
                     </p>
                     <p className="text-xs text-slate-500 uppercase">{wallet.network || 'Blockchain'}</p>
@@ -219,13 +216,13 @@ export function PaymentSettings({ user, initialCards, initialWallets }: PaymentS
         </CardContent>
       </Card>
 
-      {/* Security Note - 保持不变 */}
+      {/* Security Note */}
       <div className="p-4 bg-blue-950/20 border border-blue-900/30 rounded-xl flex gap-3 items-start">
         <ShieldCheck className="h-5 w-5 text-blue-500 mt-0.5" />
         <div className="text-sm">
            <p className="font-semibold text-blue-400">Security Guaranteed</p>
            <p className="text-blue-200/60 leading-relaxed">
-             Cards are managed securely by Stripe. We never store your full card details.
+             Cards are managed securely by Stripe. Crypto payments are processed through Coinbase Commerce. We never store your full card details.
            </p>
         </div>
       </div>

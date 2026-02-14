@@ -17,8 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { createBrowserClient } from "@supabase/ssr";
-import { useRouter } from "next/navigation";
-import { CreditCard, LogOut, Plus, Settings, User, LayoutDashboard } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+import { CreditCard, LogOut, Plus, Settings, User, LayoutDashboard, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link"
 
@@ -28,7 +28,12 @@ interface UserNavProps {
 
 export function UserNav({ user: userProp }: UserNavProps) {
   const router = useRouter();
+  const rawPathname = usePathname();
+  // Strip locale prefix (e.g., /en/dashboard → /dashboard)
+  const pathname = rawPathname.replace(/^\/[a-z]{2}(?=\/|$)/, '') || '/';
   const [user, setUser] = useState<any>(userProp || null);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   // 初始化 Supabase 客户端
   const supabase = createBrowserClient(
@@ -38,21 +43,36 @@ export function UserNav({ user: userProp }: UserNavProps) {
 
   // 如果没有提供 user prop，则自己获取用户信息（用于 dashboard 内部）
   useEffect(() => {
-    if (userProp) {
-      setUser(userProp);
-      return;
-    }
-
-    const getUser = async () => {
+    const fetchUserData = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
+        setIsLoading(true);
+        const authUser = userProp ? userProp : (await supabase.auth.getUser()).data.user;
+        
+        if (authUser) {
+          setUser(authUser);
+          
+          // 获取用户角色信息
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', authUser.id)
+            .single();
+          
+          if (error) {
+            console.warn("Failed to fetch user role:", error);
+            setUserRole('member'); // 默认为 member
+          } else {
+            setUserRole(profile?.role || 'member');
+          }
+        }
       } catch (error) {
-        console.error("Failed to get user:", error);
+        console.error("Failed to get user data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    getUser();
+    fetchUserData();
   }, [userProp, supabase]);
 
   const handleSignOut = async () => {
@@ -89,14 +109,31 @@ export function UserNav({ user: userProp }: UserNavProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href={`/dashboard`} className="flex w-full items-center cursor-pointer">
-              <LayoutDashboard className="mr-2 h-4 w-4" />
-              <span>Dashboard</span>
-            </Link>
-          </DropdownMenuItem>
+          {/* Dashboard - 仅在非 dashboard 页面显示 */}
+          {!pathname.startsWith('/dashboard') && (
+            <DropdownMenuItem asChild>
+              <Link href={`/dashboard`} className="flex w-full items-center cursor-pointer">
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                <span>Dashboard</span>
+              </Link>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+        {/* Back Office - 仅限 admin 和 staff 用户，且不在 admin 页面时显示 */}
+        {(userRole === 'admin' || userRole === 'staff') && !pathname.startsWith('/admin') && (
+          <>
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link href={`/admin`} className="flex w-full items-center cursor-pointer">
+                  <Shield className="mr-2 h-4 w-4" />
+                  <span>Back Office</span>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
           {/* 🟢 使用 asChild 将 Link 的行为赋给父级 MenuItem，同时保持 UI 样式 */}

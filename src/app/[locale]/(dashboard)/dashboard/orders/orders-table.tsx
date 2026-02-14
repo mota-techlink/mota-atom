@@ -29,7 +29,14 @@ interface Order {
   product_name: string
   tier_name: string
   payment_provider: string
+  payment_transaction_id?: string
+  payment_status?: string
   shipping_address: any
+  shipping_carrier?: string
+  tracking_number?: string
+  shipped_at?: string | null
+  delivered_at?: string | null
+  expected_delivery_date?: string | null
   // ... 其他字段
 }
 

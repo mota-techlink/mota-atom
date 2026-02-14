@@ -1,4 +1,0 @@
-- [ ] Analyze `src/components/main-nav.tsx` to understand how icons are used
-- [ ] Check `package.json` for available icon libraries (e.g. lucide-react)
-- [ ] Determine if `src/components/icons.tsx` needs to be created or if existing icon handling is sufficient
-- [ ] Fix `src/config/nav.ts` if it needs to reference icons, or confirm the current state is correct if icons are handled by string keys

@@ -121,14 +121,14 @@ export default function DashboardContent({ user, stats, recentOrders }: any) {
             </Tabs>
           </CardHeader>
           
-          <CardContent className="h-[300px] pt-4 relative">
+          <CardContent className="pt-4 relative" style={{ height: '300px' }}>
             {loading ? (
               <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 z-10">
                 <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
               </div>
             ) : null}
             
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
               <BarChart data={chartData}>
                 <XAxis dataKey="name" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
                 <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `$${v}`} />

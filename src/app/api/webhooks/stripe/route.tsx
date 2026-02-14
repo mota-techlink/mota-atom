@@ -189,6 +189,39 @@ export async function POST(req: Request) {
           // 即使存库失败，仍尝试发邮件，或者在此处 return 500 让 Stripe 重试
         } else {
           console.log('✅ Order saved to database.');
+
+          // 5a. Populate split tables (order_payment_details + order_shipping)
+          // Look up the newly created order id
+          const { data: newOrder } = await supabaseAdmin
+            .from('orders')
+            .select('id')
+            .eq('order_number', orderNumber)
+            .single();
+
+          if (newOrder) {
+            // Insert payment details
+            await supabaseAdmin.from('order_payment_details').upsert({
+              order_id: newOrder.id,
+              provider: 'stripe',
+              transaction_id: session.id,
+              status: 'paid',
+              amount_paid: amountTotal,
+              currency: session.currency || 'usd',
+              payment_method: paymentMethod,
+              paid_at: new Date().toISOString(),
+            }, { onConflict: 'order_id' });
+
+            // Insert shipping details
+            await supabaseAdmin.from('order_shipping').upsert({
+              order_id: newOrder.id,
+              carrier: 'no_shipping',
+              shipping_address: address || null,
+              estimated_delivery_date: expectedDelivery.toISOString(),
+            }, { onConflict: 'order_id' });
+
+            console.log('✅ Payment & shipping details saved to split tables.');
+          }
+
           // 更新或创建用户 Profile 并关联 Stripe Customer ID
           await upsertProfileWithStripeId(userId, customerId);
         }

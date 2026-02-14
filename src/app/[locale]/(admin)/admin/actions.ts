@@ -7,7 +7,8 @@ import { revalidatePath } from "next/cache";
 export async function deleteUser(userId: string) {
   // 1. 双重保险：在执行操作前，再次强制检查管理员身份
   // 虽然 Layout 拦截了页面访问，但 Server Action 是 API 端点，必须独立保护
-  await requireAdmin();
+  // 删除用户是敏感操作，仅允许 admin
+  await requireAdmin('admin');
 
   const supabase = await createClient();
 

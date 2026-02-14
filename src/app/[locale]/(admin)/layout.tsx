@@ -14,7 +14,8 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   // 🔒 核心：在此处拦截，如果不通过，直接在服务端重定向
-  await requireAdmin();
+  // 允许 staff 和 admin 用户访问
+  await requireAdmin('staff');
   
   const messages = await getMessages();
 

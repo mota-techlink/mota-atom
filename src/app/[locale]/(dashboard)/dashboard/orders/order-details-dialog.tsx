@@ -18,6 +18,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { getCarrierLabel } from "@/config/shipping-carriers"
 
 interface OrderDetailsProps {
   order: any | null
@@ -58,6 +59,12 @@ export function OrderDetailsDialog({ order, open, onOpenChange }: OrderDetailsPr
   const addressStr = address 
     ? `${address.line1}, ${address.city}, ${address.state} ${address.postal_code}, ${address.country}`
     : "No physical address provided (Digital Delivery)"
+
+  const shippingCarrier = order.shipping_carrier || "no_shipping"
+  const trackingNumber = order.tracking_number || "-"
+  const shippedAt = order.shipped_at ? formatDate(order.shipped_at) : null
+  const deliveredAt = order.delivered_at ? formatDate(order.delivered_at) : null
+  const expectedDelivery = order.expected_delivery_date ? formatDate(order.expected_delivery_date) : null
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -152,7 +159,7 @@ export function OrderDetailsDialog({ order, open, onOpenChange }: OrderDetailsPr
                         <div className="p-4">
                             <p className="text-xs text-slate-500 mb-1">Transaction ID</p>
                             <div className="flex items-center gap-2 font-mono text-sm">
-                               <span className="truncate max-w-[200px]">{order.payment_transaction_id}</span>
+                               <span className="truncate max-w-50">{order.payment_transaction_id}</span>
                                <Button variant="ghost" size="icon" className="h-4 w-4 text-slate-500 hover:text-white">
                                   <Copy className="w-3 h-3" />
                                </Button>
@@ -183,24 +190,60 @@ export function OrderDetailsDialog({ order, open, onOpenChange }: OrderDetailsPr
                   <h3 className="text-sm font-semibold text-slate-400 flex items-center gap-2">
                      <Truck className="w-4 h-4" /> Delivery Status
                   </h3>
+                   <div className="bg-slate-900 rounded-xl p-4 border border-slate-800 flex flex-col gap-2">
+                      <div className="flex items-center gap-3">
+                        <Badge variant="outline" className="capitalize">
+                          {getCarrierLabel(shippingCarrier)}
+                        </Badge>
+                        {trackingNumber !== "-" && shippingCarrier !== "no_shipping" && (
+                          <div className="flex items-center gap-2 text-sm text-slate-300">
+                            <span className="text-slate-500">Tracking:</span>
+                            <span className="font-mono">{trackingNumber}</span>
+                            <Button variant="ghost" size="icon" className="h-6 w-6 text-slate-400 hover:text-white" onClick={() => navigator.clipboard?.writeText(trackingNumber)}>
+                              <Copy className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                      {expectedDelivery && (
+                        <p className="text-sm text-slate-400">Expected delivery: <span className="text-white">{expectedDelivery}</span></p>
+                      )}
+                      {shippingCarrier === "no_shipping" && (
+                        <p className="text-sm text-slate-400">Digital delivery / no physical shipment.</p>
+                      )}
+                   </div>
                   <div className="relative border-l border-slate-800 ml-3 pl-8 space-y-8 py-2">
                      <div className="relative">
-                        <span className="absolute -left-[37px] bg-green-500 h-4 w-4 rounded-full border-4 border-slate-950"></span>
+                        <span className="absolute -left-9 bg-green-500 h-4 w-4 rounded-full border-4 border-slate-950"></span>
                         <p className="text-sm text-slate-400 mb-1">{formatDate(order.created_at)}</p>
                         <p className="font-medium text-white">Order Placed</p>
                      </div>
                      <div className="relative">
-                        <span className="absolute -left-[37px] bg-blue-500 h-4 w-4 rounded-full border-4 border-slate-950 animate-pulse"></span>
+                        <span className="absolute -left-9 bg-blue-500 h-4 w-4 rounded-full border-4 border-slate-950 animate-pulse"></span>
                         <p className="text-sm text-slate-400 mb-1">Processing</p>
                         <p className="font-medium text-white">We are preparing your service</p>
                      </div>
                      <div className="relative opacity-50">
-                        <span className="absolute -left-[37px] bg-slate-700 h-4 w-4 rounded-full border-4 border-slate-950"></span>
-                        <p className="text-sm text-slate-400 mb-1">
-                            {order.expected_delivery_date ? formatDate(order.expected_delivery_date) : 'Pending'}
-                        </p>
-                        <p className="font-medium text-white">Expected Delivery</p>
+                        <span className="absolute -left-9 bg-slate-700 h-4 w-4 rounded-full border-4 border-slate-950"></span>
+                            <p className="text-sm text-slate-400 mb-1">
+                                {expectedDelivery ? expectedDelivery : 'Pending'}
+                            </p>
+                            <p className="font-medium text-white">Estimated Delivery</p>
                      </div>
+                        {shippedAt && (
+                          <div className="relative">
+                            <span className="absolute -left-9 bg-amber-400 h-4 w-4 rounded-full border-4 border-slate-950"></span>
+                            <p className="text-sm text-slate-400 mb-1">{shippedAt}</p>
+                            <p className="font-medium text-white">Shipped</p>
+                          </div>
+                        )}
+                        {deliveredAt && (
+                          <div className="relative">
+                            <span className="absolute -left-9 bg-green-400 h-4 w-4 rounded-full border-4 border-slate-950"></span>
+                            <p className="text-sm text-slate-400 mb-1">{deliveredAt}</p>
+                            <p className="font-medium text-white">Delivered</p>
+                          </div>
+                        )}
                   </div>
                </div>
             </TabsContent>

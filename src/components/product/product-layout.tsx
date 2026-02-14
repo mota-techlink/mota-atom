@@ -3,7 +3,7 @@ import { useContactForm } from "@/hooks/use-contact-form"
 import React, { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Check, Clock, RefreshCcw, ShieldCheck, ArrowRight, LayoutGrid } from "lucide-react"
+import { Check, Clock, RefreshCcw, ShieldCheck, ArrowRight, LayoutGrid, Bitcoin, CreditCard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -28,7 +28,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Loader2, CheckCircle2 } from "lucide-react"
-import { usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation'
+import { CryptoPaymentModal } from "@/components/payments/crypto-payment-modal"
+import { toast } from "sonner";
 
 function ContactSalesDialog({ 
   productName, 
@@ -130,6 +132,74 @@ function ContactSalesDialog({
   )
 }
 
+// 支付方式选择对话框
+function PaymentMethodDialog({
+  productName,
+  tierName,
+  price,
+  onStripeClick,
+  onCryptoClick,
+}: {
+  productName: string;
+  tierName: string;
+  price: string;
+  onStripeClick: () => void;
+  onCryptoClick: () => void;
+}) {
+  return (
+    <DialogContent className="sm:max-w-106.25">
+      <DialogHeader>
+        <DialogTitle>Choose Payment Method</DialogTitle>
+        <DialogDescription>
+          Select how you want to pay for <span className="font-semibold text-primary">{productName} - {tierName}</span>
+        </DialogDescription>
+      </DialogHeader>
+
+      <div className="grid grid-cols-2 gap-4 py-4">
+        {/* Stripe Payment Option */}
+        <button
+          onClick={onStripeClick}
+          className="flex flex-col items-center justify-center gap-3 p-6 rounded-lg border-2 border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-all"
+        >
+          <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/30">
+            <CreditCard className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+          </div>
+          <div className="text-center">
+            <p className="font-semibold text-foreground">Credit Card</p>
+            <p className="text-xs text-muted-foreground mt-1">Visa, Mastercard, etc.</p>
+          </div>
+        </button>
+
+        {/* Crypto Payment Option */}
+        <button
+          onClick={onCryptoClick}
+          className="flex flex-col items-center justify-center gap-3 p-6 rounded-lg border-2 border-slate-200 dark:border-slate-700 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/30 transition-all"
+        >
+          <div className="p-3 rounded-full bg-orange-100 dark:bg-orange-900/30">
+            <Bitcoin className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+          </div>
+          <div className="text-center">
+            <p className="font-semibold text-foreground">Cryptocurrency</p>
+            <p className="text-xs text-muted-foreground mt-1">BTC, ETH, USDC, etc.</p>
+          </div>
+        </button>
+      </div>
+
+      <div className="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-lg">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
+          💡 <strong>No wallet needed for crypto:</strong> We'll generate a temporary payment address. Send from any wallet or exchange.
+        </p>
+      </div>
+
+      <DialogFooter>
+        <DialogClose asChild>
+          <Button variant="outline">Cancel</Button>
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
+  );
+}
+
 function TierActionButton({ 
   productName, 
   tierData 
@@ -137,12 +207,26 @@ function TierActionButton({
   productName: string, 
   tierData: any 
 }) {
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
+  const [showCryptoModal, setShowCryptoModal] = useState(false);
+  
   const tierName = tierData.name; // e.g. "Basic", "Standard", "Premium"
   const price = tierData.price;
   const pathname = usePathname();
 
   // 🟢 逻辑判断：如果是 Premium，则是 "Contact Sales"
   const isHighTier = tierName.toLowerCase().includes('premium') || tierName.toLowerCase().includes('enterprise');
+
+  const handleStripePayment = () => {
+    setPaymentDialogOpen(false);
+    const checkoutUrl = `/api/checkout?tier=${encodeURIComponent(tierName)}&price=${encodeURIComponent(price)}&product=${encodeURIComponent(productName)}&return_path=${encodeURIComponent(pathname)}`;
+    window.location.href = checkoutUrl;
+  };
+
+  const handleCryptoPayment = () => {
+    setPaymentDialogOpen(false);
+    setShowCryptoModal(true);
+  };
 
   // 情况 A: 高级套餐 -> 弹窗 (Dialog)
   if (isHighTier) {
@@ -158,17 +242,39 @@ function TierActionButton({
       </Dialog>
     )
   }
-  // 情况 B: 普通套餐 -> 直接 GET 跳转 Stripe
-  // 构造 API URL
-  // const checkoutUrl = `/api/checkout?tier=${encodeURIComponent(tierName)}&price=${encodeURIComponent(price)}&product=${encodeURIComponent(productName)}`;
-  const checkoutUrl = `/api/checkout?tier=${encodeURIComponent(tierName)}&price=${encodeURIComponent(price)}&product=${encodeURIComponent(productName)}&return_path=${encodeURIComponent(pathname)}`;
+
+  // 情况 B: 普通套餐 -> 显示支付方式选择对话框
   return (
-    <Button asChild className="w-full h-12 text-base" size="lg">
-      {/* 使用 a 标签包裹 Button，实现最原始的 GET 跳转，完美避开 404 */}
-      <a href={checkoutUrl}>
-        Order Now
-      </a>
-    </Button>
+    <>
+      <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
+        <DialogTrigger asChild>
+          <Button className="w-full h-12 text-base" size="lg">
+            Order Now
+          </Button>
+        </DialogTrigger>
+        <PaymentMethodDialog
+          productName={productName}
+          tierName={tierName}
+          price={price}
+          onStripeClick={handleStripePayment}
+          onCryptoClick={handleCryptoPayment}
+        />
+      </Dialog>
+
+      {/* Crypto Payment Modal */}
+      <CryptoPaymentModal
+        isOpen={showCryptoModal}
+        onOpenChange={setShowCryptoModal}
+        orderId={`product-${productName}-${tierName}`}
+        amount={price.replace(/[^0-9.]/g, "")}
+        onPaymentSuccess={() => {
+          toast.success("Payment received!", {
+            description: `Your order for ${productName} - ${tierName} has been confirmed.`,
+          });
+          setShowCryptoModal(false);
+        }}
+      />
+    </>
   );
 }
 
