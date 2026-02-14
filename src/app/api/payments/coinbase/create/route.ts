@@ -1,4 +1,5 @@
 // src/app/api/payments/coinbase/create/route.ts
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -7,8 +8,19 @@ export const runtime = 'edge';
 const COINBASE_API_URL = 'https://api.commerce.coinbase.com/charges';
 const API_KEY = process.env.COINBASE_COMMERCE_API_KEY!;
 
+// Service role client for order creation (bypasses RLS)
+function getAdminClient() {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
+
 interface CreateChargeRequest {
-  orderId: string;
+  orderId?: string; // 可选：已有订单 ID
+  productName?: string; // 产品名称
+  tierName?: string; // 套餐名称
+  productSlug?: string; // 产品 slug
   amount: string; // 美元金额，如 "99.99"
   currency: string; // "USD"
   cryptoCurrency?: string; // 可选：指定特定加密货币 "BTC", "ETH", "USDC"
@@ -27,6 +39,7 @@ interface CreateChargeRequest {
  */
 export async function POST(req: Request) {
   const supabase = await createClient();
+  const adminClient = getAdminClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
@@ -35,41 +48,82 @@ export async function POST(req: Request) {
 
   try {
     const body: CreateChargeRequest = await req.json();
-    const { orderId, amount, currency = "USD", cryptoCurrency, description } = body;
+    const { orderId, productName, tierName, productSlug, amount, currency = "USD", cryptoCurrency, description } = body;
 
-    if (!orderId || !amount) {
+    if (!amount) {
       return NextResponse.json(
-        { error: "Missing orderId or amount" },
+        { error: "Missing amount" },
         { status: 400 }
       );
     }
 
-    // 1. 验证订单属于当前用户
-    const { data: order } = await supabase
-      .from("orders")
-      .select("id, total_amount, status")
-      .eq("id", orderId)
-      .eq("user_id", user.id)
-      .single();
+    let finalOrderId = orderId;
 
-    if (!order) {
-      return NextResponse.json(
-        { error: "Order not found" },
-        { status: 404 }
-      );
-    }
+    // 如果提供了 orderId，查找现有订单
+    if (orderId) {
+      const { data: order } = await adminClient
+        .from("orders")
+        .select("id, amount_total, status")
+        .eq("id", orderId)
+        .eq("user_id", user.id)
+        .single();
 
-    if (order.status !== "pending_payment") {
-      return NextResponse.json(
-        { error: "Order already paid or invalid status" },
-        { status: 400 }
-      );
+      if (!order) {
+        return NextResponse.json(
+          { error: "Order not found" },
+          { status: 404 }
+        );
+      }
+
+      if (order.status !== "pending") {
+        return NextResponse.json(
+          { error: "Order already paid or invalid status" },
+          { status: 400 }
+        );
+      }
+    } else {
+      // 没有 orderId，自动创建订单
+      if (!productName) {
+        return NextResponse.json(
+          { error: "Missing productName or orderId" },
+          { status: 400 }
+        );
+      }
+
+      const orderNumber = `CRYPTO-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
+
+      const { data: newOrder, error: insertError } = await adminClient
+        .from("orders")
+        .insert({
+          order_number: orderNumber,
+          user_id: user.id,
+          customer_email: user.email || "",
+          product_name: productName,
+          tier_name: tierName || null,
+          product_slug: productSlug || null,
+          amount_total: parseFloat(amount),
+          currency: currency.toLowerCase(),
+          status: "pending",
+          payment_provider: "crypto",
+        })
+        .select("id")
+        .single();
+
+      if (insertError || !newOrder) {
+        console.error("Failed to create order:", insertError);
+        return NextResponse.json(
+          { error: "Failed to create order" },
+          { status: 500 }
+        );
+      }
+
+      finalOrderId = newOrder.id;
     }
 
     // 2. 准备 Coinbase Charge 数据
     const chargeData = {
-      name: `Order #${orderId}`,
-      description: description || `Payment for order #${orderId}`,
+      name: `Order #${finalOrderId}`,
+      description: description || `Payment for order #${finalOrderId}`,
       local_price: {
         amount: amount,
         currency: currency,
@@ -110,7 +164,7 @@ export async function POST(req: Request) {
     const charge = responseData.data;
 
     // 4. 保存 Charge 信息到数据库
-    const { error: updateError } = await supabase
+    const { error: updateError } = await adminClient
       .from("orders")
       .update({
         coinbase_charge_id: charge.id,
@@ -125,7 +179,7 @@ export async function POST(req: Request) {
           created_at: charge.created_at,
         },
       })
-      .eq("id", orderId);
+      .eq("id", finalOrderId);
 
     if (updateError) {
       console.error("Update order error:", updateError);
@@ -138,6 +192,7 @@ export async function POST(req: Request) {
     // 5. 返回支付链接给前端
     return NextResponse.json({
       success: true,
+      orderId: finalOrderId,
       chargeId: charge.id,
       // 可以用以下任一方式展示支付给用户：
       // 1. 重定向到 hosted_url (最简单，由 Coinbase 处理 UI)

@@ -265,7 +265,9 @@ function TierActionButton({
       <CryptoPaymentModal
         isOpen={showCryptoModal}
         onOpenChange={setShowCryptoModal}
-        orderId={`product-${productName}-${tierName}`}
+        productName={productName}
+        tierName={tierName}
+        productSlug={pathname.split('/').pop() || productName}
         amount={price.replace(/[^0-9.]/g, "")}
         onPaymentSuccess={() => {
           toast.success("Payment received!", {
