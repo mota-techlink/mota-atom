@@ -21,7 +21,8 @@ import {
   ListVideo,
   Eye,
   ListOrdered,
-  Newspaper
+  Newspaper,
+  Presentation,
 } from "lucide-react";
 
 // 🔴 2. 定义映射表 (String -> Component)
@@ -34,6 +35,7 @@ const IconMap = {
   video: ListVideo,
   eye: Eye,
   newspaper: Newspaper,
+  presentation: Presentation,
   // 如果有新的图标，在这里添加映射
 };
 interface SidebarProps {

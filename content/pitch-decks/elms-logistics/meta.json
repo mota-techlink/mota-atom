@@ -1,0 +1,12 @@
+{
+  "title": "ELMS - European Logistics Management System",
+  "slug": "elms-logistics",
+  "description": "AI-Powered Logistics Infrastructure for European Cross-Border Commerce",
+  "author": "MOTA TechLink",
+  "date": "2026-02-14",
+  "status": "published",
+  "previewSlides": 3,
+  "defaultTransition": "slide",
+  "tags": ["logistics", "AI", "MCP", "europe", "cross-border"],
+  "coverImage": "/images/pitch-decks/elms-cover.png"
+}

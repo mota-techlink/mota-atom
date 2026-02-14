@@ -9,7 +9,8 @@ export type IconName =
   | "video" 
   | "eye" 
   | "newspaper"
-  | "orderList";
+  | "orderList"
+  | "presentation";
 
 export type NavItem = {
   titleKey: string;
@@ -57,5 +58,10 @@ export const adminNavItems: NavItem[] = [
     titleKey: 'nav_audit_logs',
     href: '/admin/logs',
     icon: "logs",
+  },
+  {
+    titleKey: 'nav_pitch_decks',
+    href: '/admin/pitch-decks',
+    icon: "presentation",
   },
 ];

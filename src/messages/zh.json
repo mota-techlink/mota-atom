@@ -38,6 +38,7 @@
     "nav_orders": "订单管理",
     "nav_users": "用户管理",
     "nav_audit_logs": "审计日志",
+    "nav_pitch_decks": "演示文稿",
     "collapse_sidebar": "收起侧栏"
   },
   "Nav": {
