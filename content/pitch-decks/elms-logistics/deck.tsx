@@ -4,7 +4,6 @@ import React from "react";
 import {
   DeckProvider,
   SlideRenderer,
-  TitleSlide,
   ContentSlide,
   SplitLayout,
   Slide,
@@ -21,6 +20,12 @@ import {
   CountUp,
 } from "@/components/pitch-deck";
 import type { TransitionType } from "@/components/pitch-deck";
+import { FragmentedLogisticsSlide } from "./FragmentedLogisticsSlide";
+import { AILogisticsLabSlide } from "./AILogisticsLabSlide";
+import { ShipmentTrackingSlide } from "./ShipmentTrackingSlide";
+import { FinancialTransparencySlide } from "./FinancialTransparencySlide";
+import { ELMSTitleSlide } from "./ELMSTitleSlide";
+import { SolutionHubSlide } from "./SolutionHubSlide";
 
 interface ElmsLogisticsDeckProps {
   isAuthenticated?: boolean;
@@ -35,105 +40,21 @@ export function ElmsLogisticsDeck({
     // ═══════════════════════════════════════════════════════════
     // SLIDE 1: Title / Cover
     // ═══════════════════════════════════════════════════════════
-    <TitleSlide
-      key="cover"
-      title="ELMS"
-      subtitle="European Logistics Management System — AI-Powered Infrastructure for Cross-Border Commerce"
-      background="gradient-blue"
-      date="February 2026"
-      author="MOTA TechLink"
-    >
-      <div className="flex items-center gap-3 justify-center mt-4">
-        <span className="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">🇪🇺 EU Compliant</span>
-        <span className="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">🤖 AI-Native</span>
-        <span className="px-3 py-1 rounded-full bg-white/10 text-xs font-medium">🔗 MCP Ready</span>
-      </div>
-    </TitleSlide>,
+    <Slide key="cover" background="dark">
+      <ELMSTitleSlide />
+    </Slide>,
 
     // ═══════════════════════════════════════════════════════════
-    // SLIDE 2: The Problem
+    // SLIDE 2: The Problem — Fragmented Silos
     // ═══════════════════════════════════════════════════════════
-    <ContentSlide key="problem" title="The Problem" background="gradient-dark">
-      <StaggerList staggerDelay={200} className="space-y-4 text-lg">
-        <div className="flex items-start gap-3">
-          <span className="text-2xl">🔀</span>
-          <span>Fragmented systems create <strong>data silos</strong> between shipping, customs, and delivery platforms</span>
-        </div>
-        <div className="flex items-start gap-3">
-          <span className="text-2xl">📋</span>
-          <span>Manual data re-entry across systems leads to <strong>errors and delays</strong> in last-mile delivery labels</span>
-        </div>
-        <div className="flex items-start gap-3">
-          <span className="text-2xl">🛃</span>
-          <span>Customs clearance requires <strong>trustworthy, accurate data</strong> — but current workflows can&apos;t guarantee it</span>
-        </div>
-        <div className="flex items-start gap-3">
-          <span className="text-2xl">🌍</span>
-          <span>EU carbon emission regulations demand <strong>integrated tracking</strong> that legacy systems don&apos;t provide</span>
-        </div>
-        <div className="flex items-start gap-3">
-          <span className="text-2xl">⏳</span>
-          <span>Every manual step is a <strong>cost multiplier</strong> — time, labor, and error correction</span>
-        </div>
-      </StaggerList>
-    </ContentSlide>,
+    <FragmentedLogisticsSlide key="problem" />,
 
     // ═══════════════════════════════════════════════════════════
-    // SLIDE 3: Our Solution
+    // SLIDE 3: Our Solution — Interactive Solution Hub
     // ═══════════════════════════════════════════════════════════
-    <SplitLayout key="solution" background="gradient-blue" ratio="50/50">
-      <SplitLayout.Left>
-        <FadeIn delay={0}>
-          <h2 className="text-4xl font-bold mb-6">Our Solution</h2>
-        </FadeIn>
-        <FadeIn delay={200}>
-          <p className="text-lg text-white/80 leading-relaxed mb-6">
-            ELMS eliminates the barriers between fragmented logistics systems.
-            One platform that seamlessly syncs information across the entire supply chain.
-          </p>
-        </FadeIn>
-        <StaggerList staggerDelay={150} initialDelay={400} className="space-y-3">
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-green-400">✓</span>
-            <span>Seamless integration with external shipping systems</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-green-400">✓</span>
-            <span>Automated last-mile delivery label generation</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-green-400">✓</span>
-            <span>Accurate data for customs clearance</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-green-400">✓</span>
-            <span>Carbon emission tracking & EU compliance</span>
-          </div>
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-green-400">✓</span>
-            <span>IoT device integration for runtime data</span>
-          </div>
-        </StaggerList>
-      </SplitLayout.Left>
-      <SplitLayout.Right>
-        <ZoomIn delay={300}>
-          <div className="w-full max-w-sm aspect-square rounded-3xl bg-white/5 border border-white/10 p-8 flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-6xl mb-4">🏗️</div>
-              <div className="text-sm text-white/60">System Architecture</div>
-              <div className="mt-4 grid grid-cols-3 gap-2 text-xs">
-                <div className="p-2 rounded bg-blue-500/20 text-blue-300">Shipping</div>
-                <div className="p-2 rounded bg-green-500/20 text-green-300">Customs</div>
-                <div className="p-2 rounded bg-purple-500/20 text-purple-300">Delivery</div>
-                <div className="p-2 rounded bg-orange-500/20 text-orange-300">IoT</div>
-                <div className="p-2 rounded bg-cyan-500/20 text-cyan-300">AI/MCP</div>
-                <div className="p-2 rounded bg-pink-500/20 text-pink-300">Carbon</div>
-              </div>
-            </div>
-          </div>
-        </ZoomIn>
-      </SplitLayout.Right>
-    </SplitLayout>,
+    <Slide key="solution" background="dark">
+      <SolutionHubSlide />
+    </Slide>,
 
     // ═══════════════════════════════════════════════════════════
     // SLIDE 4: Key Differentiators
@@ -177,75 +98,17 @@ export function ElmsLogisticsDeck({
     </ContentSlide>,
 
     // ═══════════════════════════════════════════════════════════
-    // SLIDE 5: AI + MCP Vision
+    // SLIDE 5: AI Logistics Lab × MCP
     // ═══════════════════════════════════════════════════════════
-    <Slide key="ai-mcp" background="gradient-purple" padding="lg">
-      <div className="w-full max-w-5xl mx-auto">
-        <FadeIn>
-          <h2 className="text-4xl lg:text-5xl font-bold mb-2 text-center">
-            The Future: <Highlight color="purple-300">Conversational Shipping</Highlight>
-          </h2>
-          <p className="text-center text-white/60 text-lg mb-10">
-            ELMS + AI via Model Context Protocol (MCP)
-          </p>
-        </FadeIn>
-
-        {/* Flow diagram */}
-        <div className="flex items-center justify-center gap-4 lg:gap-6 flex-wrap">
-          <SlideIn direction="left" delay={300}>
-            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-center min-w-48">
-              <div className="text-3xl mb-2">💬</div>
-              <div className="text-sm font-semibold">AI Assistant</div>
-              <div className="text-xs text-white/50 mt-1">&quot;Ship 50 units to Dublin&quot;</div>
-            </div>
-          </SlideIn>
-
-          <FadeIn delay={500}>
-            <div className="text-2xl text-white/40">→</div>
-          </FadeIn>
-
-          <ZoomIn delay={600}>
-            <div className="p-6 rounded-2xl bg-blue-600/20 border-2 border-blue-500/40 text-center min-w-48">
-              <div className="text-3xl mb-2">⚡</div>
-              <div className="text-sm font-bold text-blue-300">ELMS MCP Server</div>
-              <div className="text-xs text-white/50 mt-1">Parse → Validate → Execute</div>
-            </div>
-          </ZoomIn>
-
-          <FadeIn delay={800}>
-            <div className="text-2xl text-white/40">→</div>
-          </FadeIn>
-
-          <SlideIn direction="right" delay={900}>
-            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-center min-w-48">
-              <div className="text-3xl mb-2">📦</div>
-              <div className="text-sm font-semibold">Auto Execution</div>
-              <div className="text-xs text-white/50 mt-1">Label + Customs + Pickup</div>
-            </div>
-          </SlideIn>
-        </div>
-
-        <FadeIn delay={1100}>
-          <div className="mt-10 grid grid-cols-3 gap-4 max-w-2xl mx-auto">
-            <div className="text-center p-3 rounded-lg bg-white/5">
-              <div className="text-xs text-white/50">Compatible</div>
-              <div className="text-sm font-semibold mt-1">Claude · GPT · Gemini</div>
-            </div>
-            <div className="text-center p-3 rounded-lg bg-white/5">
-              <div className="text-xs text-white/50">Interaction</div>
-              <div className="text-sm font-semibold mt-1">Zero-UI Required</div>
-            </div>
-            <div className="text-center p-3 rounded-lg bg-white/5">
-              <div className="text-xs text-white/50">Revenue</div>
-              <div className="text-sm font-semibold mt-1">Pay-per-API-Call</div>
-            </div>
-          </div>
-        </FadeIn>
-      </div>
-    </Slide>,
+    <AILogisticsLabSlide key="ai-mcp" />,
 
     // ═══════════════════════════════════════════════════════════
-    // SLIDE 6: Competitive Advantage
+    // SLIDE 6: Shipment Route Tracking Dashboard
+    // ═══════════════════════════════════════════════════════════
+    <ShipmentTrackingSlide key="tracking" />,
+
+    // ═══════════════════════════════════════════════════════════
+    // SLIDE 7: Competitive Advantage
     // ═══════════════════════════════════════════════════════════
     <ContentSlide key="comparison" title="Why ELMS?" subtitle="Compared to traditional logistics software" background="gradient-dark">
       <ComparisonTable
@@ -286,50 +149,12 @@ export function ElmsLogisticsDeck({
     </ContentSlide>,
 
     // ═══════════════════════════════════════════════════════════
-    // SLIDE 7: Financial Overview
+    // SLIDE 8: Financial Transparency
     // ═══════════════════════════════════════════════════════════
-    <ContentSlide key="financials" title="Investment Overview" background="gradient-dark">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard
-          value="€26,000"
-          label="Architecture Development"
-          icon="🏗️"
-          delay={0}
-        />
-        <StatCard
-          value="€3,500"
-          label="Monthly Support"
-          icon="🔧"
-          delay={150}
-        />
-        <StatCard
-          value="€3,000"
-          label="Module Development"
-          icon="🧩"
-          delay={300}
-        />
-        <StatCard
-          value="~€100K"
-          label="Year 1 Total Investment"
-          icon="💶"
-          delay={450}
-        />
-      </div>
-      <FadeIn delay={600}>
-        <div className="p-6 rounded-xl bg-white/5 border border-white/10">
-          <h3 className="font-semibold mb-3 text-lg">Cost Advantage</h3>
-          <div className="space-y-2 text-sm text-white/80">
-            <p>• Founder&apos;s technical shareholding <strong>significantly reduces upfront capital risk</strong></p>
-            <p>• Decades of engineering expertise ensures <strong>cost-effective delivery</strong></p>
-            <p>• Pay-as-you-go strategy — <strong>zero waste, every euro accountable</strong></p>
-            <p>• Clear separation of <strong>Maintenance vs Strategic Development</strong> costs</p>
-          </div>
-        </div>
-      </FadeIn>
-    </ContentSlide>,
+    <FinancialTransparencySlide key="financials" />,
 
     // ═══════════════════════════════════════════════════════════
-    // SLIDE 8: Roadmap
+    // SLIDE 9: Roadmap
     // ═══════════════════════════════════════════════════════════
     <SplitLayout key="roadmap" background="gradient-blue" ratio="40/60">
       <SplitLayout.Left>
@@ -379,7 +204,7 @@ export function ElmsLogisticsDeck({
     </SplitLayout>,
 
     // ═══════════════════════════════════════════════════════════
-    // SLIDE 9: Security & Compliance
+    // SLIDE 10: Security & Compliance
     // ═══════════════════════════════════════════════════════════
     <ContentSlide key="compliance" title="Security & Compliance" background="gradient-dark">
       <FeatureGrid
@@ -410,7 +235,7 @@ export function ElmsLogisticsDeck({
     </ContentSlide>,
 
     // ═══════════════════════════════════════════════════════════
-    // SLIDE 10: Call to Action
+    // SLIDE 11: Call to Action
     // ═══════════════════════════════════════════════════════════
     <Slide key="cta" background="gradient-blue" padding="lg">
       <div className="text-center max-w-3xl mx-auto">
