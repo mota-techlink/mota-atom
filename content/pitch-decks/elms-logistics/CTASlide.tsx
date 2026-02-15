@@ -9,6 +9,7 @@ import {
   Lock,
   Zap,
 } from "lucide-react";
+import Image from "next/image";
 
 // ─── Ambient Particle Field ─────────────────────────────────────
 // Tiny data-stream particles floating upward like digital plankton
@@ -366,8 +367,22 @@ export function CTASlide() {
             </span>
             <span className="w-1 h-1 bg-slate-700 rounded-full" />
             <span className="flex items-center gap-1.5 hover:text-blue-400/70 transition-colors cursor-pointer">
-              <Globe className="w-3 h-3" />
-              motaiot.com
+              {/* <Globe className="w-3 h-3" /> */}
+              <a
+                        href="https://atom.motaiot.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 font-medium tracking-wider text-blue-500 hover:text-blue-400 transition-colors"
+                      >
+                        <Image
+                          src="/logos/mota-icon-v2.webp"
+                          alt="MOTA TechLink"
+                          width={16}
+                          height={16}
+                          className="rounded-sm"
+                        />
+                        MOTA TechLink
+                      </a>
             </span>
             <span className="w-1 h-1 bg-slate-700 rounded-full" />
             <span className="flex items-center gap-1.5 text-slate-600">
