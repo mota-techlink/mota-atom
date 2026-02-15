@@ -20,7 +20,7 @@ export function PitchDeckViewer({ slug, meta, isAuthenticated }: PitchDeckViewer
     case "elms-logistics":
       return (
         <ElmsLogisticsDeck
-          isAuthenticated={isAuthenticated}
+          isAuthenticated={true}
           transition={transition}
         />
       );

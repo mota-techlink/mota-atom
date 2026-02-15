@@ -1,21 +1,24 @@
 "use client";
 
 import React, { ReactNode, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useDeck } from "./DeckProvider";
 import { SlideTransition } from "./SlideTransition";
 import { SlideNavigation } from "./SlideNavigation";
 import { ProgressBar } from "./ProgressBar";
-import { Lock, LogIn } from "lucide-react";
+import { Lock, LogIn, Home } from "lucide-react";
 import { LoginModal } from "@/components/auth/login-modal";
 import { siteConfig } from "@/config/site";
 
 interface SlideRendererProps {
   slides: ReactNode[];
+  /** Optional per-slide titles shown in top-left overlay */
+  slideTitles?: string[];
 }
 
-export function SlideRenderer({ slides }: SlideRendererProps) {
-  const { currentSlide, isAuthenticated, maxPreviewSlides, totalSlides } = useDeck();
+export function SlideRenderer({ slides, slideTitles }: SlideRendererProps) {
+  const { currentSlide, isAuthenticated, maxPreviewSlides, totalSlides, goToFirst } = useDeck();
   const isLocked = !isAuthenticated && currentSlide >= maxPreviewSlides - 1 && totalSlides > maxPreviewSlides;
 
   // Extract locale from pathname (e.g. /en/pitch-deck/xxx → "en")
@@ -44,6 +47,8 @@ export function SlideRenderer({ slides }: SlideRendererProps) {
     forgotPassword: 'Forgot password?',
   };
 
+  const currentTitle = slideTitles?.[currentSlide] ?? "";
+
   return (
     <div className="relative w-full h-full flex flex-col bg-slate-950">
       {/* Slide viewport (16:9) */}
@@ -51,6 +56,52 @@ export function SlideRenderer({ slides }: SlideRendererProps) {
         <SlideTransition slideKey={currentSlide}>
           {slides[currentSlide]}
         </SlideTransition>
+
+        {/* ── Top overlay bar: Title (left) + Logo (right) ── */}
+        <div className="absolute top-0 left-0 right-0 z-30 pointer-events-none">
+          <div className="flex items-center justify-between px-4 py-2.5 md:px-6 md:py-3.5">
+            {/* Left: Home button + Slide title */}
+            <div className="flex items-center gap-2.5 md:gap-4 pointer-events-auto">
+              {/* Home / first-slide button */}
+              {currentSlide > 0 && (
+                <button
+                  onClick={goToFirst}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/8 backdrop-blur-sm transition-colors cursor-pointer"
+                  aria-label="Back to first slide"
+                >
+                  <Home className="w-4 h-4 md:w-5 md:h-5 text-white/60" />
+                </button>
+              )}
+              {/* Slide title */}
+              {currentTitle && (
+                <span className="text-xs md:text-base font-mono text-white/40 tracking-wider uppercase truncate max-w-48 md:max-w-80">
+                  {currentTitle}
+                </span>
+              )}
+            </div>
+
+            {/* Right: MOTA TECHLINK logo */}
+            <a
+              href="https://atom.motaiot.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pointer-events-auto flex items-center gap-2 md:gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+              aria-label="MOTA TechLink — Open homepage"
+            >
+              <Image
+                src="/logos/mota-icon-v2.webp"
+                alt="MOTA TechLink"
+                width={28}
+                height={28}
+                className="w-5 h-5 md:w-7 md:h-7 rounded-sm"
+              />
+              <span className="hidden md:flex flex-col items-start leading-none font-mono tracking-wider uppercase">
+                <span className="text-sm text-blue-400 font-semibold">MOTA</span>
+                <span className="text-[10px] text-blue-400">TECHLINK</span>
+              </span>
+            </a>
+          </div>
+        </div>
 
         {/* Navigation overlay */}
         <SlideNavigation />

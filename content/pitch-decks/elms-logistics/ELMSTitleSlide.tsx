@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   Package,
   Plane,
@@ -215,7 +216,7 @@ function FloatingIcons({
 function MCPCore() {
   return (
     <motion.div
-      className="relative w-28 h-28 lg:w-36 lg:h-36 mx-auto mb-6"
+      className="relative w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 mx-auto mb-4 md:mb-6"
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
@@ -322,7 +323,7 @@ function ShimmerTitle({ text }: { text: string }) {
     >
       {/* Main title with metallic gradient */}
       <h1
-        className="text-6xl lg:text-8xl xl:text-9xl font-black tracking-tighter leading-none"
+        className="text-4xl md:text-6xl lg:text-8xl xl:text-9xl font-black tracking-tighter leading-none"
         style={{
           background:
             "linear-gradient(135deg, #e2e8f0 0%, #f8fafc 25%, #94a3b8 50%, #f1f5f9 75%, #cbd5e1 100%)",
@@ -390,7 +391,7 @@ function GlassBadge({
 }) {
   return (
     <motion.div
-      className="relative flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md border border-emerald-500/20 bg-emerald-500/5"
+      className="relative flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 py-1.5 md:py-2 rounded-full backdrop-blur-md border border-emerald-500/20 bg-emerald-500/5"
       initial={{ opacity: 0, y: 15, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay, duration: 0.5, ease: "easeOut" }}
@@ -401,8 +402,8 @@ function GlassBadge({
       }}
     >
       {/* Subtle glow border on hover */}
-      <span className="text-sm">{icon}</span>
-      <span className="text-xs font-medium text-emerald-300/90 tracking-wide">
+      <span className="text-xs md:text-sm">{icon}</span>
+      <span className="text-[10px] md:text-xs font-medium text-emerald-300/90 tracking-wide">
         {text}
       </span>
       {pulse && (
@@ -420,7 +421,7 @@ export function ELMSTitleSlide() {
   const { springX, springY } = useMouseParallax();
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center relative overflow-hidden aspect-video bg-[#020617]">
+    <div className="w-full h-full flex flex-col justify-center items-center relative overflow-hidden bg-[#020617]">
       {/* Deep navy gradient base */}
       <div
         className="absolute inset-0"
@@ -433,8 +434,10 @@ export function ELMSTitleSlide() {
       {/* Animated logistics flow background with mouse parallax */}
       <LogisticsFlowBackground springX={springX} springY={springY} />
 
-      {/* Floating logistics icons with parallax */}
-      <FloatingIcons springX={springX} springY={springY} />
+      {/* Floating logistics icons with parallax (desktop only) */}
+      <div className="hidden md:block">
+        <FloatingIcons springX={springX} springY={springY} />
+      </div>
 
       {/* Top vignette */}
       <div
@@ -455,7 +458,7 @@ export function ELMSTitleSlide() {
       />
 
       {/* ── Main Content ── */}
-      <div className="relative z-10 text-center flex flex-col items-center px-8">
+      <div className="relative z-10 text-center flex flex-col items-center px-4 md:px-8">
         {/* MCP Core Animation */}
         <MCPCore />
 
@@ -464,7 +467,7 @@ export function ELMSTitleSlide() {
 
         {/* Subtitle */}
         <motion.p
-          className="mt-4 lg:mt-5 text-sm lg:text-lg xl:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed font-light tracking-wide"
+          className="mt-2 md:mt-4 lg:mt-5 text-xs md:text-sm lg:text-lg xl:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed font-light tracking-wide"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.6 }}
@@ -473,7 +476,7 @@ export function ELMSTitleSlide() {
         </motion.p>
 
         <motion.p
-          className="mt-1 text-xs lg:text-sm text-slate-500 max-w-xl mx-auto tracking-wider"
+          className="mt-1 text-[10px] md:text-xs lg:text-sm text-slate-500 max-w-xl mx-auto tracking-wider"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.5 }}
@@ -483,7 +486,7 @@ export function ELMSTitleSlide() {
 
         {/* Divider line */}
         <motion.div
-          className="mt-6 lg:mt-8 w-16 h-px mx-auto"
+          className="mt-4 md:mt-6 lg:mt-8 w-12 md:w-16 h-px mx-auto"
           style={{
             background:
               "linear-gradient(90deg, transparent, rgba(52,211,153,0.4), transparent)",
@@ -495,26 +498,40 @@ export function ELMSTitleSlide() {
 
         {/* Glass Badges */}
         <motion.div
-          className="mt-6 lg:mt-8 flex items-center gap-3 justify-center flex-wrap"
+          className="mt-4 md:mt-6 lg:mt-8 flex items-center gap-2 md:gap-3 justify-center flex-wrap"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4 }}
         >
           <GlassBadge icon="🇪🇺" text="EU Compliant" delay={1.5} />
-          <GlassBadge icon="🤖" text="AI-Native" delay={1.65} />
+          <GlassBadge icon="🤖" text="AI-Empowered" delay={1.65} />
           <GlassBadge icon="🔗" text="MCP Ready" delay={1.8} pulse />
         </motion.div>
       </div>
 
       {/* ── Bottom Bar ── */}
       <motion.div
-        className="absolute bottom-6 left-0 right-0 flex items-center justify-center gap-6 text-xs text-slate-600"
+        className="absolute bottom-3 md:bottom-6 left-0 right-0 flex items-center justify-center gap-3 md:gap-6 text-[10px] md:text-xs text-slate-600"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.0, duration: 0.5 }}
       >
-        <span className="font-medium tracking-wider">MOTA TechLink</span>
-        <span className="w-px h-3 bg-slate-700" />
+        <a
+          href="https://atom.motaiot.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 font-medium tracking-wider text-blue-500 hover:text-blue-400 transition-colors"
+        >
+          <Image
+            src="/logos/mota-icon-v2.webp"
+            alt="MOTA TechLink"
+            width={16}
+            height={16}
+            className="rounded-sm"
+          />
+          MOTA TechLink
+        </a>
+        <span className="w-px h-3 bg-slate-600 " />
         <span className="tracking-wider">February 2026</span>
       </motion.div>
     </div>

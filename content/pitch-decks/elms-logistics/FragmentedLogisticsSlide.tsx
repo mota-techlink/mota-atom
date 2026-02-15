@@ -10,6 +10,10 @@ import {
   RefreshCcwDot,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  MobileDetailModal,
+  MobileExpandButton,
+} from "./MobileDetailModal";
 
 // ─── Broken Particle ────────────────────────────────────────────────
 interface ParticleProps {
@@ -221,10 +225,11 @@ function ScanLine() {
 // ─── Main Slide Component ────────────────────────────────────────
 export function FragmentedLogisticsSlide() {
   const [mounted, setMounted] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   useEffect(() => setMounted(true), []);
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 text-white relative overflow-hidden aspect-video p-8 lg:p-12">
+    <div className="w-full h-full flex flex-col justify-center items-center bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 text-white relative overflow-hidden p-8 lg:p-12">
       {/* Background grid */}
       <div
         className="absolute inset-0 opacity-[0.04]"
@@ -243,7 +248,7 @@ export function FragmentedLogisticsSlide() {
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl" />
 
       {/* ── Header ── */}
-      <div className="relative text-center mb-6 lg:mb-10 z-10">
+      <div className="relative text-center mb-4 md:mb-6 lg:mb-10 z-10">
         <motion.div
           className="flex items-center justify-center gap-2 mb-2"
           initial={{ opacity: 0 }}
@@ -266,20 +271,20 @@ export function FragmentedLogisticsSlide() {
         </motion.div>
 
         <motion.h2
-          className="text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight font-mono"
+          className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight font-mono"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
           <GlitchText text="The Barricades:" />
           <br />
-          <span className="text-slate-400">
+          <span className="text-slate-400 text-base md:text-2xl lg:text-4xl xl:text-5xl">
             Fragmentation in Global Logistics
           </span>
         </motion.h2>
 
         <motion.p
-          className="mt-3 text-xs lg:text-sm text-slate-500 font-mono max-w-lg mx-auto"
+          className="mt-2 md:mt-3 text-[10px] md:text-xs lg:text-sm text-slate-500 font-mono max-w-lg mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
@@ -288,9 +293,9 @@ export function FragmentedLogisticsSlide() {
         </motion.p>
       </div>
 
-      {/* ── 3-Column Grid with Broken Data Flows ── */}
+      {/* ── Desktop: 3-Column Grid with Broken Data Flows ── */}
       {mounted && (
-        <div className="relative z-10 flex items-stretch justify-center gap-0 w-full max-w-5xl">
+        <div className="relative z-10 hidden md:flex items-stretch justify-center gap-0 w-full max-w-5xl">
           {/* Silo 1: E-commerce */}
           <div className="flex-1 min-w-0 max-w-xs">
             <SiloCard
@@ -344,37 +349,175 @@ export function FragmentedLogisticsSlide() {
         </div>
       )}
 
+      {/* ── Mobile: Condensed 3 icons + tap to expand ── */}
+      <div className="relative z-10 flex md:hidden flex-col items-center gap-3">
+        {/* Mini silo row */}
+        <div className="flex items-center gap-3">
+          {[
+            { icon: <ShoppingCart className="w-4 h-4" />, label: "E-commerce", color: "text-red-400" },
+            { icon: <Unplug className="w-3 h-3 text-red-500/40" />, label: "" },
+            { icon: <FileCheck className="w-4 h-4" />, label: "Customs", color: "text-red-400" },
+            { icon: <Unplug className="w-3 h-3 text-red-500/40" />, label: "" },
+            { icon: <Truck className="w-4 h-4" />, label: "Last-Mile", color: "text-red-400" },
+          ].map((item, i) =>
+            item.label ? (
+              <motion.div
+                key={i}
+                className="flex flex-col items-center gap-1 p-2 rounded-xl border border-dashed border-slate-500/30 bg-slate-800/40"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.1 }}
+              >
+                <div className="p-1.5 rounded-lg bg-slate-700/50 text-slate-400">
+                  {item.icon}
+                </div>
+                <span className="text-[8px] font-mono text-slate-400 uppercase">{item.label}</span>
+                <div className="flex items-center gap-1">
+                  <span className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />
+                  <span className="text-[7px] font-mono text-red-400/70">SYNC ERR</span>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key={i}
+                className="text-red-500/40"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 + i * 0.1 }}
+              >
+                {item.icon}
+              </motion.div>
+            )
+          )}
+        </div>
+
+        <MobileExpandButton
+          label="Tap to view silo details"
+          onClick={() => setMobileOpen(true)}
+        />
+      </div>
+
       {/* ── Bottom stat bar ── */}
       <motion.div
-        className="relative z-10 mt-6 lg:mt-10 flex items-center gap-4 lg:gap-8 text-[10px] lg:text-xs font-mono text-slate-500"
+        className="relative z-10 mt-4 md:mt-6 lg:mt-10 flex items-center gap-3 md:gap-4 lg:gap-8 text-[8px] md:text-[10px] lg:text-xs font-mono text-slate-500"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.4 }}
       >
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-red-500/60 animate-pulse" />
+          <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-red-500/60 animate-pulse" />
           <span>
-            <span className="text-red-400 font-bold">37%</span> data lost in
-            handoffs
+            <span className="text-red-400 font-bold">37%</span> data lost
           </span>
         </div>
         <div className="h-3 w-px bg-slate-700" />
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-amber-500/60 animate-pulse" />
+          <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-amber-500/60 animate-pulse" />
           <span>
-            <span className="text-amber-400 font-bold">€4.2B</span> annual
-            inefficiency cost (EU)
+            <span className="text-amber-400 font-bold">€4.2B</span> cost
           </span>
         </div>
         <div className="h-3 w-px bg-slate-700" />
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-red-500/60 animate-pulse" />
+          <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-red-500/60 animate-pulse" />
           <span>
-            <span className="text-red-400 font-bold">72h</span> avg. customs
-            delay
+            <span className="text-red-400 font-bold">72h</span> delay
           </span>
         </div>
       </motion.div>
+
+      {/* ── Mobile Detail Modal ── */}
+      <MobileDetailModal
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        title="Fragmented Logistics Silos"
+        subtitle="Three isolated systems. Every handoff is a failure point."
+      >
+        <div className="space-y-4">
+          {[
+            {
+              icon: <ShoppingCart className="w-5 h-5" />,
+              title: "E-commerce Platforms",
+              items: [
+                "Order fragmentation",
+                "SKU mismatch across stores",
+                "No real-time inventory sync",
+                "Manual CSV exports",
+              ],
+            },
+            {
+              icon: <FileCheck className="w-5 h-5" />,
+              title: "Customs Compliance",
+              items: [
+                "Paper-based declarations",
+                "HS code errors",
+                "Delayed clearance cycles",
+                "Regulatory blind spots",
+              ],
+            },
+            {
+              icon: <Truck className="w-5 h-5" />,
+              title: "Last-Mile Carriers",
+              items: [
+                "Label re-entry by hand",
+                "Wrong address formats",
+                "No delivery confirmation",
+                "Carbon tracking gap",
+              ],
+            },
+          ].map((silo, si) => (
+            <div
+              key={si}
+              className="p-4 rounded-xl border border-dashed border-slate-500/30 bg-slate-800/40"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 rounded-lg bg-slate-700/50 text-slate-400">
+                  {silo.icon}
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-slate-200 font-mono uppercase">
+                    {silo.title}
+                  </h4>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                    <span className="text-[10px] font-mono text-red-400">
+                      Sync Error
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <ul className="space-y-1.5">
+                {silo.items.map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-2 text-xs text-slate-400 font-mono"
+                  >
+                    <span className="w-1 h-1 rounded-full bg-slate-500/50 shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-2 pt-2">
+            {[
+              { value: "37%", label: "Data lost in handoffs", color: "text-red-400" },
+              { value: "€4.2B", label: "Annual EU cost", color: "text-amber-400" },
+              { value: "72h", label: "Avg customs delay", color: "text-red-400" },
+            ].map((stat) => (
+              <div
+                key={stat.value}
+                className="text-center p-2 rounded-lg bg-white/3 border border-white/5"
+              >
+                <div className={`text-lg font-black font-mono ${stat.color}`}>{stat.value}</div>
+                <div className="text-[9px] text-slate-500 mt-0.5">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </MobileDetailModal>
     </div>
   );
 }

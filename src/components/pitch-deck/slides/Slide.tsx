@@ -49,7 +49,7 @@ export function Slide({
     <div
       className={cn(
         "w-full h-full flex flex-col justify-center items-center",
-        "aspect-video relative overflow-hidden",
+        "relative overflow-hidden",
         bgClass,
         paddingMap[padding],
         // Default text color based on bg

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef, ReactNode } from "react";
 
 export type TransitionType = "fade" | "slide" | "zoom" | "flip";
 
@@ -138,6 +138,47 @@ export function DeckProvider({
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [nextSlide, prevSlide, goToFirst, goToLast, toggleFullscreen, isFullscreen]);
+
+  // Touch / swipe navigation
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const touchStartTime = useRef(0);
+
+  useEffect(() => {
+    const SWIPE_THRESHOLD = 50; // minimum px distance
+    const SWIPE_MAX_TIME = 500; // max ms for a swipe gesture
+    const ANGLE_THRESHOLD = 30; // max degrees off horizontal
+
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
+      touchStartTime.current = Date.now();
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - touchStartX.current;
+      const dy = e.changedTouches[0].clientY - touchStartY.current;
+      const dt = Date.now() - touchStartTime.current;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+
+      // Check it's a horizontal swipe (not scroll)
+      if (absDx > SWIPE_THRESHOLD && dt < SWIPE_MAX_TIME && absDx > absDy * 1.5) {
+        if (dx < 0) {
+          nextSlide(); // swipe left → next
+        } else {
+          prevSlide(); // swipe right → prev
+        }
+      }
+    };
+
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [nextSlide, prevSlide]);
 
   return (
     <DeckContext.Provider
