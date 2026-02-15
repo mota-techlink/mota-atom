@@ -356,7 +356,7 @@ export function CTASlide() {
 
           {/* Contact info — ultra minimal */}
           <motion.div
-            className="flex items-center justify-center gap-3 md:gap-5 text-[9px] md:text-xs font-mono text-slate-500"
+            className="flex items-center justify-center gap-3 md:gap-5 text-[9px] md:text-xs font-mono text-slate-500 flex-wrap"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2 }}

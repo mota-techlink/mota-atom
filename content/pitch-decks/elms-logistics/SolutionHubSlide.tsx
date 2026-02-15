@@ -386,7 +386,7 @@ function InnerTechNode({
       </div>
       {/* Label */}
       <div className="absolute top-full mt-0.5 left-1/2 -translate-x-1/2 text-center whitespace-nowrap pointer-events-none">
-        <div className={`text-[14px] lg:text-[16px] font-bold ${node.logoColor} leading-tight`}>{node.label}</div>
+        <div className={`text-[9px] sm:text-[11px] lg:text-xs font-bold ${node.logoColor} leading-tight`}>{node.label}</div>
       </div>
       {/* Hover popup */}
       <AnimatePresence>
@@ -406,12 +406,12 @@ function InnerTechNode({
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.15 }}
           >
-            <div className="text-[18px] font-bold text-white mb-2">{node.label} <span className="font-normal text-slate-500">· {node.sublabel}</span></div>
+            <div className="text-sm font-bold text-white mb-2">{node.label} <span className="font-normal text-slate-500">· {node.sublabel}</span></div>
             <div className="space-y-1.5">
               {node.features.map((feat, i) => (
                 <div key={i} className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: `rgba(${node.accentRgb},0.6)` }} />
-                  <span className="text-[16px] lg:text-[18px] text-slate-400 leading-tight">{feat}</span>
+                  <span className="text-xs lg:text-sm text-slate-400 leading-tight">{feat}</span>
                 </div>
               ))}
             </div>
@@ -469,7 +469,7 @@ function OuterModuleNode({
         whileTap={{ scale: 0.95 }}
       >
         <IconComp className={`w-5 h-5 md:w-6 md:h-6 mb-0.5 transition-colors duration-300 ${isActive ? mod.color : "text-slate-500"}`} />
-        <span className={`text-[16px] md:text-[18px] font-semibold tracking-wide transition-colors duration-300 ${isActive ? mod.color : "text-slate-600"}`}>
+        <span className={`text-[10px] md:text-xs font-semibold tracking-wide transition-colors duration-300 ${isActive ? mod.color : "text-slate-600"}`}>
           {mod.label}
         </span>
       </motion.button>
@@ -482,7 +482,7 @@ function OuterModuleNode({
         animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : anchor === "right" ? -5 : 5 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
       >
-        <div className={`text-[22px] font-semibold leading-snug ${isActive ? "text-white" : "text-slate-500"} ${anchor === "right" ? "text-left" : "text-right"}`}>
+        <div className={`text-sm font-semibold leading-snug ${isActive ? "text-white" : "text-slate-500"} ${anchor === "right" ? "text-left" : "text-right"}`}>
           {feature.label}
         </div>
         {isActive && mod.badge && (
@@ -491,7 +491,7 @@ function OuterModuleNode({
             initial={{ opacity: 0, y: -2 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <span className={`text-[16px] md:text-[18px] font-medium px-1.5 py-0.5 rounded-full border backdrop-blur-md ${mod.borderActive} ${mod.bgActive} ${mod.color}`}>
+            <span className={`text-[10px] md:text-xs font-medium px-1.5 py-0.5 rounded-full border backdrop-blur-md ${mod.borderActive} ${mod.bgActive} ${mod.color}`}>
               {mod.badge}
             </span>
           </motion.div>

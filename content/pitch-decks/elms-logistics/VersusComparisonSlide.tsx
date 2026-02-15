@@ -388,11 +388,11 @@ function FeatureRow({
         <XCircle className="w-5 h-5 lg:w-6 lg:h-6 text-red-400/40 shrink-0" />
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="text-[18px] lg:text-[20px] font-mono font-bold text-red-400/50 uppercase tracking-wider">
+            <span className="text-[10px] sm:text-xs lg:text-sm font-mono font-bold text-red-400/50 uppercase tracking-wider">
               {row.traditional.tag}
             </span>
           </div>
-          <span className="text-[14px] lg:text-[16px] text-slate-500/80 leading-snug block">
+          <span className="text-[9px] sm:text-[11px] lg:text-xs text-slate-500/80 leading-snug block">
             {row.traditional.text}
           </span>
         </div>
@@ -412,7 +412,7 @@ function FeatureRow({
         >
           {row.icon}
         </motion.div>
-        <span className="text-[14px] lg:text-[16px] font-mono text-slate-600 mt-1 text-center leading-tight whitespace-nowrap">
+        <span className="text-[9px] sm:text-[11px] lg:text-xs font-mono text-slate-600 mt-1 text-center leading-tight whitespace-nowrap">
           {row.dimension}
         </span>
       </div>
@@ -431,12 +431,12 @@ function FeatureRow({
         <AnimatedCheck delay={baseDelay + 0.2} />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <span className="text-[18px] lg:text-[20px] font-mono font-bold text-emerald-400 uppercase tracking-wider">
+            <span className="text-[10px] sm:text-xs lg:text-sm font-mono font-bold text-emerald-400 uppercase tracking-wider">
               {row.elms.tag}
             </span>
             {row.elmsExclusive && (
               <motion.span
-                className="text-[14px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 uppercase tracking-wider"
+                className="text-[8px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 uppercase tracking-wider"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: baseDelay + 0.5 }}
@@ -445,7 +445,7 @@ function FeatureRow({
               </motion.span>
             )}
           </div>
-          <span className="text-[14px] lg:text-[16px] text-emerald-200/80 leading-snug block">
+          <span className="text-[9px] sm:text-[11px] lg:text-xs text-emerald-200/80 leading-snug block">
             {row.elms.text}
           </span>
         </div>
@@ -490,7 +490,7 @@ export function VersusComparisonSlide() {
       >
         <div className="flex items-center justify-center gap-2 mb-1">
           <Zap className="w-4 h-4 md:w-5 md:h-5 text-blue-400/60" />
-          <span className="text-[18px] md:text-[20px] lg:text-2xl font-mono text-blue-400/70 tracking-[0.25em] uppercase">
+          <span className="text-[10px] sm:text-xs md:text-sm lg:text-base font-mono text-blue-400/70 tracking-[0.25em] uppercase">
             Competitive Advantage
           </span>
           <Zap className="w-4 h-4 md:w-5 md:h-5 text-blue-400/60" />
@@ -551,13 +551,13 @@ export function VersusComparisonSlide() {
               </motion.div>
               <div>
                 <motion.div
-                  className="text-[18px] lg:text-[22px] font-bold text-slate-400/70"
+                  className="text-sm lg:text-lg font-bold text-slate-400/70"
                   animate={{ opacity: [0.7, 0.4, 0.7, 0.5, 0.7] }}
                   transition={{ duration: 3, repeat: Infinity }}
                 >
                   Traditional Logistics
                 </motion.div>
-                <div className="text-[14px] lg:text-[16px] font-mono text-slate-600 tracking-wider">
+                <div className="text-[10px] lg:text-xs font-mono text-slate-600 tracking-wider">
                   LEGACY FRICTION
                 </div>
               </div>
@@ -592,7 +592,7 @@ export function VersusComparisonSlide() {
             }}
           >
             <motion.span
-              className="text-[18px] lg:text-[20px] font-black text-white/70 tracking-wider"
+              className="text-xs lg:text-sm font-black text-white/70 tracking-wider"
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
@@ -664,10 +664,10 @@ export function VersusComparisonSlide() {
                 <Sparkles className="w-6 h-6 lg:w-7 lg:h-7 text-emerald-400" />
               </div>
               <div>
-                <div className="text-[18px] lg:text-[22px] font-bold text-emerald-300">
+                <div className="text-sm lg:text-lg font-bold text-emerald-300">
                   ELMS Platform
                 </div>
-                <div className="text-[14px] lg:text-[16px] font-mono text-emerald-400/60 tracking-wider">
+                <div className="text-[10px] lg:text-xs font-mono text-emerald-400/60 tracking-wider">
                   THE FUTURE
                 </div>
               </div>
@@ -725,12 +725,12 @@ export function VersusComparisonSlide() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Monitor className="w-5 h-5 text-slate-500/60 mx-auto mb-1" />
-            <div className="text-[16px] font-mono text-slate-500 text-center">Traditional</div>
+            <Monitor className="w-4 h-4 text-slate-500/60 mx-auto mb-1" />
+            <div className="text-xs font-mono text-slate-500 text-center">Traditional</div>
           </motion.div>
 
           <motion.div
-            className="text-[20px] font-black text-white/50"
+            className="text-sm font-black text-white/50"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.35, type: "spring" }}
@@ -745,8 +745,8 @@ export function VersusComparisonSlide() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <Sparkles className="w-5 h-5 text-emerald-400 mx-auto mb-1" />
-            <div className="text-[16px] font-mono text-emerald-400 text-center">ELMS</div>
+            <Sparkles className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
+            <div className="text-xs font-mono text-emerald-400 text-center">ELMS</div>
           </motion.div>
         </div>
 
@@ -757,10 +757,10 @@ export function VersusComparisonSlide() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          <span className="text-red-400/60 text-[18px] font-mono">0/6</span>
-          <span className="text-slate-600 text-[18px]">vs</span>
-          <span className="text-emerald-400 text-[18px] font-mono font-bold">6/6</span>
-          <BadgeCheck className="w-5 h-5 text-emerald-400" />
+          <span className="text-red-400/60 text-xs font-mono">0/6</span>
+          <span className="text-slate-600 text-xs">vs</span>
+          <span className="text-emerald-400 text-xs font-mono font-bold">6/6</span>
+          <BadgeCheck className="w-4 h-4 text-emerald-400" />
         </motion.div>
 
         <MobileExpandButton
@@ -771,27 +771,27 @@ export function VersusComparisonSlide() {
 
       {/* ── Bottom stats (desktop) ── */}
       <motion.div
-        className="relative z-10 mt-2 md:mt-3 hidden md:flex items-center justify-center gap-4 lg:gap-6 text-[18px] font-mono text-slate-600"
+        className="relative z-10 mt-2 md:mt-3 hidden md:flex items-center justify-center gap-4 lg:gap-6 text-[10px] lg:text-xs font-mono text-slate-600"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.8 }}
       >
         <div className="flex items-center gap-1.5">
-          <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
           <span>
             <span className="text-emerald-400 font-bold">6/6</span> advantages
           </span>
         </div>
         <div className="h-4 w-px bg-slate-700" />
         <div className="flex items-center gap-1.5">
-          <TrendingDown className="w-5 h-5 text-emerald-400" />
+          <TrendingDown className="w-3.5 h-3.5 text-emerald-400" />
           <span>
             <span className="text-emerald-400 font-bold">50%+</span> cost reduction
           </span>
         </div>
         <div className="h-4 w-px bg-slate-700" />
         <div className="flex items-center gap-1.5">
-          <Sparkles className="w-5 h-5 text-cyan-400" />
+          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
           <span>
             <span className="text-cyan-400 font-bold">MCP-Native</span> AI exclusive
           </span>
@@ -814,9 +814,9 @@ export function VersusComparisonSlide() {
               {/* Dimension header */}
               <div className="flex items-center gap-2 px-3 py-2 bg-white/3 border-b border-white/5">
                 <span className="text-slate-400">{row.icon}</span>
-                <span className="text-[20px] font-bold text-white/80">{row.dimension}</span>
+                <span className="text-sm font-bold text-white/80">{row.dimension}</span>
                 {row.elmsExclusive && (
-                  <span className="text-[14px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 uppercase">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 uppercase">
                     Exclusive
                   </span>
                 )}
@@ -824,12 +824,12 @@ export function VersusComparisonSlide() {
 
               {/* Traditional */}
               <div className="flex items-center gap-2 px-3 py-2 border-b border-white/3">
-                <XCircle className="w-5 h-5 text-red-400/40 shrink-0" />
+                <XCircle className="w-4 h-4 text-red-400/40 shrink-0" />
                 <div>
-                  <span className="text-[16px] font-mono font-bold text-red-400/50 uppercase mr-1">
+                  <span className="text-xs font-mono font-bold text-red-400/50 uppercase mr-1">
                     {row.traditional.tag}:
                   </span>
-                  <span className="text-[14px] text-slate-500">
+                  <span className="text-[11px] text-slate-500">
                     {row.traditional.text}
                   </span>
                 </div>
@@ -837,12 +837,12 @@ export function VersusComparisonSlide() {
 
               {/* ELMS */}
               <div className="flex items-center gap-2 px-3 py-2 bg-emerald-500/5">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <div>
-                  <span className="text-[16px] font-mono font-bold text-emerald-400 uppercase mr-1">
+                  <span className="text-xs font-mono font-bold text-emerald-400 uppercase mr-1">
                     {row.elms.tag}:
                   </span>
-                  <span className="text-[14px] text-emerald-200/80">
+                  <span className="text-[11px] text-emerald-200/80">
                     {row.elms.text}
                   </span>
                 </div>

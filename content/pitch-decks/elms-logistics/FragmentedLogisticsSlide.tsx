@@ -229,7 +229,7 @@ export function FragmentedLogisticsSlide() {
   useEffect(() => setMounted(true), []);
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 text-white relative overflow-hidden p-8 lg:p-12">
+    <div className="w-full h-full flex flex-col justify-center items-center bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 text-white relative overflow-hidden p-3 sm:p-5 md:p-8 lg:p-12">
       {/* Background grid */}
       <div
         className="absolute inset-0 opacity-[0.04]"

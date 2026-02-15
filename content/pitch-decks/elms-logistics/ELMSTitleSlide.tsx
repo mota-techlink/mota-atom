@@ -511,7 +511,7 @@ export function ELMSTitleSlide() {
 
       {/* ── Bottom Bar ── */}
       <motion.div
-        className="absolute bottom-3 md:bottom-6 left-0 right-0 flex items-center justify-center gap-3 md:gap-6 text-[10px] md:text-xs text-slate-600"
+        className="absolute bottom-2 sm:bottom-3 md:bottom-6 left-0 right-0 flex items-center justify-center gap-3 md:gap-6 text-[10px] md:text-xs text-slate-600"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.0, duration: 0.5 }}
