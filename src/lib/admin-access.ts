@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 
 export type PermissionLevel = 'staff' | 'admin';
 
@@ -11,12 +12,13 @@ export type PermissionLevel = 'staff' | 'admin';
  */
 export async function checkAdminAccess(minLevel: PermissionLevel = 'staff') {
   const supabase = await createClient();
+  const locale = await getLocale();
   const { data: { user } } = await supabase.auth.getUser();
   
   // 检查用户是否登录
   if (!user) {
     console.log('User not authenticated');
-    redirect('/login');
+    redirect(`/${locale}/login`);
   }
   
   // 获取用户的角色信息
@@ -28,12 +30,12 @@ export async function checkAdminAccess(minLevel: PermissionLevel = 'staff') {
   
   if (error) {
     console.error('Failed to fetch user profile:', error);
-    redirect('/dashboard');
+    redirect(`/${locale}/dashboard`);
   }
   
   if (!userProfile) {
     console.error('User profile not found for user:', user.id);
-    redirect('/dashboard');
+    redirect(`/${locale}/dashboard`);
   }
   
   const userRole = userProfile.role;
@@ -43,11 +45,11 @@ export async function checkAdminAccess(minLevel: PermissionLevel = 'staff') {
   if (minLevel === 'admin' && userRole !== 'admin') {
     // 需要 admin 权限但用户不是 admin
     console.log(`[checkAdminAccess] Access denied: user role '${userRole}' is not 'admin'`);
-    redirect('/dashboard');
+    redirect(`/${locale}/dashboard`);
   } else if (minLevel === 'staff' && userRole !== 'admin' && userRole !== 'staff') {
     // 需要 staff 或 admin 权限但用户都不是
     console.log(`[checkAdminAccess] Access denied: user role '${userRole}' is not 'admin' or 'staff'`);
-    redirect('/dashboard');
+    redirect(`/${locale}/dashboard`);
   }
   
   console.log(`[checkAdminAccess] Access granted for user: ${user.email}`);

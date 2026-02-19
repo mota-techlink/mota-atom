@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { toast } from 'sonner';
 
 interface ResetPasswordFormProps {

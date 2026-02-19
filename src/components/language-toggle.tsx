@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter, usePathname } from "@/navigation"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -15,22 +15,9 @@ export function LanguageToggle() {
   const pathname = usePathname()
   const router = useRouter()
 
-  // 切换语言的逻辑
-  const switchLocale = (newLocale: string) => {
-    // pathname 可能是 "/en/blog/post-1"
-    const segments = pathname.split('/')
-    // segments[1] 通常是 locale
-    
-    // 如果存在 locale 前缀 (en, zh)，替换它
-    if (['en', 'zh'].includes(segments[1])) {
-      segments[1] = newLocale
-    } else {
-      // 如果没有前缀 (可能是默认语言隐藏前缀的情况)，插入它
-      segments.splice(1, 0, newLocale)
-    }
-    
-    const newPath = segments.join('/')
-    router.push(newPath)
+  // 切换语言的逻辑 — 使用 next-intl 的 router，自动处理 locale 前缀
+  const switchLocale = (newLocale: 'en' | 'zh') => {
+    router.replace(pathname, { locale: newLocale })
   }
 
   return (

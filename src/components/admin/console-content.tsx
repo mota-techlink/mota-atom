@@ -18,7 +18,7 @@ import {
   Legend,
 } from "recharts";
 import { ChevronRight, ChevronLeft, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "@/navigation";
 
 export function ConsoleContent({ orders, stats }: any) {
   type ChartDataItem = {

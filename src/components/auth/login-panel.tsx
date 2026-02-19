@@ -1,7 +1,7 @@
 // src/components/auth/login-panel.tsx
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import Image from 'next/image';
 import { siteConfig } from '@/config/site';
 import { TypewriterText } from '@/components/ui/typewriter-text';

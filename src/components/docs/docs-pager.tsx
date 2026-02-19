@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { Link, usePathname } from "@/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { docsConfig } from "@/config/docs"; // 引入你的菜单配置
+import { docsConfig } from "@/config/docs";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
 
 interface DocsPagerProps {
   // 如果需要强制指定 slug 可以传，否则自动获取

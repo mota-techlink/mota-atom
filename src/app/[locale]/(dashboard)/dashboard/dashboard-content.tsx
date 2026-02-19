@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Wallet, Package, CreditCard, Clock, TrendingUp, ChevronRight, ChevronLeft, Loader2,User } from "lucide-react"
-import Link from "next/link"
+import { Link } from "@/navigation"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
 const scrollbarStyles = `

@@ -58,7 +58,7 @@ export function ElmsLogisticsDeck({
     <ShipmentTrackingSlide key="tracking" />,
 
     // ═══════════════════════════════════════════════════════════
-    // SLIDE 7: Financial Transparency
+    // SLIDE 7: Investment Opportunity & Capital Efficiency
     // ═══════════════════════════════════════════════════════════
     <FinancialTransparencySlide key="financials" />,
 
@@ -85,7 +85,7 @@ export function ElmsLogisticsDeck({
     "Competitive Advantage",         // 4  Versus
     "AI × MCP",                      // 5  AI Lab
     "Shipment Tracking",             // 6  Dashboard
-    "Financial Efficiency",          // 7  Financial
+    "Investment & Capital",         // 7  Investment Opportunity
     "Roadmap",                       // 8  Evolution Map
     "Security & Compliance",         // 9  Trust
     "Call to Action",                // 10 CTA

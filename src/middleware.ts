@@ -1,15 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { createServerClient } from '@supabase/ssr';
-import { locales } from './i18n'; // 确保引入了你定义的 locales
+import { routing } from './routing';
 
-// 1. 初始化 Intl 中间件
-const intlMiddleware = createMiddleware({
-  locales,
-  defaultLocale: 'en',
-  localePrefix: 'always' // 建议显式显示语言前缀，利于 SEO 和逻辑统一
-  
-});
+// 1. 初始化 Intl 中间件（使用统一的 routing 配置）
+const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
   // 2. 创建一个可变的 Response 对象，先让 intl 处理路由

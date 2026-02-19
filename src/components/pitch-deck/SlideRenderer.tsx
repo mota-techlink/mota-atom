@@ -2,7 +2,7 @@
 
 import React, { ReactNode, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { useLocale } from "next-intl";
 import { useDeck } from "./DeckProvider";
 import { SlideTransition } from "./SlideTransition";
 import { SlideNavigation } from "./SlideNavigation";
@@ -21,9 +21,8 @@ export function SlideRenderer({ slides, slideTitles }: SlideRendererProps) {
   const { currentSlide, isAuthenticated, maxPreviewSlides, totalSlides, goToFirst } = useDeck();
   const isLocked = !isAuthenticated && currentSlide >= maxPreviewSlides - 1 && totalSlides > maxPreviewSlides;
 
-  // Extract locale from pathname (e.g. /en/pitch-deck/xxx → "en")
-  const pathname = usePathname();
-  const locale = pathname.split("/")[1] || "en";
+  // 使用 next-intl 获取当前 locale
+  const locale = useLocale();
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 

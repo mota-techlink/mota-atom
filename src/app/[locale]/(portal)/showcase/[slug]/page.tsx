@@ -2,7 +2,7 @@ import { getContentBySlug } from '@/lib/mdx'; // 使用新的通用方法
 import { notFound } from 'next/navigation';
 import { MdxContent } from '@/components/mdx/mdx-content'; 
 import { Badge } from '@/components/ui/badge';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { HeaderMedia } from '@/components/mdx/header-media';
 import { generatePostParams } from "@/lib/static-helper";

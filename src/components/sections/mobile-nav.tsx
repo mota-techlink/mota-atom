@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import Link, { LinkProps } from "next/link"
+import { Link } from "@/navigation"
 import { useRouter } from "next/navigation"
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
@@ -198,7 +198,8 @@ export function MobileNav() {
 }
 
 // MobileLink 辅助组件保持不变...
-interface MobileLinkProps extends LinkProps {
+interface MobileLinkProps {
+  href: string
   onOpenChange?: (open: boolean) => void
   children: React.ReactNode
   className?: string
@@ -209,7 +210,6 @@ function MobileLink({
   onOpenChange,
   className,
   children,
-  ...props
 }: MobileLinkProps) {
   const router = useRouter()
   return (
@@ -220,7 +220,6 @@ function MobileLink({
         onOpenChange?.(false)
       }}
       className={cn(className)}
-      {...props}
     >
       {children}
     </Link>

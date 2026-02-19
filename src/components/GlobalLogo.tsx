@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes"
 import Image from "next/image"
-import Link from "next/link"
+import { Link } from "@/navigation"
 import { useEffect, useState } from "react"
 import { siteConfig } from "@/config/site"
 

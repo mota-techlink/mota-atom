@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { getLocale } from "next-intl/server";
 import { getAllPitchDecks } from "@/config/pitch-decks";
 import {
@@ -102,7 +102,7 @@ export default async function PitchDecksAdminPage() {
 
                 {/* Action */}
                 <Link
-                  href={`/${locale}/pitch-deck/${deck.slug}`}
+                  href={`/pitch-deck/${deck.slug}`}
                   target="_blank"
                   className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
                 >

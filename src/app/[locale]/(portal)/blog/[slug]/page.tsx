@@ -1,5 +1,5 @@
 import { getPostBySlug } from '@/lib/mdx';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { MdxContent } from '@/components/mdx/mdx-content';

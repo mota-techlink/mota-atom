@@ -54,11 +54,7 @@ export const adminNavItems: NavItem[] = [
     href: '/admin/users',
     icon: "users",
   },
-  {
-    titleKey: 'nav_audit_logs',
-    href: '/admin/logs',
-    icon: "logs",
-  },
+  
   {
     titleKey: 'nav_pitch_decks',
     href: '/admin/pitch-decks',

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import Image from 'next/image';
 import { getBlogPosts, getAllTags } from '@/lib/mdx';
 import { Badge } from '@/components/ui/badge';

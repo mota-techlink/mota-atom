@@ -1,5 +1,5 @@
 // src/app/[locale]/forgot-password/page.tsx
-import Link from "next/link"
+import { Link } from "@/navigation"
 import { getTranslations } from 'next-intl/server';
 import { ForgotPasswordForm } from "./forgot-password-form"
 

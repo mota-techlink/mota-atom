@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Image from "next/image"; // ✅ 引入 Image 组件
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/navigation";
 import { useSidebar } from "./sidebar-context";
 import { cn } from "@/lib/utils";
 import { NavItem } from "@/config/menu";

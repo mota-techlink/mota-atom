@@ -2,7 +2,7 @@
 import { useContactForm } from "@/hooks/use-contact-form"
 import React, { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
+import { Link } from "@/navigation"
 import { Check, Clock, RefreshCcw, ShieldCheck, ArrowRight, LayoutGrid, Bitcoin, CreditCard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"

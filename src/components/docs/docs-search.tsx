@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from "@/navigation"
 import { DialogProps } from "@radix-ui/react-dialog"
 import { Search, Loader2, FileText, Box } from "lucide-react" // 引入图标
 import { cn } from "@/lib/utils"

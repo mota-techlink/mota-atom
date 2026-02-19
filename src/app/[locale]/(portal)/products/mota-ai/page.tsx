@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/navigation";
 
 import { getContents } from '@/lib/mdx';
 import { 

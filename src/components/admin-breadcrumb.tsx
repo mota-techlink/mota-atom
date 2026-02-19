@@ -1,7 +1,6 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { Link, usePathname } from "@/navigation"
 import { ChevronRight, Home } from "lucide-react"
 
 interface BreadcrumbItem {
@@ -16,8 +15,8 @@ export function AdminBreadcrumb() {
   const generateBreadcrumbs = (): BreadcrumbItem[] => {
     const segments = pathname.split("/").filter(Boolean)
 
-    // 移除 locale 段 (第一个段通常是 locale)
-    const filteredSegments = segments.slice(1)
+    // usePathname from @/navigation 已去除 locale 前缀，无需再 slice
+    const filteredSegments = segments
 
     const breadcrumbs: BreadcrumbItem[] = [
       { label: "Admin Console", href: "/admin/console" }

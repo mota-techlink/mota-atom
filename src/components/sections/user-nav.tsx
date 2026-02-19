@@ -17,10 +17,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { createBrowserClient } from "@supabase/ssr";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { CreditCard, LogOut, Plus, Settings, User, LayoutDashboard, Shield } from "lucide-react";
 import { useState, useEffect } from "react";
-import Link from "next/link"
+import { Link, usePathname } from "@/navigation"
 
 interface UserNavProps {
   user?: any; // 可选，如果不提供则自己获取
@@ -28,9 +28,7 @@ interface UserNavProps {
 
 export function UserNav({ user: userProp }: UserNavProps) {
   const router = useRouter();
-  const rawPathname = usePathname();
-  // Strip locale prefix (e.g., /en/dashboard → /dashboard)
-  const pathname = rawPathname.replace(/^\/[a-z]{2}(?=\/|$)/, '') || '/';
+  const pathname = usePathname();
   const [user, setUser] = useState<any>(userProp || null);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);

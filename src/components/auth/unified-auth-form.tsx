@@ -10,7 +10,8 @@ import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import ClientOAuthHandler from '@/app/[locale]/login/client-oauth-handler';
 import { OAuthProviderConfig } from '@/config/site';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useRouter } from '@/navigation';
+import { useSearchParams, usePathname } from 'next/navigation';
 
 interface UnifiedAuthFormProps {
   specificProviders: OAuthProviderConfig[];

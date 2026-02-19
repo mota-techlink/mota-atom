@@ -16,7 +16,7 @@ import {
   CreditCard, MapPin, Package, Calendar, Bitcoin, 
   ExternalLink, Truck, Headphones, Copy, FileText 
 } from "lucide-react"
-import Link from "next/link"
+import { Link } from "@/navigation"
 import Image from "next/image"
 import { getCarrierLabel } from "@/config/shipping-carriers"
 

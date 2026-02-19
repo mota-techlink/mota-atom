@@ -1,5 +1,5 @@
 import { getBlogPosts, getAllTags } from '@/lib/mdx';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
