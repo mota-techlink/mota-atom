@@ -8,6 +8,12 @@ import { serialize } from 'next-mdx-remote/serialize';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 
+// ── 读取语言配置 (唯一真相来源: src/config/i18n.json) ───
+const i18nConfig = JSON.parse(
+  fs.readFileSync(path.join(process.cwd(), 'src/config/i18n.json'), 'utf-8')
+);
+const LOCALES = i18nConfig.locales;
+
 // ---------------------------------------------------------
 // 配置路径
 // ---------------------------------------------------------
@@ -93,9 +99,11 @@ async function scanContent() {
       
       // 生成基础 slug (去掉扩展名) -> getting-started/installation
       // 并在 Windows 上强制把反斜杠转为正斜杠，保证 URL 一致性
+      // 语言后缀模式由 i18n.json 配置动态生成 (如 .zh, .en)
+      const localeSuffixRegex = new RegExp(`\\.(${LOCALES.join('|')})$`);
       const slug = relativePath
         .replace(/\.(md|mdx)$/, '')
-        .replace(/\.[a-z]{2}$/, '') // 去掉 .zh, .en 等语言后缀
+        .replace(localeSuffixRegex, '') // 去掉语言后缀 (基于 i18n.json)
         .replace(/\\/g, '/');       // Windows 兼容
 
       // 处理文件名 (用于判断 locale)

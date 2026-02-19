@@ -95,4 +95,5 @@ next-env.d.ts
 # Generated Files
 src/generated/
 public/search.json
+public/sitemap.xml
 ChatMD/

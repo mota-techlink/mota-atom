@@ -40,9 +40,10 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // 匹配规则：跳过内部路径、静态资源等
+  // 匹配规则：跳过内部路径、静态资源、SEO 文件等
+  // robots.txt / sitemap.xml / sitemap/*.xml / manifest.webmanifest 必须排除，
+  // 否则 next-intl 会把它们重定向到 /en/robots.txt 导致 404
   matcher: [
-    '/((?!auth|api|_next/static|_next/image|videos|search.json|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-    
+    '/((?!auth|api|_next/static|_next/image|videos|search.json|favicon.ico|robots\\.txt|sitemap|manifest\\.webmanifest|opengraph-image|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
