@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import Image from "next/image"
 import { Link } from "@/navigation"
 import dynamic from "next/dynamic"
+import { useTranslations } from "next-intl"
 import { Check, Clock, RefreshCcw, ShieldCheck, ArrowRight, LayoutGrid, Bitcoin, CreditCard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -50,6 +51,7 @@ function ContactSalesDialog({
   tierName: string 
 }) {
   const { isPending, success, error, submitForm } = useContactForm()
+  const t = useTranslations("ProductPage")
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -80,13 +82,13 @@ function ContactSalesDialog({
             <CheckCircle2 className="h-8 w-8 text-green-600" />
           </div>
           <div>
-            <h3 className="text-lg font-bold">Request Sent!</h3>
+            <h3 className="text-lg font-bold">{t("requestSent")}</h3>
             <p className="text-sm text-muted-foreground mt-2">
-              Our team has received your inquiry about the <span className="font-semibold">{tierName}</span> plan.
+              {t("inquiryReceived", { tierName })}
             </p>
           </div>
           <DialogClose asChild>
-             <Button variant="outline" className="mt-4">Close</Button>
+             <Button variant="outline" className="mt-4">{t("close")}</Button>
           </DialogClose>
         </div>
       </DialogContent>
@@ -96,9 +98,9 @@ function ContactSalesDialog({
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>Contact Sales Team</DialogTitle>
+        <DialogTitle>{t("contactSalesTeam")}</DialogTitle>
         <DialogDescription>
-          Inquiring about: <span className="font-semibold text-primary">{productName} - {tierName}</span>
+          {t("inquiringAbout")} <span className="font-semibold text-primary">{productName} - {tierName}</span>
         </DialogDescription>
       </DialogHeader>
       
@@ -111,20 +113,20 @@ function ContactSalesDialog({
         )}
         
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="name" className="text-right">Name</Label>
-          <Input id="name" name="name" className="col-span-3" placeholder="Your Name" required disabled={isPending} />
+          <Label htmlFor="name" className="text-right">{t("name")}</Label>
+          <Input id="name" name="name" className="col-span-3" placeholder={t("yourName")} required disabled={isPending} />
         </div>
         <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="email" className="text-right">Email</Label>
-          <Input id="email" name="email" type="email" className="col-span-3" placeholder="work@company.com" required disabled={isPending} />
+          <Label htmlFor="email" className="text-right">{t("email")}</Label>
+          <Input id="email" name="email" type="email" className="col-span-3" placeholder={t("emailPlaceholder")} required disabled={isPending} />
         </div>
          <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="message" className="text-right">Needs</Label>
+          <Label htmlFor="message" className="text-right">{t("needs")}</Label>
           <Textarea 
             id="message" 
             name="message" 
             className="col-span-3" 
-            placeholder="Tell us about your project requirements..." 
+            placeholder={t("needsPlaceholder")}
             required 
             minLength={5}
             disabled={isPending} 
@@ -134,7 +136,7 @@ function ContactSalesDialog({
         <DialogFooter>
           <Button type="submit" disabled={isPending}>
             {isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            {isPending ? "Sending..." : "Send Request"}
+            {isPending ? t("sending") : t("sendRequest")}
           </Button>
         </DialogFooter>
       </form>
@@ -156,12 +158,13 @@ function PaymentMethodDialog({
   onStripeClick: () => void;
   onCryptoClick: () => void;
 }) {
+  const t = useTranslations("ProductPage");
   return (
     <DialogContent className="sm:max-w-106.25">
       <DialogHeader>
-        <DialogTitle>Choose Payment Method</DialogTitle>
+        <DialogTitle>{t("choosePaymentMethod")}</DialogTitle>
         <DialogDescription>
-          Select how you want to pay for <span className="font-semibold text-primary">{productName} - {tierName}</span>
+          {t("selectPayment")} <span className="font-semibold text-primary">{productName} - {tierName}</span>
         </DialogDescription>
       </DialogHeader>
 
@@ -175,8 +178,8 @@ function PaymentMethodDialog({
             <CreditCard className="h-6 w-6 text-blue-600 dark:text-blue-400" />
           </div>
           <div className="text-center">
-            <p className="font-semibold text-foreground">Credit Card</p>
-            <p className="text-xs text-muted-foreground mt-1">Visa, Mastercard, etc.</p>
+            <p className="font-semibold text-foreground">{t("creditCard")}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("creditCardDesc")}</p>
           </div>
         </button>
 
@@ -189,21 +192,21 @@ function PaymentMethodDialog({
             <Bitcoin className="h-6 w-6 text-orange-600 dark:text-orange-400" />
           </div>
           <div className="text-center">
-            <p className="font-semibold text-foreground">Cryptocurrency</p>
-            <p className="text-xs text-muted-foreground mt-1">BTC, ETH, USDC, etc.</p>
+            <p className="font-semibold text-foreground">{t("cryptocurrency")}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("cryptoDesc")}</p>
           </div>
         </button>
       </div>
 
       <div className="bg-slate-50 dark:bg-slate-900/30 p-4 rounded-lg">
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          💡 <strong>No wallet needed for crypto:</strong> We'll generate a temporary payment address. Send from any wallet or exchange.
+          💡 <strong>{t("noWalletNeeded")}</strong> {t("noWalletDesc")}
         </p>
       </div>
 
       <DialogFooter>
         <DialogClose asChild>
-          <Button variant="outline">Cancel</Button>
+          <Button variant="outline">{t("cancel")}</Button>
         </DialogClose>
       </DialogFooter>
     </DialogContent>
@@ -212,20 +215,23 @@ function PaymentMethodDialog({
 
 function TierActionButton({ 
   productName, 
-  tierData 
+  tierData,
+  isLastTier,
 }: { 
   productName: string, 
-  tierData: any 
+  tierData: any,
+  isLastTier?: boolean,
 }) {
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const [showCryptoModal, setShowCryptoModal] = useState(false);
+  const t = useTranslations("ProductPage");
   
   const tierName = tierData.name; // e.g. "Basic", "Standard", "Premium"
   const price = tierData.price;
   const pathname = usePathname();
 
-  // 🟢 逻辑判断：如果是 Premium，则是 "Contact Sales"
-  const isHighTier = tierName.toLowerCase().includes('premium') || tierName.toLowerCase().includes('enterprise');
+  // 🟢 逻辑判断：如果是最后一个 tier（Premium/高级版），则是 "Contact Sales"
+  const isHighTier = isLastTier || tierName.toLowerCase().includes('premium') || tierName.toLowerCase().includes('enterprise');
 
   const handleStripePayment = () => {
     setPaymentDialogOpen(false);
@@ -244,7 +250,7 @@ function TierActionButton({
       <Dialog>
         <DialogTrigger asChild>
           <Button className="w-full h-12 text-base bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-black" size="lg">
-            Contact Sales
+            {t("contactSales")}
           </Button>
         </DialogTrigger>
         {/* 传入参数 */}
@@ -259,7 +265,7 @@ function TierActionButton({
       <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
         <DialogTrigger asChild>
           <Button className="w-full h-12 text-base" size="lg">
-            Order Now
+            {t("orderNow")}
           </Button>
         </DialogTrigger>
         <PaymentMethodDialog
@@ -280,8 +286,8 @@ function TierActionButton({
         productSlug={pathname.split('/').pop() || productName}
         amount={price.replace(/[^0-9.]/g, "")}
         onPaymentSuccess={() => {
-          toast.success("Payment received!", {
-            description: `Your order for ${productName} - ${tierName} has been confirmed.`,
+          toast.success(t("paymentReceived"), {
+            description: t("orderConfirmed", { productName, tierName }),
           });
           setShowCryptoModal(false);
         }}
@@ -299,6 +305,7 @@ interface ProductLayoutProps {
 {/* === RIGHT COLUMN: Sticky Pricing Card === */}
 function PricingWidget({ data }: { data: any }) {
   const pathname = usePathname();
+  const t = useTranslations("ProductPage");
   // Derive product slug from URL: /en/products/mvp → mvp, /en/products/mota-ai/chatbot → chatbot
   const productSlug = pathname.split('/').filter(Boolean).pop() || '';
 
@@ -308,21 +315,18 @@ function PricingWidget({ data }: { data: any }) {
             
             {/* 1. Pricing Tabs (The Fiverr Core) */}
             <Card className="border-2 border-primary/10 shadow-lg">
-              <Tabs defaultValue="standard" className="w-full">
+              <Tabs defaultValue="tier-1" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 rounded-none border-b h-20 bg-transparent p-0">
-                  <TabsTrigger value="basic" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary h-full">Basic</TabsTrigger>
-                  <TabsTrigger value="standard" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary h-full">Standard</TabsTrigger>
-                  <TabsTrigger value="premium" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary h-full">Premium</TabsTrigger>
+                  {data.pricing.map((tierData: any, idx: number) => (
+                    <TabsTrigger key={idx} value={`tier-${idx}`} className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary h-full">{tierData.name}</TabsTrigger>
+                  ))}
                 </TabsList>
                 
-                {/* 重复用于 Basic, Standard, Premium */}
-                {['basic', 'standard', 'premium'].map((tier) => {
-                   // 获取对应数据
-                   const tierData = data.pricing.find((p:any) => p.name.toLowerCase() === tier);
+                {data.pricing.map((tierData: any, idx: number) => {
                    if (!tierData) return null;
 
                    return (
-                    <TabsContent key={tier} value={tier} className="p-6 space-y-6 mt-0">
+                    <TabsContent key={idx} value={`tier-${idx}`} className="p-6 space-y-6 mt-0">
                       <div className="flex justify-between items-baseline">
                         <span className="font-bold text-2xl">{tierData.price}</span>
                         <span className="text-muted-foreground uppercase text-xs font-semibold">{tierData.name}</span>
@@ -335,11 +339,11 @@ function PricingWidget({ data }: { data: any }) {
                       <div className="flex items-center gap-4 text-sm font-medium text-foreground/80">
                         <div className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
-                          {tierData.deliveryTime} Delivery
+                          {tierData.deliveryTime} {t("delivery")}
                         </div>
                         <div className="flex items-center gap-1">
                           <RefreshCcw className="w-4 h-4" />
-                          Unlimited Revisions
+                          {t("unlimitedRevisions")}
                         </div>
                       </div>
 
@@ -354,7 +358,8 @@ function PricingWidget({ data }: { data: any }) {
 
                       <TierActionButton 
                         productName={data.title} 
-                        tierData={tierData} 
+                        tierData={tierData}
+                        isLastTier={idx === data.pricing.length - 1}
                       />
                                             
                     </TabsContent>
@@ -371,13 +376,13 @@ function PricingWidget({ data }: { data: any }) {
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                    <ShieldCheck className="w-5 h-5 text-primary" />
-                   Why MOTA ATOM?
+                   {t("whyMotaAtom")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-muted-foreground space-y-3">
-                 <p>🏆 <strong>Proven Expertise:</strong> Over 50+ enterprise AI solutions delivered.</p>
-                 <p>🔒 <strong>Data Privacy:</strong> Enterprise-grade security & compliance.</p>
-                 <p>🤝 <strong>Full Support:</strong> 3-month free maintenance included.</p>
+                 <p>🏆 <strong>{t("provenExpertise")}</strong> {t("provenExpertiseDesc")}</p>
+                 <p>🔒 <strong>{t("dataPrivacy")}</strong> {t("dataPrivacyDesc")}</p>
+                 <p>🤝 <strong>{t("fullSupport")}</strong> {t("fullSupportDesc")}</p>
               </CardContent>
             </Card>
 
@@ -388,6 +393,7 @@ function PricingWidget({ data }: { data: any }) {
 export function ProductLayout({ data, content }: ProductLayoutProps) {
   const [selectedImage, setSelectedImage] = useState(data.gallery[0]);
   const relatedCases = data.relatedShowcasesData || [];
+  const t = useTranslations("ProductPage");
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       {/* 1. Breadcrumb & Title Area */}
@@ -425,19 +431,19 @@ export function ProductLayout({ data, content }: ProductLayoutProps) {
           </div>
           {/* 🟢 2. Mobile Only Pricing Section */}
           <div className="block lg:hidden">
-            <h3 className="text-xl font-bold mb-4">Pricing</h3>
+            <h3 className="text-xl font-bold mb-4">{t("pricing")}</h3>
             <PricingWidget data={data} />
           </div>
 
           {/* B. About This Service (MDX Content) */}
           <div className="prose prose-slate dark:prose-invert max-w-none">
-            <h3 className="text-xl font-bold mb-4">About This Service</h3>
+            <h3 className="text-xl font-bold mb-4">{t("aboutThisService")}</h3>
             {content}
           </div>
 
           {/* C. Tech Stack (Icons) */}
           <div className="border rounded-xl p-6 bg-muted/30">
-            <h3 className="text-lg font-semibold mb-4">Technologies We Use</h3>
+            <h3 className="text-lg font-semibold mb-4">{t("technologiesWeUse")}</h3>
             <div className="flex flex-wrap gap-3">
               {data.techStack.map((tech: string) => (
                 <Badge key={tech} variant="secondary" className="px-3 py-1 text-sm">
@@ -449,18 +455,18 @@ export function ProductLayout({ data, content }: ProductLayoutProps) {
 
           {/* D. Comparison Table (Fiverr Style) - 可选 */}
           <div className="hidden md:block">
-            <h3 className="text-xl font-bold mb-6">Compare Packages</h3>
+            <h3 className="text-xl font-bold mb-6">{t("comparePackages")}</h3>
             <div className="border rounded-xl overflow-hidden">
                {/* 这里可以放一个 Table 组件对比三个套餐的详细参数 */}
                <div className="p-8 text-center text-muted-foreground bg-muted/20">
-                  Detailed Feature Comparison Table Component Here
+                  {t("comparisonPlaceholder")}
                </div>
             </div>
           </div>
 
           {/* E. FAQ Section */}
           <div>
-            <h3 className="text-xl font-bold mb-6">Frequently Asked Questions</h3>
+            <h3 className="text-xl font-bold mb-6">{t("faq")}</h3>
             <Accordion type="single" collapsible className="w-full">
               {data.faq.map((item: any, idx: number) => (
                 <AccordionItem key={idx} value={`item-${idx}`}>
@@ -474,9 +480,9 @@ export function ProductLayout({ data, content }: ProductLayoutProps) {
           {/* F. Success Cases (Replacing Reviews) */}
           <div id="showcase">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold">Success Stories</h3>
+              <h3 className="text-xl font-bold">{t("successStories")}</h3>
               <Link href="/showcase" className="text-primary text-sm hover:underline flex items-center">
-                View All <ArrowRight className="w-4 h-4 ml-1"/>
+                {t("viewAll")} <ArrowRight className="w-4 h-4 ml-1"/>
               </Link>
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -500,7 +506,7 @@ export function ProductLayout({ data, content }: ProductLayoutProps) {
                         </div>
                         <CardFooter className="p-4 pt-3 text-sm text-muted-foreground group-hover:text-primary transition-colors border-x border-b rounded-b-xl flex-grow">
                            <span className="line-clamp-2">
-                             {item.description || "See how we helped this client achieve success."}
+                             {item.description || t("defaultShowcaseDesc")}
                            </span>
                         </CardFooter>
                      </Card>
@@ -508,7 +514,7 @@ export function ProductLayout({ data, content }: ProductLayoutProps) {
                  ))
                ) : (
                  <div className="col-span-2 text-muted-foreground text-sm italic p-4 border rounded-lg bg-muted/20">
-                   No specific success stories linked to this product yet.
+                   {t("noSuccessStories")}
                  </div>
                )}
             </div>

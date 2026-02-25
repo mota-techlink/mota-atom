@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button"
 import { Github, LayoutDashboard } from "lucide-react"
 import { HeroSection } from "@/components/sections/hero-section-modal";
 import { FeaturesSection } from "@/components/sections/features";
+import { getTranslations } from "next-intl/server";
 
 interface IndexPageProps {
   params: Promise<{ locale: string }>;
@@ -12,6 +13,7 @@ interface IndexPageProps {
 
 export default async function IndexPage({ params }: IndexPageProps) {
   const { locale } = await params;
+  const t = await getTranslations('Hero');
   
   // Provider 配置
   const specificProviders = siteConfig.oauth.regionSpecific[locale] || [];
@@ -29,7 +31,7 @@ export default async function IndexPage({ params }: IndexPageProps) {
         {/* 底部文字区域 */}
         <div className="mx-auto text-center md:max-w-[58rem]">
           <p className="leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            MOTA ATOM also includes a blog and a full documentation site. Built using MDX and Contentlayer.
+            {t('featuresBottomText')}
           </p>
         </div>
       </section>
@@ -38,14 +40,13 @@ export default async function IndexPage({ params }: IndexPageProps) {
       <section className="container py-8 md:py-10 lg:py-20 mx-auto">
          <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
             <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
-              Proudly Open Source
+              {t('openSourceTitle')}
             </h2>
             <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-              MOTA ATOM is open source and powered by open source software. <br /> 
-              The code is available on GitHub.
+              {t('openSourceDesc')}
             </p>
             <Link href={siteConfig.links.github} target="_blank" className="underline underline-offset-4">
-               View on GitHub
+               {t('viewOnGitHub')}
             </Link>
          </div>
       </section>

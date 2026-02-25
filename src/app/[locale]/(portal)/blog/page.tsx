@@ -5,11 +5,13 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { ListSearch } from '@/components/ui/list-search';
 import { ListPagination } from '@/components/ui/list-pagination';
-import { Suspense } from 'react'; // 建议引入 Suspense 以避免构建时的 useSearchParams 报错
+import { Suspense } from 'react';
+import { getTranslations } from 'next-intl/server';
 
 // ... metadata 保持不变 ...
 
 interface PageProps {
+  params: Promise<{ locale: string }>
   searchParams: Promise<{
     page?: string
     limit?: string
@@ -18,15 +20,17 @@ interface PageProps {
   }>
 }
 
-export default async function BlogIndex({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const currentPage = Number(params.page) || 1;
-  const pageSize = Number(params.limit) || 12;
-  const query = params.q?.toLowerCase() || "";
-  const activeTag = params.tag || "";
+export default async function BlogIndex({ params, searchParams }: PageProps) {
+  const { locale } = await params;
+  const resolvedSearchParams = await searchParams;
+  const currentPage = Number(resolvedSearchParams.page) || 1;
+  const pageSize = Number(resolvedSearchParams.limit) || 12;
+  const query = resolvedSearchParams.q?.toLowerCase() || "";
+  const activeTag = resolvedSearchParams.tag || "";
 
-  const allPosts = getBlogPosts();
-  const allTags = getAllTags();
+  const allPosts = getBlogPosts(locale);
+  const allTags = getAllTags(locale);
+  const t = await getTranslations("BlogList");
 
   const filteredPosts = allPosts.filter((post) => {
     const matchesSearch = 
@@ -56,7 +60,7 @@ export default async function BlogIndex({ searchParams }: PageProps) {
         <div>
            <h1 className="text-2xl font-bold tracking-tight lg:text-3xl">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-cyan-500">
-            Blog
+            {t("title")}
             </span>
             </h1>           
         </div>
@@ -69,7 +73,7 @@ export default async function BlogIndex({ searchParams }: PageProps) {
       {/* mb-6 = 与下方文章列表拉开距离 */}
       <div className="w-full mb-6 lg:hidden">
          <Suspense fallback={<div className="h-10 w-full bg-slate-100 rounded-md animate-pulse" />}>
-            <ListSearch tags={allTags} />
+            <ListSearch tags={allTags} sectionTitle={t("topics")} searchPlaceholder={t("searchPlaceholder")} />
          </Suspense>
       </div>
       
@@ -79,7 +83,7 @@ export default async function BlogIndex({ searchParams }: PageProps) {
         <div className="lg:col-span-3">
            {paginatedPosts.length === 0 ? (
              <div className="py-16 text-center text-sm text-muted-foreground border border-dashed rounded-lg bg-slate-50 dark:bg-slate-900/50">
-               No posts found.
+               {t("noPosts")}
              </div>
            ) : (
              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -150,9 +154,9 @@ export default async function BlogIndex({ searchParams }: PageProps) {
            {/* hidden lg:block = 在手机端隐藏，在桌面端显示 */}
            {/* 这样防止手机端页面底部出现重复的搜索框 */}
            <div className="rounded-lg border bg-card p-3 shadow-sm sticky top-20 hidden lg:block">
-              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Filter</h2>
+              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("filter")}</h2>
               <Suspense>
-                <ListSearch tags={allTags} />
+                <ListSearch tags={allTags} sectionTitle={t("topics")} searchPlaceholder={t("searchPlaceholder")} />
               </Suspense>
            </div>
         </aside>

@@ -1,6 +1,5 @@
 // src/app/[locale]/(portal)/docs/layout.tsx
 import { DocsSidebar } from "@/components/docs/docs-sidebar";
-import { docsConfig } from "@/config/docs";
 import { ScrollArea } from "@/components/ui/scroll-area"; // 如果你有 Shadcn UI 的 ScrollArea 最好，没有就用原生 overflow
 import { DocsSearch } from "@/components/docs/docs-search";
 
@@ -21,7 +20,7 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
 
             {/* 菜单区域 - 可独立滚动 */}
             <ScrollArea className="h-[calc(100vh-8rem)] px-2">
-              <DocsSidebar items={docsConfig.sidebarNav} />
+              <DocsSidebar />
             </ScrollArea>
         </aside>
 

@@ -16,7 +16,8 @@ import {
   CommandSeparator,
 } from "@/components/ui/command"
 import Fuse from "fuse.js" // 🟢 引入 Fuse
-import { docsConfig } from "@/config/docs"
+import { getDocsConfig } from "@/config/docs"
+import { useTranslations } from "next-intl"
 
 // 定义索引结构
 type SearchDoc = {
@@ -33,6 +34,8 @@ export function DocsSearch({ ...props }: DialogProps) {
   const [query, setQuery] = React.useState("")
   const [data, setData] = React.useState<SearchDoc[]>([])
   const [isLoading, setIsLoading] = React.useState(false)
+  const t = useTranslations("DocsNav")
+  const docsConfig = getDocsConfig(t)
 
   // 1. 初始化快捷键监听 (保持不变)
   React.useEffect(() => {
@@ -121,8 +124,8 @@ export function DocsSearch({ ...props }: DialogProps) {
       >
         <span className="inline-flex items-center">
             <Search className="mr-2 h-4 w-4" />
-            <span className="hidden sm:inline-flex">Search docs...</span>
-            <span className="inline-flex sm:hidden">Search...</span>
+            <span className="hidden sm:inline-flex">{t("searchPlaceholder")}</span>
+            <span className="inline-flex sm:hidden">{t("searchPlaceholder")}</span>
         </span>
         <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
           <span className="text-xs">⌘</span>K
@@ -131,25 +134,25 @@ export function DocsSearch({ ...props }: DialogProps) {
       
       <CommandDialog open={open} onOpenChange={setOpen} shouldFilter={false}>
         <CommandInput 
-          placeholder="Search documentation..." 
+          placeholder={t("searchPlaceholderFull")} 
           value={query}
           onValueChange={setQuery}
         />
         <CommandList>
           <CommandEmpty className={cn(isLoading ? "hidden" : "py-6 text-center text-sm")}>
-             No results found.
+             {t("noResults")}
           </CommandEmpty>
           
           {isLoading && (
             <div className="flex items-center justify-center py-6 text-sm text-muted-foreground">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Loading index...
+              {t("loadingIndex")}
             </div>
           )}
 
           {/* 🟢 模式 A: 有搜索关键词时，显示全文搜索结果 */}
           {query.length > 0 && (
-            <CommandGroup heading="Search Results">
+            <CommandGroup heading={t("searchResults")}>
               {results.map((doc) => (
                 <CommandItem
                   key={doc.slug}
@@ -180,7 +183,7 @@ export function DocsSearch({ ...props }: DialogProps) {
           {/* 🟢 模式 B: 没有搜索关键词时，显示默认导航菜单 (作为快速跳转) */}
           {query.length === 0 && !isLoading && (
              <>
-               <div className="px-2 py-2 text-xs font-medium text-muted-foreground">Suggested</div>
+               <div className="px-2 py-2 text-xs font-medium text-muted-foreground">{t("suggested")}</div>
                {docsConfig.sidebarNav.map((group) => (
                 <CommandGroup key={group.title} heading={group.title}>
                   {group.items?.map((navItem) => (

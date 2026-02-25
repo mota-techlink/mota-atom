@@ -7,43 +7,51 @@ export interface FeatureItem {
   icon: IconKey;
 }
 
-export const featuresContent = {
-  title: "Features",
-  subtitle: "The comprehensive open-source portal that gives you a Storefront, Member Hub, and Admin Dashboard out of the box.",
-  features: [
-    {
-      title: "Zero Infrastructure Costs",
-      description: "Stop worrying about AWS bills. Architected for serverless-first deployment that stays free until you scale.",
-      icon: "wallet" as IconKey,
-    },
-    {
-      title: "3-in-1 Ecosystem",
-      description: "A unified portal integrating Public Storefront, Member Hub, and Admin Dashboard seamlessly.",
-      icon: "layers" as IconKey,
-    },
-    {
-      title: "Modern Tech Stack",
-      description: "Built with the bleeding edge: Next.js 15, Shadcn/UI, Tailwind CSS, and Supabase.",
-      icon: "cpu" as IconKey,
-    },
-    {
-      title: "Native AI Support",
-      description: "Built-in RAG-powered customer support and 24/7 AI Chatbot with local content awareness.",
-      icon: "bot" as IconKey,
-    },
-    {
-      title: "Web3 Ready",
-      description: "Future-proof your startup with seamless integration for next-gen digital assets and identity.",
-      icon: "blocks" as IconKey,
-    },
-    {
-      title: "Enhanced UX",
-      description: "Features distinct user experience tools like Bionic Reading to improve content consumption.",
-      icon: "glasses" as IconKey,
-    },
-  ],
-};
+export interface FeaturesContent {
+  title: string;
+  subtitle: string;
+  features: FeatureItem[];
+}
 
-
-
-// Stop worrying about AWS bills and start building. We combine the latest tech into a powerful toolkit.
+/**
+ * 根据翻译函数生成 features 内容
+ * @param t - 翻译函数，对应 "Features" 命名空间
+ */
+export function getFeaturesContent(t: (key: string) => string): FeaturesContent {
+  return {
+    title: t("title"),
+    subtitle: t("subtitle"),
+    features: [
+      {
+        title: t("zeroInfra_title"),
+        description: t("zeroInfra_desc"),
+        icon: "wallet" as IconKey,
+      },
+      {
+        title: t("ecosystem_title"),
+        description: t("ecosystem_desc"),
+        icon: "layers" as IconKey,
+      },
+      {
+        title: t("techStack_title"),
+        description: t("techStack_desc"),
+        icon: "cpu" as IconKey,
+      },
+      {
+        title: t("ai_title"),
+        description: t("ai_desc"),
+        icon: "bot" as IconKey,
+      },
+      {
+        title: t("web3_title"),
+        description: t("web3_desc"),
+        icon: "blocks" as IconKey,
+      },
+      {
+        title: t("ux_title"),
+        description: t("ux_desc"),
+        icon: "glasses" as IconKey,
+      },
+    ],
+  };
+}

@@ -8,6 +8,7 @@ import { siteConfig } from "@/config/site";
 import { Metadata } from "next";
 import { PlayCircle, ArrowRight } from "lucide-react";
 import { ContentLayout } from "@/components/layout/content-layout";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: `Showcase - ${siteConfig.name}`,
@@ -15,18 +16,21 @@ export const metadata: Metadata = {
 };
 
 interface ShowcasePageProps {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{
     q?: string;
     tag?: string;
   }>;
 }
 
-export default async function ShowcasePage({ searchParams }: ShowcasePageProps) {
+export default async function ShowcasePage({ params, searchParams }: ShowcasePageProps) {
+  const { locale } = await params;
   const { q, tag } = await searchParams;
   const query = q?.toLowerCase() || "";
   const activeTag = tag || "";
+  const t = await getTranslations("ShowcaseList");
 
-  const allPosts = getContents("showcase");
+  const allPosts = getContents("showcase", locale);
   const allTags = Array.from(new Set(allPosts.flatMap(post => post.metadata.categories || [])));
 
   const filteredPosts = allPosts
@@ -70,7 +74,7 @@ export default async function ShowcasePage({ searchParams }: ShowcasePageProps) 
             />
           ) : (
             <div className="flex h-full items-center justify-center text-muted-foreground">
-              No Image
+              {t("noImage")}
             </div>
           )}
 
@@ -117,11 +121,11 @@ export default async function ShowcasePage({ searchParams }: ShowcasePageProps) 
       <div className="flex flex-col items-center text-center space-y-4 mb-16">
         <h1 className="text-3xl font-extrabold tracking-tight md:text-5xl lg:text-6xl">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">
-            Showcase
+            {t("title")}
           </span>
         </h1>
         <p className="max-w-[700px] text-lg text-muted-foreground md:text-xl">
-          Discover how we bridge the gap between AI, Edge Computing, and real-world industrial applications.
+          {t("description")}
         </p>
       </div>
 
@@ -130,9 +134,11 @@ export default async function ShowcasePage({ searchParams }: ShowcasePageProps) 
         items={postItems}
         tags={allTags}
         itemsPerPage={6}
-        sectionTitle="Categories"
-        searchPlaceholder="Search projects..."
-        // renderItem 属性已删除
+        sectionTitle={t("categories")}
+        searchPlaceholder={t("searchPlaceholder")}
+        noItemsText={t("noItems")}
+        loadingText={t("loading")}
+        endOfListText={t("endOfList")}
       />
     </div>
   );

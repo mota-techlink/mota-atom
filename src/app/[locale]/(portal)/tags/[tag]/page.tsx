@@ -7,11 +7,11 @@ export async function generateStaticParams() {
   return tags.map((tag) => ({ tag }));
 }
 
-export default async function TagPage({ params }: { params: Promise<{ tag: string }> }) {
-  const { tag } = await params;
+export default async function TagPage({ params }: { params: Promise<{ tag: string; locale: string }> }) {
+  const { tag, locale } = await params;
   const decodedTag = decodeURIComponent(tag);
   
-  const posts = getBlogPosts().filter(post => 
+  const posts = getBlogPosts(locale).filter(post => 
     post.metadata.tags?.some(t => t.toLowerCase() === decodedTag.toLowerCase())
   );
 

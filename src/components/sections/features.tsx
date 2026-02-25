@@ -1,23 +1,10 @@
-import matter from "gray-matter";
 import { Icons, IconKey } from "@/components/icons"; // 引入刚才创建的图标映射
-import { featuresContent } from "@/config/features";
-
-// 定义数据接口
-interface FeatureItem {
-  title: string;
-  description: string;
-  icon: IconKey;
-}
-
-interface FeatureData {
-  title: string;
-  subtitle: string;
-  features: FeatureItem[];
-}
+import { getFeaturesContent } from "@/config/features";
+import { getTranslations } from "next-intl/server";
 
 export async function FeaturesSection() {
-  
-  const content = featuresContent;
+  const t = await getTranslations("Features");
+  const content = getFeaturesContent(t);
   return (
     <section className="container space-y-16 py-24 ">
       {/* 头部区域：Headline & Sub-headline */}

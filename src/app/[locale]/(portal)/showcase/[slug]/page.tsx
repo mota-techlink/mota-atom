@@ -12,10 +12,10 @@ export function generateStaticParams() {
 }
 
 
-export default async function ShowcasePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function ShowcasePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const { slug, locale } = await params;
   // 1. 获取 'showcase' 类型的内容
-  const post = getContentBySlug('showcase', decodeURIComponent(slug));
+  const post = getContentBySlug('showcase', decodeURIComponent(slug), locale);
 
   if (!post) {
     return notFound();

@@ -1,15 +1,14 @@
 "use client";
 
 import { Link, usePathname } from "@/navigation";
-import { SidebarNavItem } from "@/config/docs";
+import { SidebarNavItem, getDocsConfig } from "@/config/docs";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
-interface DocsSidebarProps {
-  items: SidebarNavItem[];
-}
-
-export function DocsSidebar({ items }: DocsSidebarProps) {
+export function DocsSidebar() {
   const pathname = usePathname();
+  const t = useTranslations("DocsNav");
+  const { sidebarNav: items } = getDocsConfig(t);
 
   return (
     <div className="w-full">

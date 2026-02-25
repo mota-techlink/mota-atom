@@ -4,9 +4,9 @@ import { getContentBySlug } from '@/lib/mdx';
 import { formatDate } from "@/lib/utils"
 
 
-export default async function showTermsPage({ params }: { params: Promise<{ slug: string }> }) {
-
-  const post = getContentBySlug('legal', decodeURIComponent('terms'));
+export default async function showTermsPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const { locale } = await params;
+  const post = getContentBySlug('legal', decodeURIComponent('terms'), locale);
   if (!post) {
     return notFound();
   }

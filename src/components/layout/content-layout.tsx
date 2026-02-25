@@ -13,16 +13,21 @@ interface ContentLayoutProps {
   searchPlaceholder?: string
   itemsPerPage?: number
   emptyState?: React.ReactNode
+  noItemsText?: string
+  loadingText?: string
+  endOfListText?: string
 }
 
 export function ContentLayout({ 
   items, 
-  // renderItem, 🔴 删除这个 prop
   tags, 
   sectionTitle = "Categories", 
   searchPlaceholder = "Search...",
   itemsPerPage = 9,
-  emptyState
+  emptyState,
+  noItemsText = "No items found matching your criteria.",
+  loadingText = "Loading more content...",
+  endOfListText = "You've reached the end of the list.",
 }: ContentLayoutProps){
   
   // --- 无限滚动逻辑 ---
@@ -72,7 +77,7 @@ export function ContentLayout({
         ) : (
           emptyState || (
             <div className="text-center py-20 text-muted-foreground bg-muted/30 rounded-xl border border-dashed">
-              <p>No items found matching your criteria.</p>
+              <p>{noItemsText}</p>
             </div>
           )
         )}
@@ -81,14 +86,14 @@ export function ContentLayout({
           <div ref={observerRef} className="flex justify-center items-center py-12 w-full">
             <div className="flex items-center gap-2 text-muted-foreground text-sm bg-muted/50 px-4 py-2 rounded-full">
               <Loader2 className="w-4 h-4 animate-spin" />
-              Loading more content...
+              {loadingText}
             </div>
           </div>
         )}
         
         {visibleItems.length >= items.length && items.length > 0 && (
           <div className="text-center py-12 text-sm text-muted-foreground/50">
-            You&apos;ve reached the end of the list.
+            {endOfListText}
           </div>
         )}
       </div>

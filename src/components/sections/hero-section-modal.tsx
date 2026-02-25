@@ -25,23 +25,24 @@ interface HeroSectionProps {
 
 export function HeroSection({ specificProviders = [], commonProviders = [] }: HeroSectionProps) {
   const t = useTranslations('Hero');
+  const tAuth = useTranslations('Auth');
   const [signupModalOpen, setSignupModalOpen] = useState(false);
 
   const dict = {
-    loginTitle: 'Welcome back',
-    signupTitle: 'Create an account',
-    loginDesc: 'Sign in to your account',
-    signupDesc: 'Enter your email below to create your account',
-    email: 'Email',
-    password: 'Password',
-    confirmPassword: 'Confirm Password',
-    signIn: 'Sign In',
-    signUp: 'Sign Up',
-    noAccount: "Don't have an account?",
-    hasAccount: 'Already have an account?',
-    signUpNow: 'Sign Up Now',
-    signInNow: 'Sign In Now',
-    forgotPassword: 'Forgot password?',
+    loginTitle: tAuth('loginTitle'),
+    signupTitle: tAuth('signupTitle'),
+    loginDesc: tAuth('loginDesc'),
+    signupDesc: tAuth('signupDesc'),
+    email: tAuth('email'),
+    password: tAuth('password'),
+    confirmPassword: tAuth('confirmPassword'),
+    signIn: tAuth('signIn'),
+    signUp: tAuth('signUp'),
+    noAccount: tAuth('noAccount'),
+    hasAccount: tAuth('hasAccount'),
+    signUpNow: tAuth('signUpNow'),
+    signInNow: tAuth('signInNow'),
+    forgotPassword: tAuth('forgotPassword'),
   };
 
   return (
@@ -65,19 +66,19 @@ export function HeroSection({ specificProviders = [], commonProviders = [] }: He
                 className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80"
               >
                 <Twitter className="mr-2 h-4 w-4 fill-current" />
-                Follow updates on Twitter
+                {t('badge')}
               </Link>
 
               {/* 标题 */}
               <div className="space-y-4 max-w-2xl lg:max-w-3xl">
                 <h1 className="font-bold tracking-tighter text-foreground font-heading leading-tight">
                   <span className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl block sm:inline text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-400">
-                    Structuring{" "}
+                    {t('slogan')}{" "}
                   </span>
 
                   <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl inline-block">
                       <TypewriterText
-                        words={["Chaos", "SaaS", "Assets", "Future"]}
+                        words={[t('typewriterWord1'), t('typewriterWord2'), t('typewriterWord3'), t('typewriterWord4')]}
                         className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-600"
                         cursorClassName="bg-blue-500 h-[0.8em]"
                       />
@@ -85,7 +86,7 @@ export function HeroSection({ specificProviders = [], commonProviders = [] }: He
                 </h1>
                 
                 <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 landscape:mx-0 leading-relaxed">
-                  {siteConfig.description}
+                  {t('description')}
                 </p>
               </div>
 

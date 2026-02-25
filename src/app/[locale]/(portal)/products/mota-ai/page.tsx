@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "MOTA ATOM Solutions - Empower Your Business",
@@ -78,9 +79,10 @@ const PRODUCT_CONFIG: Record<string, any> = {
 
 export default async function AIProductListPage({ params }: { params: { locale: string } }) {
   const { locale } = await params;
+  const t = await getTranslations("MotaAIList");
   
   // 1. 获取所有 MOTA ATOM 产品  
-  const products = getContents("mota-ai");
+  const products = getContents("mota-ai", locale);
   // 2. 排序逻辑：有配置的按 order 排，没配置的放最后
   const sortedProducts = products.sort((a, b) => {
     const orderA = PRODUCT_CONFIG[a.slug]?.order ?? 99;
@@ -101,14 +103,14 @@ export default async function AIProductListPage({ params }: { params: { locale: 
         <div className="max-w-3xl mx-auto text-center mb-16 space-y-6">
           <div className="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-500 mb-4">
             <Sparkles className="mr-2 h-4 w-4" />
-            MOTA ATOM Intelligence Suite
+            {t("badge")}
           </div>
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">
-            Intelligent Solutions for <br/>
-            <span className="text-blue-500">Future Business</span>
+            {t("titleLine1")} <br/>
+            <span className="text-blue-500">{t("titleLine2")}</span>
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            From generative digital humans to edge AI quantification, explore our cutting-edge models designed to automate and scale your operations.
+            {t("description")}
           </p>
         </div>
 
@@ -172,7 +174,7 @@ export default async function AIProductListPage({ params }: { params: { locale: 
                    </div>
 
                    <div className="flex items-center text-sm font-medium text-blue-500 group-hover:translate-x-1 transition-transform">
-                      View Solution <ArrowRight className="ml-2 w-4 h-4" />
+                      {t("viewSolution")} <ArrowRight className="ml-2 w-4 h-4" />
                    </div>
                 </div>
               </Link>
@@ -184,19 +186,19 @@ export default async function AIProductListPage({ params }: { params: { locale: 
         <div className="mt-24 rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-8 md:p-16 text-center text-white relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-20" /> {/* 可选网格背景 */}
           <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-            <h2 className="text-3xl font-bold">Need a Custom AI Solution?</h2>
+            <h2 className="text-3xl font-bold">{t("ctaTitle")}</h2>
             <p className="text-blue-100 text-lg">
-              We specialize in tailoring models for specific industry needs. From fine-tuning LLMs to embedded deployment.
+              {t("ctaDescription")}
             </p>
             <div className="flex justify-center gap-4 pt-4">
               <Link href="/contact">
                 <Button size="lg" variant="secondary" className="font-semibold">
-                  Talk to an Expert
+                  {t("talkToExpert")}
                 </Button>
               </Link>
               <Link href="/showcase">
                 <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-blue-600">
-                  See Success Cases
+                  {t("seeSuccessCases")}
                 </Button>
               </Link>
             </div>

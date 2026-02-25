@@ -29,40 +29,38 @@ function getManifestData(type: ContentType): any[] {
 // 获取指定类型的所有内容（用于生成列表页或聚合页）
 export function getContents(type: ContentType, locale: string = defaultLocale): MdxPost[] {
   const allItems = getManifestData(type);
-  // 1. 过滤逻辑 (移植原 filter)
-  const filtered = allItems.filter((item: any) => {
-    // 过滤掉 draft (生产环境)
+
+  // 1. 过滤掉 draft (生产环境)
+  const nonDraft = allItems.filter((item: any) => {
     if (process.env.NODE_ENV === 'production' && item.metadata.draft === true) {
       return false;
     }
-
-    // 语言过滤逻辑：
-    // 如果文件名包含 .en.md，但当前请求的是 zh，则过滤掉
-    const isLocalizedFile = locales.some(l => l !== defaultLocale && item.filename.includes(`.${l}.`));
-    
-    // 如果当前请求是默认语言(zh)，但文件是(en)，则跳过
-    if (locale === defaultLocale && isLocalizedFile) return false;
-
-    // 如果当前请求是(en)，但文件不是(en)且不是默认文件... 这里简化逻辑：
-    // 我们主要需要确保取出"最合适"的文件。
-    // 在列表页，通常我们只返回默认语言的文章，或者做更复杂的去重。
-    // 原代码逻辑：!locales.some(l => l !== defaultLocale && f.includes(`.${l}.md`))
-    // 原意是：只获取默认语言的文件 + 不带后缀的文件
-    if (locales.some(l => l !== defaultLocale && item.filename.includes(`.${l}.`))) {
-      return false; 
-    }
-
     return true;
   });
-   
-// 2. 映射格式 (JSON 里已经是 parse 好的了)
-  const posts: MdxPost[] = filtered.map((item: any) => ({
+
+  // 2. 按 slug 分组，为每个 slug 选择最合适的语言版本
+  //    优先选择与请求 locale 匹配的文件，回退到默认（无后缀）版本
+  const slugMap = new Map<string, { item: any; itemLocale: string }>();
+  for (const item of nonDraft) {
+    const itemLocale = locales.find(l => l !== defaultLocale && item.filename.includes(`.${l}.`)) || defaultLocale;
+
+    const existing = slugMap.get(item.slug);
+    if (!existing) {
+      slugMap.set(item.slug, { item, itemLocale });
+    } else if (itemLocale === locale && existing.itemLocale !== locale) {
+      // 新条目的语言更匹配当前请求，替换
+      slugMap.set(item.slug, { item, itemLocale });
+    }
+  }
+
+  // 3. 映射格式
+  const posts: MdxPost[] = Array.from(slugMap.values()).map(({ item }) => ({
     slug: item.slug,
     metadata: item.metadata,
     content: item.content,
   }));
 
-  // 3. 排序
+  // 4. 排序
   return posts.sort((a, b) => {
     if (a.metadata.date && b.metadata.date) {
       return new Date(a.metadata.date) > new Date(b.metadata.date) ? -1 : 1;
@@ -102,8 +100,8 @@ export function getContentBySlug(type: ContentType, slug: string, locale: string
 
 
 
-export const getBlogPosts = () => getContents('blog');
-export const getShowcasePosts = () => getContents('showcase');
+export const getBlogPosts = (locale: string = defaultLocale) => getContents('blog', locale);
+export const getShowcasePosts = (locale: string = defaultLocale) => getContents('showcase', locale);
 
 export const getProductBySlug = (slug: string, locale: string) => getContentBySlug('products', slug, locale);
 export const getMotaAiProductBySlug = (slug: string, locale: string) => getContentBySlug('mota-ai', slug, locale);
@@ -113,8 +111,8 @@ export const getDocBySlug = (slug: string, locale: string) => getContentBySlug('
 
 
 
-export function getAllTags(): string[] {
-    const posts = getContents('blog');
+export function getAllTags(locale: string = defaultLocale): string[] {
+    const posts = getContents('blog', locale);
     const tags = new Set<string>();
     posts.forEach(p => p.metadata.tags?.forEach(t => tags.add(t)));
     return Array.from(tags);

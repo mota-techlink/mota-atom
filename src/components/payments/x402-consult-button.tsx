@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import {
   Card,
   CardContent,
@@ -63,23 +64,24 @@ interface ConsultResult {
   payer?: string;
 }
 
-const PHASE_LABELS: Record<string, string> = {
-  requesting: "Sending request…",
-  parsing: "Processing payment requirements…",
-  connecting: "Connecting wallet…",
-  checking_balance: "Verifying USDC balance…",
-  signing: "Please sign in MetaMask…",
-  paying: "Submitting payment…",
-};
-
 export function X402ConsultButton({
   productSlug,
   productName,
 }: X402ConsultButtonProps) {
+  const t = useTranslations("X402Consult");
   const [state, setState] = useState<ConsultState>({ step: "idle" });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [question, setQuestion] = useState("");
   const [hasWallet, setHasWallet] = useState(false);
+
+  const PHASE_LABELS: Record<string, string> = {
+    requesting: t("phaseRequesting"),
+    parsing: t("phaseParsing"),
+    connecting: t("phaseConnecting"),
+    checking_balance: t("phaseCheckingBalance"),
+    signing: t("phaseSigning"),
+    paying: t("phasePaying"),
+  };
 
   useEffect(() => {
     setHasWallet(isWalletAvailable());
@@ -98,7 +100,7 @@ export function X402ConsultButton({
 
   const handleSubmit = async () => {
     if (!question.trim()) {
-      toast.error("Please enter your consultation question.");
+      toast.error(t("enterQuestion"));
       return;
     }
 
@@ -106,7 +108,7 @@ export function X402ConsultButton({
       setState({
         step: "error",
         message:
-          "No Ethereum wallet detected. Please install MetaMask to make X402 payments.",
+          t("noWalletError"),
         errorCode: "NO_WALLET",
       });
       return;
@@ -152,7 +154,7 @@ export function X402ConsultButton({
           payer: result.payer,
         },
       });
-      toast.success("Consultation complete!");
+      toast.success(t("consultComplete"));
     } else {
       setState({
         step: "error",
@@ -169,21 +171,12 @@ export function X402ConsultButton({
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
             <Zap className="w-5 h-5 text-violet-600 dark:text-violet-400" />
-            Quick Consultation
+            {t("quickConsultation")}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            Get instant expert advice on{" "}
-            <span className="font-medium text-foreground">{productName}</span>{" "}
-            powered by{" "}
-            <Badge
-              variant="outline"
-              className="text-xs px-1.5 py-0 font-mono"
-            >
-              X402
-            </Badge>{" "}
-            protocol.
+            {t("consultDesc", { productName })}
           </p>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
@@ -191,13 +184,13 @@ export function X402ConsultButton({
                 $0.10
               </span>
               <span className="text-xs text-muted-foreground">
-                USDC / question
+                {t("usdcPerQuestion")}
               </span>
             </div>
             {hasWallet && (
               <Badge variant="secondary" className="text-xs gap-1">
                 <Wallet className="w-3 h-3" />
-                Wallet Ready
+                {t("walletReady")}
               </Badge>
             )}
           </div>
@@ -207,12 +200,12 @@ export function X402ConsultButton({
             size="lg"
           >
             <MessageSquare className="w-4 h-4 mr-2" />
-            Ask a Question
+            {t("askQuestion")}
           </Button>
           <p className="text-xs text-center text-muted-foreground">
             {hasWallet
-              ? "Paid via MetaMask · USDC on Base"
-              : "Requires MetaMask wallet"}
+              ? t("paidViaMetamask")
+              : t("requiresMetamask")}
           </p>
         </CardContent>
       </Card>
@@ -232,9 +225,9 @@ export function X402ConsultButton({
                     <Zap className="w-5 h-5 text-violet-600 dark:text-violet-400" />
                   </div>
                   <div>
-                    <DialogTitle>Consultation: {productName}</DialogTitle>
+                    <DialogTitle>{t("consultationTitle", { productName })}</DialogTitle>
                     <DialogDescription>
-                      Ask your question — $0.10 USDC via X402 protocol
+                      {t("consultationDesc")}
                     </DialogDescription>
                   </div>
                 </div>
@@ -242,7 +235,7 @@ export function X402ConsultButton({
 
               <div className="space-y-4 mt-2">
                 <Textarea
-                  placeholder={`What would you like to know about ${productName}? e.g., "What tech stack do you recommend for my use case?"`}
+                  placeholder={t("questionPlaceholder", { productName })}
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   rows={4}
@@ -256,23 +249,17 @@ export function X402ConsultButton({
                     <div className="text-xs text-muted-foreground space-y-1.5">
                       <p>
                         <strong className="text-foreground">
-                          How payment works:
+                          {t("howPaymentWorks")}
                         </strong>
                       </p>
                       <ol className="list-decimal ml-3 space-y-0.5">
-                        <li>Click &quot;Pay &amp; Submit&quot; below</li>
-                        <li>
-                          MetaMask will ask you to sign a USDC authorization
-                        </li>
-                        <li>
-                          $0.10 USDC is transferred via the X402 protocol
-                        </li>
-                        <li>
-                          You receive your consultation response instantly
-                        </li>
+                        <li>{t("step1")}</li>
+                        <li>{t("step2")}</li>
+                        <li>{t("step3")}</li>
+                        <li>{t("step4")}</li>
                       </ol>
                       <p className="text-muted-foreground/70">
-                        Payment is settled on Base network. No gas fees for you.
+                        {t("paymentNote")}
                       </p>
                     </div>
                   </div>
@@ -280,7 +267,7 @@ export function X402ConsultButton({
 
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button variant="outline">{t("cancel")}</Button>
                   </DialogClose>
                   <Button
                     onClick={handleSubmit}
@@ -288,7 +275,7 @@ export function X402ConsultButton({
                     className="bg-violet-600 hover:bg-violet-700 text-white"
                   >
                     <Wallet className="w-4 h-4 mr-2" />
-                    Pay &amp; Submit ($0.10)
+                    {t("paySubmit")}
                   </Button>
                 </DialogFooter>
               </div>
@@ -304,9 +291,9 @@ export function X402ConsultButton({
                     <Zap className="w-5 h-5 text-violet-600 dark:text-violet-400" />
                   </div>
                   <div>
-                    <DialogTitle>Processing Payment</DialogTitle>
+                    <DialogTitle>{t("processingPayment")}</DialogTitle>
                     <DialogDescription>
-                      Please follow the prompts in your wallet
+                      {t("walletPrompts")}
                     </DialogDescription>
                   </div>
                 </div>
@@ -315,17 +302,16 @@ export function X402ConsultButton({
               <div className="py-8 flex flex-col items-center gap-4">
                 <Loader2 className="w-10 h-10 text-violet-600 animate-spin" />
                 <p className="text-sm font-medium text-center">
-                  {PHASE_LABELS[state.phase] || "Processing…"}
+                  {PHASE_LABELS[state.phase] || t("processing")}
                 </p>
                 {state.phase === "signing" && (
                   <p className="text-xs text-muted-foreground text-center max-w-xs">
-                    A MetaMask popup should appear. Please sign the USDC
-                    authorization to complete payment.
+                    {t("signingHint")}
                   </p>
                 )}
                 {state.phase === "connecting" && (
                   <p className="text-xs text-muted-foreground text-center max-w-xs">
-                    Please approve the connection in your MetaMask wallet.
+                    {t("connectingHint")}
                   </p>
                 )}
 
@@ -384,7 +370,7 @@ export function X402ConsultButton({
                     <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <div>
-                    <DialogTitle>Consultation Complete</DialogTitle>
+                    <DialogTitle>{t("consultationComplete")}</DialogTitle>
                     <DialogDescription>
                       {state.data.product} ·{" "}
                       {new Date(state.data.consultedAt).toLocaleString()}
@@ -398,7 +384,7 @@ export function X402ConsultButton({
                 {state.data.payer && (
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Wallet className="w-3.5 h-3.5" />
-                    Paid by{" "}
+                    {t("paidBy")}{" "}
                     <code className="bg-muted px-1.5 rounded">
                       {state.data.payer.slice(0, 6)}…
                       {state.data.payer.slice(-4)}
@@ -409,7 +395,7 @@ export function X402ConsultButton({
                 {/* Question */}
                 <div className="bg-muted/50 rounded-lg p-3">
                   <p className="text-xs font-medium text-muted-foreground mb-1">
-                    Your Question
+                    {t("yourQuestion")}
                   </p>
                   <p className="text-sm">{state.data.question}</p>
                 </div>
@@ -417,7 +403,7 @@ export function X402ConsultButton({
                 {/* Response */}
                 <div className="bg-violet-50 dark:bg-violet-950/20 rounded-lg p-4">
                   <p className="text-xs font-medium text-violet-600 dark:text-violet-400 mb-2">
-                    Expert Response
+                    {t("expertResponse")}
                   </p>
                   <div className="text-sm whitespace-pre-line leading-relaxed">
                     {state.data.response}
@@ -439,11 +425,11 @@ export function X402ConsultButton({
                       navigator.clipboard.writeText(
                         state.data.paymentId || ""
                       );
-                      toast.success("Payment ID copied");
+                      toast.success(t("paymentIdCopied"));
                     }}
                   >
                     <Copy className="w-3.5 h-3.5 mr-1.5" />
-                    Copy Receipt
+                    {t("copyReceipt")}
                   </Button>
                 )}
                 <Button
@@ -451,15 +437,15 @@ export function X402ConsultButton({
                   size="sm"
                   onClick={() => {
                     navigator.clipboard.writeText(state.data.response);
-                    toast.success("Response copied");
+                    toast.success(t("responseCopied"));
                   }}
                 >
                   <Copy className="w-3.5 h-3.5 mr-1.5" />
-                  Copy Response
+                  {t("copyResponse")}
                 </Button>
                 <DialogClose asChild>
                   <Button variant="default" size="sm">
-                    Done
+                    {t("done")}
                   </Button>
                 </DialogClose>
               </DialogFooter>
@@ -477,12 +463,12 @@ export function X402ConsultButton({
                   <div>
                     <DialogTitle>
                       {state.errorCode === "NO_WALLET"
-                        ? "Wallet Required"
+                        ? t("walletRequired")
                         : state.errorCode === "INSUFFICIENT_BALANCE"
-                          ? "Insufficient Balance"
+                          ? t("insufficientBalance")
                           : state.errorCode === "USER_REJECTED"
-                            ? "Transaction Cancelled"
-                            : "Payment Issue"}
+                            ? t("transactionCancelled")
+                            : t("paymentIssue")}
                     </DialogTitle>
                     <DialogDescription>X402 Protocol</DialogDescription>
                   </div>
@@ -505,7 +491,7 @@ export function X402ConsultButton({
                     className="flex items-center gap-2 text-sm text-violet-600 hover:underline"
                   >
                     <ArrowRight className="w-4 h-4" />
-                    Install MetaMask
+                    {t("installMetamask")}
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 )}
@@ -513,10 +499,10 @@ export function X402ConsultButton({
                 {/* Insufficient balance help */}
                 {state.errorCode === "INSUFFICIENT_BALANCE" && (
                   <div className="text-xs text-muted-foreground space-y-1">
-                    <p>To get testnet USDC on Base Sepolia:</p>
+                    <p>{t("getTestUsdc")}</p>
                     <ol className="list-decimal ml-4 space-y-0.5">
                       <li>
-                        Visit{" "}
+                        {t("faucetStep1")}{" "}
                         <a
                           href="https://faucet.circle.com/"
                           target="_blank"
@@ -526,9 +512,9 @@ export function X402ConsultButton({
                           Circle Faucet
                         </a>
                       </li>
-                      <li>Select &quot;Base Sepolia&quot; network</li>
-                      <li>Paste your wallet address</li>
-                      <li>Claim free test USDC</li>
+                      <li>{t("faucetStep2")}</li>
+                      <li>{t("faucetStep3")}</li>
+                      <li>{t("faucetStep4")}</li>
                     </ol>
                   </div>
                 )}
@@ -536,7 +522,7 @@ export function X402ConsultButton({
                 {/* Developer info */}
                 <div className="space-y-2 text-xs text-muted-foreground">
                   <p className="font-medium text-foreground">
-                    For developers &amp; AI agents:
+                    {t("forDevelopers")}
                   </p>
                   <code className="block bg-muted p-3 rounded text-xs overflow-x-auto">
                     {`curl -X POST ${typeof window !== "undefined" ? window.location.origin : ""}/api/x402/consult \\
@@ -545,7 +531,7 @@ export function X402ConsultButton({
   -d '{"product": "${productSlug}", "question": "..."}'`}
                   </code>
                   <p>
-                    Learn more:{" "}
+                    {t("learnMore")}{" "}
                     <a
                       href="https://x402.org"
                       target="_blank"
@@ -562,10 +548,10 @@ export function X402ConsultButton({
                     variant="outline"
                     onClick={() => setState({ step: "input" })}
                   >
-                    Try Again
+                    {t("tryAgain")}
                   </Button>
                   <DialogClose asChild>
-                    <Button variant="default">Close</Button>
+                    <Button variant="default">{t("close")}</Button>
                   </DialogClose>
                 </DialogFooter>
               </div>

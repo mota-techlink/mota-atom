@@ -3,8 +3,9 @@
 import { Link, usePathname } from "@/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import { docsConfig } from "@/config/docs";
+import { getDocsConfig } from "@/config/docs";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface DocsPagerProps {
   // 如果需要强制指定 slug 可以传，否则自动获取
@@ -13,9 +14,10 @@ interface DocsPagerProps {
 
 export function DocsPager({ slug }: DocsPagerProps) {
   const pathname = usePathname();
+  const t = useTranslations("DocsNav");
   
   // 1. 将嵌套的侧边栏配置展平成一维数组，方便查找前后关系
-  const pager = getPagerForDoc(docsConfig.sidebarNav, pathname);
+  const pager = getPagerForDoc(getDocsConfig(t).sidebarNav, pathname);
 
   if (!pager) {
     return null;
@@ -31,7 +33,7 @@ export function DocsPager({ slug }: DocsPagerProps) {
         >
           <ChevronLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
           <div className="flex flex-col items-start">
-             <span className="text-xs text-muted-foreground font-medium mb-1">Previous</span>
+             <span className="text-xs text-muted-foreground font-medium mb-1">{t("previous")}</span>
              <span className="font-medium text-foreground">{pager.prev.title}</span>
           </div>
         </Link>
@@ -47,7 +49,7 @@ export function DocsPager({ slug }: DocsPagerProps) {
           className={cn(buttonVariants({ variant: "ghost" }), "group pr-0 hover:bg-transparent ml-auto")}
         >
           <div className="flex flex-col items-end">
-             <span className="text-xs text-muted-foreground font-medium mb-1">Next</span>
+             <span className="text-xs text-muted-foreground font-medium mb-1">{t("next")}</span>
              <span className="font-medium text-foreground">{pager.next.title}</span>
           </div>
           <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

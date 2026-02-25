@@ -4,9 +4,9 @@ import { getContentBySlug } from '@/lib/mdx';
 import { formatDate } from "@/lib/utils"
 
 
-export default async function showCookiePage({ params }: { params: Promise<{ slug: string }> }) {
-  
-  const post = getContentBySlug('legal', decodeURIComponent('privacy'));
+export default async function showCookiePage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
+  const { locale } = await params;
+  const post = getContentBySlug('legal', decodeURIComponent('privacy'), locale);
   if (!post) {
     return notFound();
   }

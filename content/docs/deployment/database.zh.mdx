@@ -1,0 +1,81 @@
+---
+title: 数据库部署
+description: 如何同步数据模型结构
+---
+
+## 简介
+一条命令将本地数据库结构同步到远程。
+
+## 操作步骤
+
+<Steps>
+
+<Step title = "准备工作" >
+ 
+```bash
+# 安装 CLI
+npm install supabase --save-dev
+
+# 弹出浏览器进行授权
+npx supabase login
+```
+![](/images/docs/2026-02-05-00-09-37.png)![](/images/docs/2026-02-05-00-05-36.png)
+
+</Step>
+
+<Step title = "配置连接">
+
+> 我们需要告诉本地代码谁是远程主库。
+
+* 从 Supabase 控制台 -> Settings -> General 复制 Reference ID（类似 vjqwxqz... 的字符串）。
+
+```bash
+# 初始化（首次使用时）
+npx supabase init
+
+# 连接远程项目（Reference ID）
+npx supabase link --project-ref ReferenceID
+# 此步骤会要求输入数据库密码
+```
+</Step>
+
+<Step title = "生成迁移文件（自动对比）">
+
+```bash
+# 从远程拉取作为基线（首次使用）
+npx supabase db pull
+
+# 创建新的更新（例如刚添加了 documents 表）
+# 它会在 supabase/migrations 文件夹中生成新的 .sql 文件
+npx supabase db diff --use-migra -f update_schema
+```
+</Step>
+<Step title = "自动化">
+
+（可选）在 package.json 中添加以下内容。
+```json
+"scripts": {
+  // ... 其他
+  "db:pull": "supabase db pull",
+  "db:push": "supabase db push" 
+}
+```
+</Step>
+
+</Steps>
+
+## 日常操作
+后续流程如下：
+
+1. 在本地控制台的 [Table Editor](http://127.0.0.1:54323/project/default/editor/) 或 [SQL Edit](http://127.0.0.1:54323/project/default/sql/) 中更新数据库
+2. 本地测试完成。
+3. 运行对比
+```bash
+npx supabase db diff -f feature_name
+```
+4. 运行命令同步到远程
+```bash
+npx supabase db push
+# 或如果在 package.json 中定义了快捷方式
+# npm run db:push
+```
