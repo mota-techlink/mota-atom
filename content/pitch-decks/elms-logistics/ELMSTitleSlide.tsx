@@ -18,6 +18,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+import { useContent } from "./useContent";
 
 // ─── Mouse Parallax Hook ─────────────────────────────────────────
 function useMouseParallax() {
@@ -418,6 +419,8 @@ function GlassBadge({
 
 // ─── Main Slide Component ────────────────────────────────────────
 export function ELMSTitleSlide() {
+  const content = useContent();
+  const c = content.slide1;
   const { springX, springY } = useMouseParallax();
 
   return (
@@ -472,7 +475,7 @@ export function ELMSTitleSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.6 }}
         >
-          European Logistics Management System
+          {c.subtitle}
         </motion.p>
 
         <motion.p
@@ -481,7 +484,7 @@ export function ELMSTitleSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.5 }}
         >
-          AI-Powered Infrastructure for Cross-Border Commerce
+          {c.tagline}
         </motion.p>
 
         {/* Divider line */}
@@ -503,9 +506,9 @@ export function ELMSTitleSlide() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4 }}
         >
-          <GlassBadge icon="🇪🇺" text="EU Compliant" delay={1.5} />
-          <GlassBadge icon="🤖" text="AI-Empowered" delay={1.65} />
-          <GlassBadge icon="🔗" text="MCP Ready" delay={1.8} pulse />
+          <GlassBadge icon="🇪🇺" text={c.badges[0].text} delay={1.5} />
+          <GlassBadge icon="🤖" text={c.badges[1].text} delay={1.65} />
+          <GlassBadge icon="🔗" text={c.badges[2].text} delay={1.8} pulse />
         </motion.div>
       </div>
 
@@ -532,7 +535,7 @@ export function ELMSTitleSlide() {
           MOTA TechLink
         </a>
         <span className="w-px h-3 bg-slate-600 " />
-        <span className="tracking-wider">February 2026</span>
+        <span className="tracking-wider">{c.bottomDate}</span>
       </motion.div>
     </div>
   );

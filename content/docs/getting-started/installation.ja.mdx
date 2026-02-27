@@ -1,0 +1,163 @@
+---
+title: インストール
+description: MOTA ATOM SDK のインストール方法
+---
+
+🛠️ インストール・設定ガイド
+本ガイドでは、Mota Atom の開発環境をゼロから構築する方法を説明します。プロジェクトは Next.js、Supabase、Cloudflare Pages をベースに構築されています。
+
+📋 目次
+- 環境準備
+- プロジェクト初期化
+- バックエンド統合
+- コア機能
+- デプロイ・ビルド
+
+## 1. 環境準備
+Node.js のバージョンを隔離するため、Conda によるプロジェクト環境管理を推奨します。
+
+```bash
+# 独立環境を作成（Node.js 20 を指定）
+conda create -n mota-atom nodejs=20 -y
+```
+
+# 環境を有効化
+conda activate mota-atom
+
+## 2. プロジェクト初期化
+Next.js フレームワークと Shadcn UI コンポーネントライブラリを初期化します。
+
+```bash
+# 1. Next.js プロジェクトを初期化（TypeScript, Tailwind, ESLint）
+npx create-next-app@latest mota-atom --typescript --tailwind --eslint
+
+# プロジェクトディレクトリに移動
+cd mota-atom
+
+# 2. Shadcn UI を初期化
+npx shadcn@latest init
+💡 ヒント：Shadcn UI の設定時、カラーテーマは Slate または Gray を選択すると最適な視覚効果が得られます。
+```
+
+## 3. バックエンド統合（Supabase）
+本プロジェクトでは、バックエンドサービス（データベース、認証）として Supabase を使用します。
+
+### 3.1 CLI のインストールと初期化
+```bash
+# Supabase CLI をインストール（開発依存のみ）
+npm install supabase --save-dev
+
+# インストールを確認（バージョン番号が表示されるはずです。例：2.72.9）
+npx supabase --version
+
+# プロジェクトを初期化（supabase フォルダが生成されます）
+npx supabase init
+```
+
+### 3.2 ローカル環境の起動（Local Docker）
+Docker が実行中であることを確認してから、ローカル Supabase インスタンスを起動します：
+
+```bash
+npx supabase start
+起動が成功すると、以下のローカルサービスアドレスが取得できます：
+```
+
+Console（Studio）：http://127.0.0.1:54323
+
+Mailpit（メールテスト）：http://127.0.0.1:54323/project/default
+
+### 3.3 依存パッケージのインストール
+```bash
+# @supabase/ssr はサーバーサイドコンポーネントやミドルウェアでの Cookie 処理に使用
+npm install @supabase/supabase-js @supabase/ssr
+```
+
+### 3.4 環境変数の設定
+プロジェクトルートディレクトリに .env.local ファイルを作成します：
+
+```Code snippet
+# npx supabase status から取得
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=あなたのローカルAnonKey
+```
+
+### 3.5 データベースワークフロー
+開発段階：ローカルデータベースの構造を変更した後、以下のコマンドで SQL マイグレーションファイルを生成します：
+
+```bash
+# ローカルの変更を supabase/migrations ディレクトリに抽出
+npx supabase db diff -f init_schema
+npx supabase db diff -f add_user_table
+```
+本番同期：ローカルのテーブル構造の変更をリモート本番データベースにプッシュします：
+
+```bash
+# 事前に npx supabase login の実行が必要
+npx supabase db push
+```
+
+## 4. コア機能
+
+### 🌓 テーマ対応（ライト・ダークモード）
+next-themes を統合して、ライト・ダークモードの切り替えに対応します。
+
+```bash
+npm install next-themes
+```
+
+設定：layout.tsx 内で ThemeProvider をラップしてください。Shadcn コンポーネントは自動的に適応します。
+
+### 🌐 多言語対応（i18n）
+next-intl を使用して国際化を実現します。
+
+```bash
+npm install next-intl
+```
+設定ファイル：src/i18n.ts、src/middleware.ts
+
+翻訳ファイル：src/messages/zh.json、src/messages/en.json
+
+ルーティング構造：src/app/[locale]/ の動的ルートを使用
+
+### 📝 ブログシステム（Taxonomy テンプレート）
+MDX と Tailwind Typography をベースにコンテンツエンジンを構築します。
+
+```bash
+# MDX パーサーとメタデータ処理ツールをインストール
+npm install gray-matter next-mdx-remote
+npm install -D @tailwindcss/typography
+```
+プラグイン設定：tailwind.config.ts を更新して typography プラグインを導入します。
+
+読み取りエンジン：src/lib/mdx.ts
+
+ページ実装：src/app/[locale]/(portal)/blog/page.tsx（Resend スタイルのリスト）
+
+## 5. デプロイ・ビルド
+本プロジェクトは Cloudflare Pages 向けに最適化されています。
+
+### 5.1 アダプターのインストール
+Cloudflare アダプターをインストールし、React のバージョンを固定します（互換性の確保）：
+
+```bash
+npm install next@15.5.2 react@19 react-dom@19 --save-exact
+npm install -D @cloudflare/next-on-pages
+```
+
+### 5.2 プロジェクトのビルド
+Cloudflare 専用コマンドでビルドを実行します：
+
+```bash
+npx @cloudflare/next-on-pages
+```
+
+### 5.3 ローカルプレビュー
+GitHub にプッシュする前に、ローカルで Cloudflare Edge 環境をシミュレートしてテストします：
+
+```bash
+npx wrangler pages dev .vercel/output/static
+```
+
+## 付録：よく使うコマンド
+- Supabase の状態確認：`npx supabase status`
+- ローカルデータベースのリセット：`npx supabase db reset`

@@ -38,6 +38,7 @@ import {
   MobileDetailModal,
   MobileExpandButton,
 } from "./MobileDetailModal";
+import { useContent } from "./useContent";
 
 // ═══════════════════════════════════════════════════════════════
 // Types
@@ -309,7 +310,7 @@ function GridFloorBackground() {
 }
 
 // ── Tech Health Badge ────────────────────────────────────────
-function TechHealthBadge() {
+function TechHealthBadge({ label }: { label?: string }) {
   return (
     <motion.div
       className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/5"
@@ -322,7 +323,7 @@ function TechHealthBadge() {
         <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
       </span>
       <span className="text-[9px] lg:text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest">
-        Tech Health: Optimum
+        {label ?? "Tech Health: Optimum"}
       </span>
     </motion.div>
   );
@@ -353,7 +354,7 @@ function ProgressLine({ progress }: { progress: number }) {
 }
 
 // ── Status Indicator ─────────────────────────────────────────
-function StatusDot({ status }: { status: Milestone["status"] }) {
+function StatusDot({ status, statusLabels }: { status: Milestone["status"]; statusLabels?: Record<string, string> }) {
   const colors: Record<Milestone["status"], string> = {
     complete: "bg-emerald-400",
     current: "bg-cyan-400",
@@ -376,7 +377,7 @@ function StatusDot({ status }: { status: Milestone["status"] }) {
         <span className={`relative inline-flex h-2 w-2 rounded-full ${colors[status]}`} />
       </span>
       <span className="text-[9px] lg:text-[10px] font-mono text-slate-500 uppercase tracking-wider">
-        {labels[status]}
+        {statusLabels?.[status] ?? labels[status]}
       </span>
     </div>
   );
@@ -390,6 +391,7 @@ function MilestoneNode({
   onHover,
   isHovered,
   onClick,
+  statusLabels,
 }: {
   milestone: Milestone;
   track: TrackDef;
@@ -397,6 +399,7 @@ function MilestoneNode({
   onHover: (id: string | null) => void;
   isHovered: boolean;
   onClick: () => void;
+  statusLabels?: Record<string, string>;
 }) {
   const IconComp = milestone.icon;
   const delay = 0.4 + colIndex * 0.2;
@@ -481,7 +484,7 @@ function MilestoneNode({
           >
             <IconComp className={`w-4 h-4 lg:w-5 lg:h-5 ${track.color}`} />
           </motion.div>
-          <StatusDot status={milestone.status} />
+          <StatusDot status={milestone.status} statusLabels={statusLabels} />
         </div>
 
         {/* Title */}
@@ -545,7 +548,7 @@ function MilestoneNode({
 }
 
 // ── Recursive Growth Icon (end of timeline) ──────────────────
-function RecursiveGrowthIcon() {
+function RecursiveGrowthIcon({ label, description }: { label?: string; description?: string }) {
   return (
     <motion.div
       className="hidden md:flex flex-col items-center justify-center gap-2 px-3"
@@ -561,11 +564,8 @@ function RecursiveGrowthIcon() {
         <RefreshCw className="w-5 h-5 lg:w-6 lg:h-6 text-emerald-400/60" />
       </motion.div>
       <div className="text-center">
-        <div className="text-[9px] lg:text-[10px] font-mono font-bold text-white/40 tracking-wider">
-          CONTINUOUS
-        </div>
-        <div className="text-[9px] lg:text-[10px] font-mono font-bold text-emerald-400/60 tracking-wider">
-          TECH REFRESH
+        <div className="text-[9px] lg:text-[10px] font-mono font-bold text-emerald-400/60 tracking-wider uppercase">
+          {label ?? "Continuous Refresh"}
         </div>
       </div>
       <motion.div
@@ -574,14 +574,14 @@ function RecursiveGrowthIcon() {
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
       >
-        &ldquo;By the time our stack ages, competitors are still years behind.&rdquo;
+        {description ?? "\u201CBy the time our stack ages, competitors are still years behind.\u201D"}
       </motion.div>
     </motion.div>
   );
 }
 
 // ── Track Label (left side) ──────────────────────────────────
-function TrackLabel({ track, index }: { track: TrackDef; index: number }) {
+function TrackLabel({ track, index, labelOverride }: { track: TrackDef; index: number; labelOverride?: string }) {
   const IconComp = track.icon;
   return (
     <motion.div
@@ -601,7 +601,7 @@ function TrackLabel({ track, index }: { track: TrackDef; index: number }) {
       </div>
       <div className="min-w-0">
         <div className={`text-[10px] lg:text-xs font-bold ${track.color} leading-tight truncate`}>
-          {track.shortLabel}
+          {labelOverride ?? track.shortLabel}
         </div>
         <div className="text-[8px] lg:text-[9px] font-mono text-slate-600 truncate hidden lg:block">
           Track {index + 1}
@@ -672,7 +672,7 @@ function GlowConnectors({
 }
 
 // ── Time Header ──────────────────────────────────────────────
-function TimeHeader({ columns }: { columns: TimeColumn[] }) {
+function TimeHeader({ columns, timeLabels }: { columns: TimeColumn[]; timeLabels?: { period: string; label: string }[] }) {
   return (
     <div className="flex gap-3 lg:gap-4 mb-3 lg:mb-4">
       {/* Spacer for track labels */}
@@ -697,11 +697,11 @@ function TimeHeader({ columns }: { columns: TimeColumn[] }) {
                 col.isCurrent ? "text-cyan-400" : "text-slate-500"
               }`}
             >
-              {col.label}
+              {timeLabels?.[i]?.period ?? col.label}
             </span>
           </div>
           <span className="text-[9px] lg:text-[10px] font-mono text-slate-600 uppercase tracking-widest">
-            {col.sublabel}
+            {timeLabels?.[i]?.label ?? col.sublabel}
           </span>
           {/* Column line */}
           <div
@@ -765,6 +765,15 @@ export function RoadmapEvolutionSlide() {
   const [selectedMilestone, setSelectedMilestone] = useState<{ milestone: Milestone; track: TrackDef; col: TimeColumn } | null>(null);
   const { containerRef, canScrollLeft, canScrollRight, scrollBy } = useHorizontalScroll();
 
+  const content = useContent();
+  const c = content.slide8;
+
+  const statusLabelsMap: Record<string, string> = {
+    complete: c.statusLabels.done,
+    current: c.statusLabels.active,
+    upcoming: c.statusLabels.planned,
+  };
+
   // Progress: Q1-Q2 2026 is current → 25% through timeline
   const progressPercent = 18;
 
@@ -783,7 +792,7 @@ export function RoadmapEvolutionSlide() {
         >
           <Activity className="w-3.5 h-3.5 md:w-4 md:h-4 text-cyan-400/60" />
           <span className="text-[9px] md:text-[10px] lg:text-xs font-mono text-cyan-400/70 tracking-[0.2em] uppercase">
-            Multi-Layer Evolution Map
+            {c.badge}
           </span>
         </motion.div>
 
@@ -794,8 +803,8 @@ export function RoadmapEvolutionSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <span className="text-white">Product </span>
-          <span className="text-cyan-400">Roadmap</span>
+          <span className="text-white">{c.title} </span>
+          <span className="text-cyan-400">{c.titleHighlight}</span>
         </motion.h2>
 
         <motion.p
@@ -804,7 +813,7 @@ export function RoadmapEvolutionSlide() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          3 parallel tracks · Q1 2026 → 2027+ · Infrastructure × Intelligence × Compliance
+          {c.subtitle}
         </motion.p>
       </div>
 
@@ -816,7 +825,7 @@ export function RoadmapEvolutionSlide() {
         </div>
 
         {/* Time Header */}
-        <TimeHeader columns={timeColumns} />
+        <TimeHeader columns={timeColumns} timeLabels={c.timeColumns} />
 
         {/* Scrollable grid area */}
         <div className="relative flex-1 min-h-0">
@@ -864,22 +873,29 @@ export function RoadmapEvolutionSlide() {
               {tracks.map((track, trackIdx) => (
                 <div key={track.id} className="flex items-stretch gap-3 lg:gap-4 flex-1 min-h-0">
                   {/* Track Label */}
-                  <TrackLabel track={track} index={trackIdx} />
+                  <TrackLabel track={track} index={trackIdx} labelOverride={c.tracks[trackIdx]?.label} />
 
                   {/* Milestones row */}
                   <div className="flex gap-3 lg:gap-4 flex-1 min-w-0">
                     {timeColumns.map((col, colIdx) => {
                       const milestone = track.milestones[col.id];
                       if (!milestone) return <div key={col.id} className="flex-1" />;
+                      const lm = c.tracks[trackIdx]?.milestones[colIdx];
+                      const localizedMilestone = lm ? { ...milestone, title: lm.title, description: lm.description } : milestone;
                       return (
                         <div key={col.id} className="flex-1 min-w-40 lg:min-w-44">
                           <MilestoneNode
-                            milestone={milestone}
+                            milestone={localizedMilestone}
                             track={track}
                             colIndex={colIdx}
                             onHover={setHoveredMilestone}
                             isHovered={hoveredMilestone === milestone.id}
-                            onClick={() => setSelectedMilestone({ milestone, track, col })}
+                            onClick={() => setSelectedMilestone({
+                              milestone: localizedMilestone,
+                              track: { ...track, label: c.tracks[trackIdx]?.label ?? track.label, shortLabel: c.tracks[trackIdx]?.label ?? track.shortLabel },
+                              col: { ...col, label: c.timeColumns[colIdx]?.period ?? col.label },
+                            })}
+                            statusLabels={statusLabelsMap}
                           />
                         </div>
                       );
@@ -888,7 +904,7 @@ export function RoadmapEvolutionSlide() {
 
                   {/* Recursive growth (only on last track) */}
                   {trackIdx === tracks.length - 1 ? (
-                    <RecursiveGrowthIcon />
+                    <RecursiveGrowthIcon label={`${c.continuousRefresh.line1} ${c.continuousRefresh.line2}`} description={c.continuousRefresh.quote} />
                   ) : (
                     <div className="hidden md:block w-18 lg:w-22 shrink-0" />
                   )}
@@ -908,7 +924,7 @@ export function RoadmapEvolutionSlide() {
           <div className="flex items-center gap-4 lg:gap-5">
             {(["current", "upcoming", "future"] as const).map((status) => (
               <div key={status} className="flex items-center gap-1">
-                <StatusDot status={status} />
+                <StatusDot status={status} statusLabels={statusLabelsMap} />
               </div>
             ))}
           </div>
@@ -917,7 +933,7 @@ export function RoadmapEvolutionSlide() {
               <ArrowRight className="w-3 h-3 text-slate-500" />
               <span>Click milestones to see details</span>
             </div>
-            <TechHealthBadge />
+            <TechHealthBadge label={c.techHealth} />
           </div>
         </motion.div>
       </div>
@@ -948,7 +964,7 @@ export function RoadmapEvolutionSlide() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className={`text-[9px] font-bold ${track.color} truncate`}>
-                    {track.shortLabel}
+                    {c.tracks[i]?.label ?? track.shortLabel}
                   </div>
                   <div className="text-[7px] text-slate-600 font-mono">
                     4 milestones · Q1 2026 → 2027+
@@ -983,7 +999,7 @@ export function RoadmapEvolutionSlide() {
         </div>
 
         <MobileExpandButton
-          label="Tap to explore roadmap"
+          label={c.mobileExpand}
           onClick={() => setMobileOpen(true)}
         />
       </div>
@@ -1051,7 +1067,7 @@ export function RoadmapEvolutionSlide() {
                       {selectedMilestone.milestone.title}
                     </h3>
                     <div className="flex items-center gap-2">
-                      <StatusDot status={selectedMilestone.milestone.status} />
+                      <StatusDot status={selectedMilestone.milestone.status} statusLabels={statusLabelsMap} />
                       <span className="text-[10px] font-mono text-slate-600">
                         {selectedMilestone.track.label}
                       </span>
@@ -1119,11 +1135,11 @@ export function RoadmapEvolutionSlide() {
       <MobileDetailModal
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        title="Product Roadmap"
-        subtitle="3 tracks · Q1 2026 → 2027+"
+        title={c.mobileModal.title}
+        subtitle={c.mobileModal.subtitle}
       >
         <div className="space-y-5">
-          {tracks.map((track) => {
+          {tracks.map((track, tIdx) => {
             const TrackIcon = track.icon;
             return (
               <div key={track.id}>
@@ -1139,24 +1155,25 @@ export function RoadmapEvolutionSlide() {
                     <TrackIcon className={`w-3.5 h-3.5 ${track.color}`} />
                   </div>
                   <div>
-                    <div className={`text-xs font-bold ${track.color}`}>{track.label}</div>
+                    <div className={`text-xs font-bold ${track.color}`}>{c.tracks[tIdx]?.label ?? track.label}</div>
                     <div className="text-[8px] font-mono text-slate-600">Track</div>
                   </div>
                 </div>
 
                 {/* Milestones */}
                 <div className="space-y-2 pl-2 border-l-2" style={{ borderColor: `rgba(${track.accentRgb},0.15)` }}>
-                  {timeColumns.map((col) => {
+                  {timeColumns.map((col, cIdx) => {
                     const milestone = track.milestones[col.id];
                     if (!milestone) return null;
                     const MIcon = milestone.icon;
+                    const lm = c.tracks[tIdx]?.milestones[cIdx];
                     return (
                       <div key={col.id} className="pl-3">
                         {/* Time label */}
                         <div className="flex items-center gap-1.5 mb-1">
                           <Clock className="w-2.5 h-2.5 text-slate-600" />
-                          <span className="text-[8px] font-mono text-slate-500">{col.label}</span>
-                          <StatusDot status={milestone.status} />
+                          <span className="text-[8px] font-mono text-slate-500">{c.timeColumns[cIdx]?.period ?? col.label}</span>
+                          <StatusDot status={milestone.status} statusLabels={statusLabelsMap} />
                         </div>
 
                         {/* Milestone content */}
@@ -1168,8 +1185,8 @@ export function RoadmapEvolutionSlide() {
                             <MIcon className={`w-3 h-3 ${track.color}`} />
                           </div>
                           <div>
-                            <div className={`text-[10px] font-bold ${track.color}`}>{milestone.title}</div>
-                            <p className="text-[9px] text-slate-500 leading-relaxed mt-0.5">{milestone.description}</p>
+                            <div className={`text-[10px] font-bold ${track.color}`}>{lm?.title ?? milestone.title}</div>
+                            <p className="text-[9px] text-slate-500 leading-relaxed mt-0.5">{lm?.description ?? milestone.description}</p>
                           </div>
                         </div>
 
@@ -1204,16 +1221,15 @@ export function RoadmapEvolutionSlide() {
                 <RefreshCw className="w-3.5 h-3.5 text-emerald-400/60" />
               </div>
               <div>
-                <div className="text-xs font-bold text-emerald-400">Continuous Tech Refresh</div>
-                <div className="text-[8px] font-mono text-slate-600">Recursive Growth Strategy</div>
+                <div className="text-xs font-bold text-emerald-400">{`${c.continuousRefresh.line1} ${c.continuousRefresh.line2}`}</div>
+                <div className="text-[8px] font-mono text-slate-600">{c.continuousRefresh.quote}</div>
               </div>
             </div>
             <p className="text-[9px] text-slate-500 leading-relaxed">
-              &ldquo;By the time our stack ages, competitors are still years behind.&rdquo;
-              Our architecture is designed for perpetual evolution — modular, swappable, future-proof.
+              {c.continuousRefresh.quote}
             </p>
             <div className="flex items-center gap-2 mt-2">
-              <TechHealthBadge />
+              <TechHealthBadge label={c.techHealth} />
             </div>
           </div>
         </div>

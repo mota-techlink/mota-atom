@@ -41,7 +41,7 @@ export function SlideRenderer({ slides, slideTitles }: SlideRendererProps) {
   const effectiveLocales = hasDeckLocale ? deckCtx.availableLocales : (locales as unknown as string[]);
   const effectiveLabels: Record<string, string> = hasDeckLocale
     ? deckCtx.localeLabels
-    : { en: "EN", zh: "中文" };
+    : Object.fromEntries((locales as unknown as string[]).map(l => [l, l.toUpperCase()]));
 
   const isRTL = RTL_LOCALES.has(effectiveLocale);
 

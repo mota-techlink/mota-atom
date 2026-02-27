@@ -27,6 +27,7 @@ import {
   MobileDetailModal,
   MobileExpandButton,
 } from "./MobileDetailModal";
+import { useContent } from "./useContent";
 
 // ─── AI Brand Icons (inline SVGs) ────────────────────────────────
 function ChatGPTIcon({ className = "w-4 h-4" }: { className?: string }) {
@@ -164,10 +165,12 @@ function AIBrandIcons() {
 
 // ─── Business Navigation Links ───────────────────────────────────
 function BusinessLinks() {
+  const content = useContent();
+  const c = content.slide5;
   const links = [
-    { label: "ELMS Products", href: "/products/mota-ai/" },
-    { label: "Case Studies", href: "/showcase" },
-    { label: "Documentation", href: "/docs" },
+    { label: c.businessLinks[0], href: "/products/mota-ai/" },
+    { label: c.businessLinks[1], href: "/showcase" },
+    { label: c.businessLinks[2], href: "/docs" },
   ];
 
   return (
@@ -184,7 +187,7 @@ function BusinessLinks() {
         className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] lg:text-xs text-slate-400 font-mono hover:text-emerald-400 hover:border-emerald-400/30 hover:bg-emerald-500/5 transition-all duration-300 group"
       >
         <ArrowLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
-        Back to Deck
+        {c.businessLinks[3]}
       </a>
       {links.map((link) => (
         <a
@@ -289,6 +292,8 @@ function DataParticle({
 
 // ─── MCP Bridge Node ─────────────────────────────────────────────
 function MCPBridgeNode({ active }: { active: boolean }) {
+  const content = useContent();
+  const c = content.slide5;
   return (
     <div className="relative flex flex-col items-center justify-center gap-3 px-3">
       {/* Pulse rings */}
@@ -351,7 +356,7 @@ function MCPBridgeNode({ active }: { active: boolean }) {
               active ? "text-emerald-400" : "text-slate-500"
             }`}
           >
-            MCP Protocol
+            {c.mcpProtocol}
           </div>
           <AnimatePresence>
             {active && (
@@ -362,7 +367,7 @@ function MCPBridgeNode({ active }: { active: boolean }) {
                 exit={{ opacity: 0, height: 0 }}
               >
                 <Zap className="w-2.5 h-2.5" />
-                Processing
+                {c.processing}
               </motion.div>
             )}
           </AnimatePresence>
@@ -382,8 +387,9 @@ function AIChatConsole({
   showResult: boolean;
   onShipmentClick: () => void;
 }) {
-  const prompt =
-    "Ship 50 boxes of electronics from Shenzhen to Dublin via the fastest route.";
+  const content = useContent();
+  const c = content.slide5;
+  const prompt = c.userPrompt;
   const { displayed, done } = useTypingEffect(prompt, 35, 1000);
   const chatEndRef = React.useRef<HTMLDivElement>(null);
 
@@ -420,7 +426,7 @@ function AIChatConsole({
         <div className="ml-auto flex items-center gap-1">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="text-[9px] text-emerald-400/70 font-mono">
-            CONNECTED
+            {c.connected}
           </span>
         </div>
       </div>
@@ -438,10 +444,10 @@ function AIChatConsole({
             <Sparkles className="w-3 h-3 text-emerald-400" />
           </div>
           <div className="text-xs lg:text-sm text-slate-400 font-mono leading-relaxed">
-            ELMS AI ready. MCP server connected.
+            {c.systemMessages[0]}
             <br />
             <span className="text-emerald-400/60">
-              Available tools: ship, track, customs, carbon
+              {c.systemMessages[1]}
             </span>
           </div>
         </motion.div>
@@ -487,7 +493,7 @@ function AIChatConsole({
                   <span>●</span>
                   <span>●</span>
                 </motion.div>
-                Calling MCP tools...
+                {c.callingTools}
               </div>
             </motion.div>
           )}
@@ -508,7 +514,7 @@ function AIChatConsole({
                   <Sparkles className="w-3 h-3 text-emerald-400" />
                 </div>
                 <div className="text-xs lg:text-sm text-emerald-400/80 font-mono leading-relaxed">
-                  ✅ Shipment created successfully. Click to track:
+                  {c.aiResponse}
                 </div>
               </div>
 
@@ -527,10 +533,10 @@ function AIChatConsole({
                     </div>
                     <div>
                       <div className="text-[9px] lg:text-[10px] text-emerald-400/60 font-mono uppercase tracking-wider">
-                        Shipment Created
+                        {c.shipmentCreated}
                       </div>
                       <div className="text-xs lg:text-sm text-emerald-300 font-mono font-bold">
-                        ELMS-2026-SZX-DUB-0847
+                        {c.shipmentId}
                       </div>
                     </div>
                   </div>
@@ -547,22 +553,22 @@ function AIChatConsole({
                 <div className="flex items-center gap-3 text-[9px] lg:text-[10px] font-mono text-slate-400">
                   <span className="flex items-center gap-1">
                     <MapPin className="w-2.5 h-2.5 text-emerald-400/50" />
-                    SZX → DUB
+                    {c.miniRoute[0]}
                   </span>
                   <span className="flex items-center gap-1">
                     <Package className="w-2.5 h-2.5 text-cyan-400/50" />
-                    50 boxes
+                    {c.miniRoute[1]}
                   </span>
                   <span className="flex items-center gap-1">
                     <Truck className="w-2.5 h-2.5 text-blue-400/50" />
-                    SF Express
+                    {c.miniRoute[2]}
                   </span>
                 </div>
 
                 {/* Click hint */}
                 <div className="mt-2 pt-2 border-t border-emerald-500/10 flex items-center justify-center gap-1.5">
                   <span className="text-[9px] lg:text-[10px] text-emerald-400/50 font-mono group-hover:text-emerald-400/80 transition-colors">
-                    View Route Dashboard & Documents
+                    {c.viewRoute}
                   </span>
                   <ArrowRight className="w-3 h-3 text-emerald-400/40 group-hover:text-emerald-400/80 group-hover:translate-x-0.5 transition-all" />
                 </div>
@@ -578,7 +584,7 @@ function AIChatConsole({
       <div className="px-3 py-2 border-t border-white/10 bg-white/2">
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
           <span className="text-xs text-slate-500 font-mono flex-1">
-            Ask ELMS anything...
+            {c.inputPlaceholder}
           </span>
           <Send className="w-3 h-3 text-slate-500" />
         </div>
@@ -601,46 +607,48 @@ interface ShipmentField {
 }
 
 function ShipmentCard({ visible }: { visible: boolean }) {
+  const content = useContent();
+  const c = content.slide5;
   const fields: ShipmentField[] = useMemo(
     () => [
       {
         icon: <Truck className="w-3.5 h-3.5" />,
-        label: "Carrier",
-        value: "SF Express International",
+        label: c.outputFields[0].label,
+        value: c.outputFields[0].value,
         color: "text-emerald-400",
       },
       {
         icon: <Zap className="w-3.5 h-3.5" />,
-        label: "Service",
-        value: "Priority Express (2-3 days)",
+        label: c.outputFields[1].label,
+        value: c.outputFields[1].value,
         color: "text-cyan-400",
       },
       {
         icon: <Globe className="w-3.5 h-3.5" />,
-        label: "Route",
-        value: "SZX → DUB (via AMS hub)",
+        label: c.outputFields[2].label,
+        value: c.outputFields[2].value,
         color: "text-blue-400",
       },
       {
         icon: <ShieldCheck className="w-3.5 h-3.5" />,
-        label: "Customs",
-        value: "EU-Compliant · Auto-declared",
+        label: c.outputFields[3].label,
+        value: c.outputFields[3].value,
         color: "text-emerald-400",
       },
       {
         icon: <Package className="w-3.5 h-3.5" />,
-        label: "Labels",
-        value: "50x generated · QR attached",
+        label: c.outputFields[4].label,
+        value: c.outputFields[4].value,
         color: "text-purple-400",
       },
       {
         icon: <Leaf className="w-3.5 h-3.5" />,
-        label: "Carbon",
-        value: "1.2t CO₂ · Offset available",
+        label: c.outputFields[5].label,
+        value: c.outputFields[5].value,
         color: "text-green-400",
       },
     ],
-    []
+    [c]
   );
 
   return (
@@ -655,7 +663,7 @@ function ShipmentCard({ visible }: { visible: boolean }) {
         <div className="flex items-center gap-1.5">
           <Package className="w-4 h-4 text-emerald-400" />
           <span className="text-xs font-semibold text-white/80 font-mono">
-            Shipment Output
+            {c.outputHeader}
           </span>
         </div>
         <div className="ml-auto">
@@ -668,7 +676,7 @@ function ShipmentCard({ visible }: { visible: boolean }) {
               >
                 <CheckCircle2 className="w-3 h-3 text-emerald-400" />
                 <span className="text-[9px] text-emerald-400 font-mono font-bold">
-                  READY
+                  {c.outputReady}
                 </span>
               </motion.div>
             )}
@@ -688,10 +696,10 @@ function ShipmentCard({ visible }: { visible: boolean }) {
             >
               <div>
                 <div className="text-[9px] text-emerald-400/60 font-mono uppercase">
-                  Shipment ID
+                  {c.outputIdLabel}
                 </div>
                 <div className="text-xs text-emerald-300 font-mono font-bold">
-                  ELMS-2026-SZX-DUB-0847
+                  {c.shipmentId}
                 </div>
               </div>
               <BarChart3 className="w-4 h-4 text-emerald-400/40" />
@@ -737,11 +745,11 @@ function ShipmentCard({ visible }: { visible: boolean }) {
           >
             <div className="flex items-center gap-1 text-[9px] text-emerald-400/60 font-mono">
               <Clock className="w-2.5 h-2.5" />
-              Generated in 1.2s
+              {c.outputFooter[0]}
             </div>
             <div className="flex items-center gap-1 text-[9px] text-emerald-400/60 font-mono">
               <Zap className="w-2.5 h-2.5" />
-              3 MCP tools called
+              {c.outputFooter[1]}
             </div>
           </motion.div>
         )}
@@ -823,6 +831,8 @@ export function AILogisticsLabSlide() {
   const [showResult, setShowResult] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { nextSlide } = useDeck();
+  const content = useContent();
+  const c = content.slide5;
 
   const handleTypingComplete = React.useCallback(() => {
     setMcpActive(true);
@@ -854,7 +864,7 @@ export function AILogisticsLabSlide() {
         >
           <Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5 text-emerald-400/60" />
           <span className="text-[9px] md:text-[10px] lg:text-xs font-mono text-emerald-400/70 tracking-[0.25em] uppercase">
-            Live Demo
+            {c.badge}
           </span>
           <Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5 text-emerald-400/60" />
         </motion.div>
@@ -865,9 +875,9 @@ export function AILogisticsLabSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.5 }}
         >
-          <span className="text-white">AI Logistics Lab</span>
+          <span className="text-white">{c.title}</span>
           <span className="text-emerald-400 ml-1 md:ml-2">×</span>
-          <span className="text-emerald-300 ml-1 md:ml-2">MCP</span>
+          <span className="text-emerald-300 ml-1 md:ml-2">{c.titleHighlight}</span>
         </motion.h2>
 
         <motion.p
@@ -876,7 +886,7 @@ export function AILogisticsLabSlide() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          Natural language → MCP Protocol → Automated shipment execution
+          {c.subtitle}
         </motion.p>
       </div>
 
@@ -922,7 +932,7 @@ export function AILogisticsLabSlide() {
           {/* AI Console mini */}
           <div className="flex flex-col items-center gap-1 p-2.5 rounded-xl bg-white/4 border border-white/10">
             <Bot className="w-4 h-4 text-emerald-400" />
-            <span className="text-[7px] font-mono text-slate-400">AI Console</span>
+            <span className="text-[7px] font-mono text-slate-400">{c.mobileLabels.console}</span>
           </div>
 
           <motion.div
@@ -936,7 +946,7 @@ export function AILogisticsLabSlide() {
           {/* MCP mini */}
           <div className="flex flex-col items-center gap-1 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
             <Cpu className="w-4 h-4 text-emerald-400" />
-            <span className="text-[7px] font-mono text-emerald-400/70">MCP</span>
+            <span className="text-[7px] font-mono text-emerald-400/70">{c.mobileLabels.mcp}</span>
           </div>
 
           <motion.div
@@ -950,7 +960,7 @@ export function AILogisticsLabSlide() {
           {/* Output mini */}
           <div className="flex flex-col items-center gap-1 p-2.5 rounded-xl bg-white/4 border border-white/10">
             <Package className="w-4 h-4 text-emerald-400" />
-            <span className="text-[7px] font-mono text-slate-400">Output</span>
+            <span className="text-[7px] font-mono text-slate-400">{c.mobileLabels.output}</span>
           </div>
         </motion.div>
 
@@ -962,12 +972,12 @@ export function AILogisticsLabSlide() {
           transition={{ delay: 0.5 }}
         >
           <span className="text-[9px] font-mono text-emerald-300 font-bold">
-            ELMS-2026-SZX-DUB-0847
+            {c.shipmentId}
           </span>
         </motion.div>
 
         <MobileExpandButton
-          label="Tap to view full demo"
+          label={c.mobileExpand}
           onClick={() => setMobileOpen(true)}
         />
       </div>
@@ -981,7 +991,7 @@ export function AILogisticsLabSlide() {
       >
         {[
           {
-            label: "Compatible",
+            label: c.compatBar.compatible,
             value: (
               <span className="inline-flex items-center gap-1.5">
                 <ClaudeIcon className="w-3.5 h-3.5 text-orange-400" />
@@ -991,8 +1001,8 @@ export function AILogisticsLabSlide() {
               </span>
             ),
           },
-          { label: "Protocol", value: "MCP (Model Context Protocol)" },
-          { label: "Latency", value: "< 2s end-to-end" },
+          { label: c.compatBar.protocol, value: c.compatBar.protocolValue },
+          { label: c.compatBar.latency, value: c.compatBar.latencyValue },
         ].map((item) => (
           <div
             key={item.label}
@@ -1012,8 +1022,8 @@ export function AILogisticsLabSlide() {
       <MobileDetailModal
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        title="AI Logistics Lab × MCP"
-        subtitle="Natural language → Automated execution"
+        title={c.mobileModal.title}
+        subtitle={c.mobileModal.subtitle}
       >
         <div className="space-y-4">
           {/* Prompt */}
@@ -1022,10 +1032,10 @@ export function AILogisticsLabSlide() {
               <div className="p-1 rounded-md bg-blue-500/10">
                 <Send className="w-3 h-3 text-blue-400" />
               </div>
-              <span className="text-[10px] font-mono text-slate-500 uppercase">User Prompt</span>
+              <span className="text-[10px] font-mono text-slate-500 uppercase">{c.mobileModal.userPromptLabel}</span>
             </div>
             <p className="text-xs text-white/90 font-mono leading-relaxed">
-              &quot;Ship 50 boxes of electronics from Shenzhen to Dublin via the fastest route.&quot;
+              &quot;{c.userPrompt}&quot;
             </p>
           </div>
 
@@ -1035,11 +1045,11 @@ export function AILogisticsLabSlide() {
               <div className="p-1 rounded-md bg-emerald-500/10">
                 <Cpu className="w-3 h-3 text-emerald-400" />
               </div>
-              <span className="text-[10px] font-mono text-emerald-400/70 uppercase">MCP Protocol</span>
+              <span className="text-[10px] font-mono text-emerald-400/70 uppercase">{c.mobileModal.mcpProtocolLabel}</span>
             </div>
             <div className="flex items-center gap-1.5 text-[10px] text-emerald-400/80 font-mono">
               <Zap className="w-3 h-3" />
-              3 tools called: ship, customs, carbon
+              {c.mobileModal.mcpTools}
             </div>
           </div>
 
@@ -1049,15 +1059,15 @@ export function AILogisticsLabSlide() {
               <div className="p-1 rounded-md bg-emerald-500/10">
                 <Package className="w-3 h-3 text-emerald-400" />
               </div>
-              <span className="text-[10px] font-mono text-slate-500 uppercase">Shipment Output</span>
+              <span className="text-[10px] font-mono text-slate-500 uppercase">{c.mobileModal.outputLabel}</span>
             </div>
             {[
-              { icon: <Truck className="w-3.5 h-3.5" />, label: "Carrier", value: "SF Express International", color: "text-emerald-400" },
-              { icon: <Zap className="w-3.5 h-3.5" />, label: "Service", value: "Priority Express (2-3 days)", color: "text-cyan-400" },
-              { icon: <Globe className="w-3.5 h-3.5" />, label: "Route", value: "SZX → DUB (via AMS hub)", color: "text-blue-400" },
-              { icon: <ShieldCheck className="w-3.5 h-3.5" />, label: "Customs", value: "EU-Compliant · Auto-declared", color: "text-emerald-400" },
-              { icon: <Package className="w-3.5 h-3.5" />, label: "Labels", value: "50x generated · QR attached", color: "text-purple-400" },
-              { icon: <Leaf className="w-3.5 h-3.5" />, label: "Carbon", value: "1.2t CO₂ · Offset available", color: "text-green-400" },
+              { icon: <Truck className="w-3.5 h-3.5" />, label: c.outputFields[0].label, value: c.outputFields[0].value, color: "text-emerald-400" },
+              { icon: <Zap className="w-3.5 h-3.5" />, label: c.outputFields[1].label, value: c.outputFields[1].value, color: "text-cyan-400" },
+              { icon: <Globe className="w-3.5 h-3.5" />, label: c.outputFields[2].label, value: c.outputFields[2].value, color: "text-blue-400" },
+              { icon: <ShieldCheck className="w-3.5 h-3.5" />, label: c.outputFields[3].label, value: c.outputFields[3].value, color: "text-emerald-400" },
+              { icon: <Package className="w-3.5 h-3.5" />, label: c.outputFields[4].label, value: c.outputFields[4].value, color: "text-purple-400" },
+              { icon: <Leaf className="w-3.5 h-3.5" />, label: c.outputFields[5].label, value: c.outputFields[5].value, color: "text-green-400" },
             ].map((field) => (
               <div
                 key={field.label}
@@ -1091,10 +1101,10 @@ export function AILogisticsLabSlide() {
                 </div>
                 <div>
                   <div className="text-[9px] text-emerald-400/60 font-mono uppercase tracking-wider">
-                    Shipment Created
+                    {c.shipmentCreated}
                   </div>
                   <div className="text-xs text-emerald-300 font-mono font-bold">
-                    ELMS-2026-SZX-DUB-0847
+                    {c.shipmentId}
                   </div>
                 </div>
               </div>
@@ -1103,16 +1113,16 @@ export function AILogisticsLabSlide() {
             <div className="flex items-center gap-3 text-[9px] font-mono text-slate-400">
               <span className="flex items-center gap-1">
                 <MapPin className="w-2.5 h-2.5 text-emerald-400/50" />
-                SZX → DUB
+                {c.miniRoute[0]}
               </span>
               <span className="flex items-center gap-1">
                 <Package className="w-2.5 h-2.5 text-cyan-400/50" />
-                50 boxes
+                {c.miniRoute[1]}
               </span>
             </div>
             <div className="mt-2 pt-2 border-t border-emerald-500/10 flex items-center justify-center gap-1.5">
               <span className="text-[9px] text-emerald-400/50 font-mono">
-                View Route Dashboard & Documents →
+                {c.viewRoute} →
               </span>
             </div>
           </button>
@@ -1121,7 +1131,7 @@ export function AILogisticsLabSlide() {
           <div className="grid grid-cols-3 gap-2 pt-2">
             {[
               {
-                label: "Compatible",
+                label: c.compatBar.compatible,
                 value: (
                   <span className="inline-flex items-center gap-1">
                     <ClaudeIcon className="w-3 h-3 text-orange-400" />
@@ -1131,8 +1141,8 @@ export function AILogisticsLabSlide() {
                   </span>
                 ),
               },
-              { label: "Protocol", value: "MCP" },
-              { label: "Latency", value: "< 2s" },
+              { label: c.compatBar.protocol, value: c.compatBar.protocolValue },
+              { label: c.compatBar.latency, value: c.compatBar.latencyValue },
             ].map((item) => (
               <div
                 key={item.label}

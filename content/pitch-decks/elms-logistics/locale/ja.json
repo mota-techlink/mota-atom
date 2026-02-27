@@ -1,0 +1,444 @@
+{
+  "slide1": {
+    "subtitle": "欧州物流管理システム",
+    "tagline": "越境ECを支えるAI駆動インフラストラクチャ",
+    "badges": [
+      { "icon": "🇪🇺", "text": "EU準拠" },
+      { "icon": "🤖", "text": "AI搭載" },
+      { "icon": "🔗", "text": "MCP対応" }
+    ],
+    "bottomDate": "2026年2月"
+  },
+  "slide2": {
+    "badge": "課題",
+    "title": "障壁：",
+    "subtitle": "グローバル物流の分断",
+    "description": "3つの孤立したサイロ。相互運用性ゼロ。すべての引き継ぎが障害点となる。",
+    "syncError": "同期エラー",
+    "silos": [
+      {
+        "title": "ECプラットフォーム",
+        "items": ["注文の分断", "店舗間のSKU不一致", "リアルタイム在庫同期なし", "手動CSVエクスポート"]
+      },
+      {
+        "title": "通関コンプライアンス",
+        "items": ["紙ベースの申告", "HSコードの誤り", "通関サイクルの遅延", "規制の盲点"]
+      },
+      {
+        "title": "ラストマイル配送",
+        "items": ["手入力によるラベル再作成", "住所フォーマットの誤り", "配達確認なし", "カーボントラッキングの欠如"]
+      }
+    ],
+    "mobileLabels": { "ecommerce": "EC", "customs": "通関", "lastMile": "ラストマイル", "syncErr": "同期エラー" },
+    "mobileExpand": "タップしてサイロの詳細を表示",
+    "stats": [
+      { "value": "37%", "label": "データ損失" },
+      { "value": "€4.2B", "label": "コスト" },
+      { "value": "72h", "label": "遅延" }
+    ],
+    "mobileModal": {
+      "title": "分断された物流サイロ",
+      "subtitle": "3つの孤立したシステム。すべての引き継ぎが障害点となる。",
+      "statLabels": ["引き継ぎ時のデータ損失", "EU年間コスト", "平均通関遅延"]
+    }
+  },
+  "slide3": {
+    "badge": "ソリューション",
+    "title": "アーキテクチャ",
+    "titleHighlight": "デュアルリング",
+    "features": [
+      { "label": "シームレスなシステム統合", "description": "システム間の障壁を排除。サプライチェーン全体にわたる物流データの単一の信頼できるソースを実現します。" },
+      { "label": "自動ラベル生成", "description": "同期された配送データから、正確なラストマイル配送ラベルを自動生成します。" },
+      { "label": "通関コンプライアンス", "description": "信頼性の高い検証済みデータにより、手動エラーゼロでスムーズな通関を実現します。" },
+      { "label": "カーボン排出量トラッキング", "description": "EUの環境基準・規制に適合した統合カーボン排出量トラッキング機能を提供します。" },
+      { "label": "AI駆動インテリジェンス", "description": "MCPを通じた予測分析、ルート最適化、自動意思決定を実現します。" },
+      { "label": "IoTデバイス統合", "description": "温度、位置、状態のモニタリングのためのIoTデバイスからのリアルタイムデータを活用します。" }
+    ],
+    "modules": [
+      { "label": "配送", "badge": "APIファースト" },
+      { "label": "通関", "badge": "AEO認証" },
+      { "label": "デリバリー", "badge": "ラストマイル" },
+      { "label": "IoT", "badge": "リアルタイム" },
+      { "label": "AI / MCP", "badge": "MCPネイティブ" },
+      { "label": "カーボン", "badge": "ISO 14067" }
+    ],
+    "techNodes": [
+      { "label": "Cloudflare", "sublabel": "エッジ · CDN · WAF", "features": ["300以上のグローバルエッジPoP", "100ms未満のレスポンス", "DDoS対策 & WAF", "コールドスタートゼロのWorkers"] },
+      { "label": "GitHub", "sublabel": "CI/CD · GitOps", "features": ["Push → 2分以内にデプロイ", "自動CI/CD", "コードスキャン & Dependabot", "ブランチ保護ゲート"] },
+      { "label": "Supabase", "sublabel": "DB · Auth · RLS", "features": ["PostgreSQL行レベルセキュリティ", "データベース内RPC", "リアルタイムWebSocket", "Auth + JWT + MFA"] },
+      { "label": "Next.js 15", "sublabel": "SSR · RSC · エッジ", "features": ["React Server Components", "ISR + エッジランタイム", "App Router + Middleware", "ストリーミングSSR"] },
+      { "label": "Tailwind", "sublabel": "ユーティリティファーストUI", "features": ["ゼロランタイムCSS", "デザインシステムの一貫性", "モバイルファーストレスポンシブ", "ダークモード内蔵"] },
+      { "label": "shadcn/ui", "sublabel": "コンポーネント · A11y", "features": ["Radix UIプリミティブ (WAI-ARIA)", "コピー&ペーストで所有権を確保", "エンタープライズコンポーネント", "完全なアクセシビリティ"] }
+    ],
+    "coreLabel": "ELMS",
+    "coreSublabel": "コア",
+    "techStackLabel": "テクノロジースタック",
+    "mobileExpand": "タップしてアーキテクチャを表示",
+    "mobileModal": {
+      "title": "ソリューションアーキテクチャ",
+      "subtitle": "デュアルリング設計 · 6モジュール · 6テクノロジーノード"
+    }
+  },
+  "slide4": {
+    "badge": "競争優位性",
+    "title": "従来型物流",
+    "titleVs": "vs",
+    "titleHighlight": "ELMS",
+    "subtitle": "6つの重要な側面における比較。",
+    "traditionalHeader": "従来型",
+    "elmsHeader": "ELMS",
+    "rows": [
+      { "dimension": "システム統合", "traditional": { "tag": "サイロ化", "text": "分断された手動同期" }, "elms": { "tag": "統合", "text": "即時APIエコシステム" } },
+      { "dimension": "通関", "traditional": { "tag": "手動", "text": "エラーが多い紙ベース処理" }, "elms": { "tag": "自動運転", "text": "100%検証済みデジタル処理" } },
+      { "dimension": "サステナビリティ", "traditional": { "tag": "不透明", "text": "カーボンの可視性ゼロ" }, "elms": { "tag": "環境準拠", "text": "ISOトラッキング標準装備" } },
+      { "dimension": "IoT / リアルタイム", "traditional": { "tag": "遅延", "text": "バッチ処理データ" }, "elms": { "tag": "ライブ", "text": "リアルタイムエッジインテリジェンス" } },
+      { "dimension": "AI / MCP", "traditional": { "tag": "なし", "text": "静的なレガシーソフトウェア" }, "elms": { "tag": "自律型", "text": "MCPネイティブAIエージェント" } },
+      { "dimension": "コストモデル", "traditional": { "tag": "固定", "text": "高額な初期ライセンス費用" }, "elms": { "tag": "柔軟", "text": "スケーラブルな従量課金" } }
+    ],
+    "verdict": {
+      "traditional": { "label": "レガシー", "sublabel": "逓減するリターン" },
+      "elms": { "label": "ELMS", "sublabel": "複利的な優位性" }
+    },
+    "mobileExpand": "タップしてすべての比較を表示",
+    "mobileModal": {
+      "title": "ELMS vs 従来型",
+      "subtitle": "6つの側面を比較"
+    }
+  },
+  "slide5": {
+    "badge": "ライブデモ",
+    "title": "AI物流ラボ",
+    "titleHighlight": "MCP",
+    "subtitle": "自然言語 → MCPプロトコル → 出荷の自動実行",
+    "mcpProtocol": "MCPプロトコル",
+    "processing": "処理中",
+    "connected": "接続済み",
+    "systemMessages": [
+      "ELMS AI準備完了。MCPサーバー接続済み。",
+      "利用可能なツール: ship, track, customs, carbon"
+    ],
+    "userPrompt": "深圳からダブリンへ電子機器50箱を最速ルートで出荷してください。",
+    "callingTools": "MCPツールを呼び出し中...",
+    "aiResponse": "✅ 出荷が正常に作成されました。クリックして追跡：",
+    "shipmentCreated": "出荷作成完了",
+    "shipmentId": "ELMS-2026-SZX-DUB-0847",
+    "miniRoute": ["SZX → DUB", "50箱", "SF Express"],
+    "viewRoute": "ルートダッシュボード＆書類を表示",
+    "inputPlaceholder": "ELMSに何でも聞いてください...",
+    "outputHeader": "出荷結果",
+    "outputReady": "準備完了",
+    "outputIdLabel": "出荷ID",
+    "outputFields": [
+      { "label": "配送業者", "value": "SF Express International" },
+      { "label": "サービス", "value": "プライオリティエクスプレス（2〜3日）" },
+      { "label": "ルート", "value": "SZX → DUB（AMS経由）" },
+      { "label": "通関", "value": "EU準拠 · 自動申告済み" },
+      { "label": "ラベル", "value": "50枚生成 · QRコード付き" },
+      { "label": "カーボン", "value": "1.2t CO₂ · オフセット可能" }
+    ],
+    "outputFooter": ["1.2秒で生成", "3つのMCPツールを呼び出し"],
+    "compatBar": { "compatible": "互換性あり", "protocol": "プロトコル", "protocolValue": "MCP (Model Context Protocol)", "latency": "レイテンシ", "latencyValue": "エンドツーエンド2秒未満" },
+    "mobileLabels": { "console": "AIコンソール", "mcp": "MCP", "output": "出力" },
+    "mobileExpand": "タップしてデモ全体を表示",
+    "businessLinks": ["ELMS製品", "導入事例", "ドキュメント", "デッキに戻る"],
+    "mobileModal": {
+      "title": "AI物流ラボ × MCP",
+      "subtitle": "自然言語 → 自動実行",
+      "userPromptLabel": "ユーザープロンプト",
+      "mcpProtocolLabel": "MCPプロトコル",
+      "mcpTools": "3つのツールを呼び出し: ship, customs, carbon",
+      "outputLabel": "出荷結果"
+    }
+  },
+  "slide6": {
+    "badge": "リアルタイム出荷追跡",
+    "title": "ルートダッシュボード",
+    "subtitle": "SF Expressプライオリティ · 深圳 → アムステルダム → ダブリン · 50箱",
+    "shipmentId": "ELMS-2026-SZX-DUB-0847",
+    "legend": { "completed": "完了", "inProgress": "進行中", "pending": "保留中" },
+    "docStatuses": { "Approved": "承認済", "Pending": "保留中", "Processing": "処理中", "Generated": "生成済" },
+    "routeNodes": [
+      {
+        "label": "出荷元倉庫",
+        "location": "中国・深圳",
+        "timestamp": "2026-02-14 09:30 CST",
+        "documents": [
+          { "title": "発注書", "details": { "注文ID": "PO-20260214-001", "顧客": "TechRetail Europe GmbH", "商品": "50 × 家電製品（混合SKU）", "合計金額": "€127,500.00", "通貨": "EUR", "支払条件": "Net 30", "インコタームズ": "DDP ダブリン" } },
+          { "title": "梱包明細書", "details": { "梱包明細ID": "PL-20260214-001", "総箱数": "50", "総重量": "1,250 kg", "正味重量": "1,080 kg", "寸法": "50 × 40cm × 35cm × 30cm", "パレット数": "4 (ユーロパレット)", "特別取扱": "壊れ物注意 — 取扱い注意" } },
+          { "title": "商業送り状", "details": { "送り状番号": "CI-20260214-001", "売主": "Shenzhen Digi-Tech Co., Ltd", "買主": "TechRetail Europe GmbH", "合計金額": "€127,500.00", "HSコード": "8471.30 / 8528.72", "原産国": "中国 (CN)", "条件": "DDP ダブリン、アイルランド" } }
+        ]
+      },
+      {
+        "label": "配送業者ピックアップ",
+        "location": "SZXハブ、深圳",
+        "timestamp": "2026-02-14 14:15 CST",
+        "documents": [
+          { "title": "航空貨物運送状 (MAWB)", "details": { "AWB番号": "784-2026-0847", "運送業者": "SF Express International", "サービス": "プライオリティエクスプレス", "出発地": "SZX (深圳宝安国際空港)", "目的地": "DUB (ダブリン空港)", "中継拠点": "AMS (アムステルダム・スキポール)", "推定所要時間": "2〜3営業日" } },
+          { "title": "配送ラベル (×50)", "details": { "ラベルバッチ": "LBL-SZX-50", "フォーマット": "A6感熱紙 (100×150mm)", "ラベル数": "50枚", "QRコード": "埋め込み — ELMS追跡リンク", "バーコード規格": "Code 128", "自動生成": "はい (ELMS AI)", "ステータス": "印刷・貼付済" } }
+        ]
+      },
+      {
+        "label": "中継拠点",
+        "location": "アムステルダム・スキポール (AMS)",
+        "timestamp": "2026-02-15 06:45 CET",
+        "documents": [
+          { "title": "通過申告 (T1)", "details": { "T1 MRN": "26NL00T1AMS003391", "種類": "EU域内通過 (T1)", "出発税関": "NL000396 — スキポール", "到着税関": "IE002100 — ダブリン空港", "保証番号": "GRN-NL-2026-08847", "封印番号": "NL-SEAL-887441, NL-SEAL-887442", "ステータス": "リリース済" } },
+          { "title": "IoT温度ログ", "details": { "センサーID": "ELMS-IOT-T7742", "場所": "AMS コールドチェーンゾーンB", "最低温度": "18.2°C", "最高温度": "22.1°C", "平均温度": "20.4°C", "閾値": "15°C – 25°C", "結果": "✅ 許容範囲内" } }
+        ]
+      },
+      {
+        "label": "EU通関手続き",
+        "location": "ダブリン空港 (DUB)",
+        "timestamp": "2026-02-15 11:30 GMT — 処理中",
+        "documents": [
+          { "title": "ICS2 輸入申告", "details": { "MRN": "26IE00ICS2DUB00847", "申告タイプ": "ICS2 入域サマリー (ENS)", "申告者": "ELMS アイルランド通関業者", "HSコード": "8471.30.00, 8528.72.00", "関税率": "0% (ITA協定)", "VAT税率": "23% (アイルランド標準)", "ステータス": "⏳ 審査中" } },
+          { "title": "原産地証明書", "details": { "証明書番号": "COO-CN-2026-44871", "発行機関": "CCPIT 深圳", "原産国": "中華人民共和国", "受益者": "TechRetail Europe GmbH", "貿易協定": "該当なし（MFN税率適用）", "有効期限": "2026-08-14", "検証者": "ELMSコンプライアンスエンジン" } },
+          { "title": "炭素排出レポート", "details": { "レポートID": "CARBON-DUB-0847", "総CO₂": "1.2トン", "空輸区間": "1.08t (SZX→AMS→DUB)", "陸送区間": "0.12t (ラストマイル)", "EU基準": "CSRD / CBAM準拠", "オフセット可能": "はい — €18.60 (ETS経由)", "生成元": "ELMSカーボンモジュール" } }
+        ]
+      },
+      {
+        "label": "ラストマイル配送",
+        "location": "アイルランド・ダブリン",
+        "documents": [
+          { "title": "配送指示書", "details": { "配送ID": "DEL-DUB-0847", "受取人": "TechRetail Europe GmbH", "住所": "Unit 12, Citywest Business Park, Dublin 24", "連絡先": "Michael O'Brien (+353 1 XXX XXXX)", "配送時間枠": "2026-02-16 09:00–12:00 GMT", "ラストマイル配送業者": "An Post / DPD Ireland", "ステータス": "⏳ 通関待ち" } },
+          { "title": "配達証明", "details": { "POD ID": "POD-DUB-0847", "署名": "— (保留中)", "写真証拠": "— (保留中)", "配達時刻": "— (保留中)", "状態確認": "— (保留中)", "受取人名": "— (保留中)", "ステータス": "⏳ 未配達" } }
+        ]
+      }
+    ],
+    "statusBar": {
+      "nodesCompleted": "ノード完了",
+      "documentsTracked": "書類追跡",
+      "customs": "通関：",
+      "customsStatus": "処理中",
+      "carbon": "カーボン：",
+      "carbonValue": "1.2t CO₂"
+    },
+    "clickHint": "書類をクリックして詳細を確認",
+    "docsSuffix": "件",
+    "documentModal": {
+      "shipmentRef": "出荷リファレンス",
+      "datePrefix": "日付：",
+      "autoGenerated": "ELMS自動生成書類"
+    },
+    "mobileExpand": "タップしてルート＆書類を表示",
+    "mobileModal": {
+      "title": "ルートダッシュボード",
+      "subtitle": "ELMS-2026-SZX-DUB-0847 · 5ノード · 12書類",
+      "stats": [
+        { "value": "3/5", "label": "完了" },
+        { "value": "12", "label": "書類" },
+        { "value": "処理中", "label": "通関" },
+        { "value": "1.2t", "label": "CO₂" }
+      ]
+    }
+  },
+  "slide7": {
+    "badge": "投資案件",
+    "title": "財務",
+    "titleHighlight": "透明性",
+    "subtitle": "€150K を調達し、プラットフォームをグローバルに展開。資金配分を完全に透明化。",
+    "fundAllocation": [
+      { "label": "製品開発 & AI", "pct": "40%", "detail": "€60,000 · AI/ML、MCP統合、プラットフォーム開発" },
+      { "label": "市場 & 運営", "pct": "30%", "detail": "€45,000 · EU/アジア市場参入、加盟店開拓" },
+      { "label": "セキュリティ & コンプライアンス", "pct": "20%", "detail": "€30,000 · EUサーバー、GDPR監査、法的遵守" },
+      { "label": "緊急準備金", "pct": "10%", "detail": "€15,000 · 物流市場変動リスクバッファー" }
+    ],
+    "totalRaise": "総調達額",
+    "totalRaiseAmount": "€150K",
+    "valuationBar": {
+      "preLabel": "プレマネー",
+      "preValue": "€200K",
+      "postLabel": "ポストマネー",
+      "postValue": "€350K"
+    },
+    "investmentCard": {
+      "title": "投資ハイライト",
+      "items": [
+        "技術資産注入：€200K の資産価値",
+        "フルスタックプラットフォームは本番稼働済み",
+        "資本効率：2.3× レバレッジ",
+        "定期SaaS + トランザクション型収益"
+      ]
+    },
+    "leverageVisual": {
+      "label": "1× 資本",
+      "arrow": "→ 2.3× プラットフォームレバレッジ"
+    },
+    "keyMetrics": [
+      { "label": "ランウェイ", "value": "18 月" },
+      { "label": "レバレッジ", "value": "2.3×" },
+      { "label": "粗利率", "value": "75%" }
+    ],
+    "mobileExpand": "タップして財務詳細を表示",
+    "mobileModal": {
+      "title": "財務透明性",
+      "subtitle": "資金配分と主要指標"
+    }
+  },
+  "slide8": {
+    "badge": "マルチレイヤー進化マップ",
+    "title": "製品",
+    "titleHighlight": "ロードマップ",
+    "subtitle": "3つの並行トラック · Q1 2026 → 2027+ · インフラ × インテリジェンス × コンプライアンス",
+    "timeColumns": [
+      { "period": "Q1–Q2 2026", "label": "基盤構築" },
+      { "period": "Q3–Q4 2026", "label": "拡大" },
+      { "period": "2027年初頭", "label": "統合" },
+      { "period": "2027年以降", "label": "市場制覇" }
+    ],
+    "tracks": [
+      {
+        "label": "インフラ＆オペレーション",
+        "shortLabel": "運用＆インフラ",
+        "milestones": [
+          { "title": "コア配送エンジン", "description": "シームレスなラベル生成とマルチキャリアAPI。すべての物流パートナー向けの単一データソースを実現。" },
+          { "title": "エッジネイティブスケーリング", "description": "繁忙期でも100ms未満のレスポンス。Cloudflare Workersによる300以上のグローバルPoP。" },
+          { "title": "WMSディープ同期", "description": "リアルタイム在庫-配送メッシュ。倉庫オペレーションと配送インテリジェンスの融合。" },
+          { "title": "グローバル展開", "description": "グローバルパートナー向けのマルチテナントインフラ。エンタープライズ向けホワイトラベル対応。" }
+        ]
+      },
+      {
+        "label": "インテリジェンス＆イノベーション",
+        "shortLabel": "AI＆インテリジェンス",
+        "milestones": [
+          { "title": "AI住所解析", "description": "自動多言語住所補正。EU住所フォーマットにおいて99.7%の精度を実現。" },
+          { "title": "MCPプロトコル V1", "description": "初のAIエージェント型配送インターフェース。Claude/GPTによる対話型物流オペレーション。" },
+          { "title": "IoTノードネットワーク", "description": "コールドチェーンおよび高価値貨物向けのリアルタイムセンサーデータ。リアルタイム状態監視。" },
+          { "title": "自律型物流", "description": "自己最適化するルート＆コストAI。人的介入ゼロの予測需要計画。" }
+        ]
+      },
+      {
+        "label": "コンプライアンス＆グリーンテック",
+        "shortLabel": "コンプライアンス＆ESG",
+        "milestones": [
+          { "title": "GDPR＆プライバシー", "description": "アイルランドベースのデータレジデンシー制限。アイルランドデータ保護法2018およびEU GDPR完全準拠。" },
+          { "title": "カーボン ISO 14067", "description": "リアルタイムスコープ3排出量トラッキング。出荷単位のカーボンフットプリント算出。" },
+          { "title": "通関オートパイロット", "description": "100%ペーパーレスのAI検証済み申告。EU域内のボーダーを越える通関摩擦ゼロ。" },
+          { "title": "グリーンスタンダードリーダー", "description": "EU物流サステナビリティの基準を設定。カーボンニュートラル運用認証取得。" }
+        ]
+      }
+    ],
+    "statusLabels": { "done": "完了", "active": "進行中", "planned": "計画中", "vision": "ビジョン" },
+    "crossLinks": ["AI → カーボン", "IoT → WMS", "エッジ → 通関", "自律 → グリーン"],
+    "techHealth": "テクノロジー健全性: 最適",
+    "continuousRefresh": { "line1": "継続的", "line2": "技術リフレッシュ", "quote": "私たちの技術スタックが古くなる頃、競合はまだ数年遅れている。" },
+    "trackPrefix": "トラック",
+    "techStackLabel": "テクノロジースタック",
+    "clickHint": "マイルストーンをクリックして詳細を表示",
+    "progressLabel": "進捗",
+    "mobileTrackDesc": "4マイルストーン · Q1 2026 → 2027+",
+    "mobileExpand": "タップしてロードマップを探索",
+    "mobileModal": {
+      "title": "製品ロードマップ",
+      "subtitle": "3トラック · Q1 2026 → 2027+",
+      "continuousTitle": "継続的技術リフレッシュ",
+      "recursiveLabel": "再帰的成長戦略",
+      "recursiveDesc": "私たちのアーキテクチャは永続的な進化のために設計されています — モジュール式、交換可能、将来にも対応。"
+    }
+  },
+  "slide9": {
+    "badge": "セキュリティコマンドセンター",
+    "title": "セキュリティ",
+    "titleHighlight": "コンプライアンス",
+    "subtitle": "エンタープライズグレードの保護 · Supabase Auth · PostgreSQL RLS · Cloudflare WAF",
+    "activeStatus": "有効",
+    "trustScoreLabel": "信頼スコア",
+    "certBadges": ["GDPR", "ISO", "SOC2"],
+    "cards": [
+      {
+        "title": "EUデータ主権",
+        "subtitle": "GDPR",
+        "badgeLabel": "EU準拠",
+        "description": "データはダブリン (eu-west-1) に厳格にローカライズ。GDPR およびアイルランドデータ保護法2018に100%準拠。データレジデンシーの摩擦ゼロ。",
+        "details": [
+          "AWS eu-west-1（アイルランド）データレジデンシー",
+          "Supabase Auth（JWT + MFA対応）",
+          "アイルランドデータ保護法2018準拠",
+          "データ処理契約 (DPA) 対応済み",
+          "削除権および可搬性を標準実装"
+        ]
+      },
+      {
+        "title": "株主保護",
+        "subtitle": "法務",
+        "badgeLabel": "保護済み",
+        "description": "機関投資家グレードの株主間契約。すべての投資家に対する明確なIP保護と責任遮断。",
+        "details": [
+          "専門的な株主間契約",
+          "知的財産の所有権＆ライセンスの明確化",
+          "責任制限フレームワーク",
+          "取締役会ガバナンス構造を明確化",
+          "出口戦略＆バリュエーション条項"
+        ]
+      },
+      {
+        "title": "ミリタリーグレード防御",
+        "subtitle": "セキュリティ",
+        "badgeLabel": "ゼロトラスト",
+        "description": "ゼロトラストアーキテクチャ: AES-256暗号化（保存時）、TLS 1.3（転送時）。PostgreSQL RLSがカーネルレベルで不正なデータ漏洩を防止。",
+        "details": [
+          "AES-256保存時暗号化",
+          "TLS 1.3転送時暗号化",
+          "PostgreSQL行レベルセキュリティ (RLS)",
+          "Cloudflare WAF & DDoS対策",
+          "自動監査ログ＆SIEM"
+        ]
+      },
+      {
+        "title": "ESG自動化",
+        "subtitle": "環境",
+        "badgeLabel": "ISO 14067",
+        "description": "ISO 14067カーボン会計を標準搭載。手動作業ゼロでEU環境基準を達成。スコープ3排出量レポートの自動化。",
+        "details": [
+          "ISO 14067カーボントラッキング標準装備",
+          "EUスコープ3レポート自動化",
+          "出荷単位のカーボンフットプリント算出",
+          "ステークホルダー向けESGダッシュボード",
+          "EU環境規制に適合"
+        ]
+      }
+    ],
+    "mobileExpand": "タップしてセキュリティ詳細を表示",
+    "mobileModal": {
+      "title": "セキュリティ＆コンプライアンス",
+      "subtitle": "4つの柱 · エンタープライズグレードの保護",
+      "trustScoreValue": "100%"
+    }
+  },
+  "slide10": {
+    "badge": "パラダイムシフトは今ここに",
+    "headline": {
+      "prefix": "AI時代に",
+      "strikethrough": "追随者",
+      "only": "存在するのは",
+      "architects": "設計者",
+      "and": "と",
+      "obsolete": "淘汰される者だけ"
+    },
+    "leftBlock": {
+      "heading": "避けられない現実",
+      "text": "物理とデジタルをつなぐ物流の架け橋は{will}構築される。歴史の窓は今開いているが、すぐに閉じる。唯一の変数は、このインフラを{own}するか、競合から借りるかだ。"
+    },
+    "rightBlock": {
+      "heading": "絶滅イベント",
+      "text": "これはソフトウェアのアップグレードではない。グローバル貿易の根本的な書き換えだ。レガシーシステムは{agentDriven}への移行を生き残れない。我々は聖域を構築している。",
+      "agentDriven": "エージェント駆動型商取引"
+    },
+    "cta": "共に未来を設計しよう",
+    "email": "contact@motaiot.com",
+    "brand": "MOTA TechLink",
+    "confidential": "機密"
+  },
+  "slideTitles": [
+    "ELMS",
+    "課題",
+    "アーキテクチャ",
+    "競争優位性",
+    "AI × MCP",
+    "出荷追跡",
+    "投資＆資本",
+    "ロードマップ",
+    "セキュリティ＆コンプライアンス",
+    "行動喚起"
+  ]
+}

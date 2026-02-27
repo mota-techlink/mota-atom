@@ -4,6 +4,7 @@ import React from "react";
 import {
   DeckProvider,
   SlideRenderer,
+  DeckLocaleProvider,
 } from "@/components/pitch-deck";
 import type { TransitionType } from "@/components/pitch-deck";
 import { FragmentedLogisticsSlide } from "./FragmentedLogisticsSlide";
@@ -16,16 +17,24 @@ import { VersusComparisonSlide } from "./VersusComparisonSlide";
 import { SecurityComplianceSlide } from "./SecurityComplianceSlide";
 import { RoadmapEvolutionSlide } from "./RoadmapEvolutionSlide";
 import { CTASlide } from "./CTASlide";
+import { useContent } from "./useContent";
+
+/** Locales supported by this deck */
+const DECK_LOCALES = ["en", "zh", "ja", "ar"];
+const DECK_LOCALE_LABELS: Record<string, string> = { en: "EN", zh: "中文", ja: "日本語", ar: "عربي" };
 
 interface ElmsLogisticsDeckProps {
   isAuthenticated?: boolean;
   transition?: TransitionType;
 }
 
-export function ElmsLogisticsDeck({
+function ElmsLogisticsDeckInner({
   isAuthenticated = true,
   transition = "slide",
 }: ElmsLogisticsDeckProps) {
+  const content = useContent();
+  const slideTitles = content.slideTitles;
+
   const slides = [
     // ═══════════════════════════════════════════════════════════
     // SLIDE 1: Title / Cover
@@ -78,19 +87,6 @@ export function ElmsLogisticsDeck({
     <CTASlide key="cta" />,
   ];
 
-  const slideTitles = [
-    "ELMS",                          // 1  Title / Cover
-    "The Problem",                   // 2  Fragmented Silos
-    "Architecture",                  // 3  Solution + Tech Edge
-    "Competitive Advantage",         // 4  Versus
-    "AI × MCP",                      // 5  AI Lab
-    "Shipment Tracking",             // 6  Dashboard
-    "Investment & Capital",         // 7  Investment Opportunity
-    "Roadmap",                       // 8  Evolution Map
-    "Security & Compliance",         // 9  Trust
-    "Call to Action",                // 10 CTA
-  ];
-
   return (
     <DeckProvider
       totalSlides={slides.length}
@@ -100,5 +96,13 @@ export function ElmsLogisticsDeck({
     >
       <SlideRenderer slides={slides} slideTitles={slideTitles} />
     </DeckProvider>
+  );
+}
+
+export function ElmsLogisticsDeck(props: ElmsLogisticsDeckProps) {
+  return (
+    <DeckLocaleProvider availableLocales={DECK_LOCALES} localeLabels={DECK_LOCALE_LABELS}>
+      <ElmsLogisticsDeckInner {...props} />
+    </DeckLocaleProvider>
   );
 }

@@ -18,6 +18,7 @@ import {
   MobileDetailModal,
   MobileExpandButton,
 } from "./MobileDetailModal";
+import { useContent } from "./useContent";
 
 // ─── Types ───────────────────────────────────────────────────────
 interface ComplianceCard {
@@ -405,7 +406,7 @@ function SecurityCard({
 }
 
 // ─── Trust Score Counter ─────────────────────────────────────────
-function TrustScore() {
+function TrustScore({ label, certBadges }: { label: string; certBadges: string[] }) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (v) => Math.round(v));
   const [display, setDisplay] = useState(0);
@@ -432,7 +433,7 @@ function TrustScore() {
     >
       {/* Score bar */}
       <div className="flex items-center gap-3 flex-1 max-w-sm">
-        <span className="text-[10px] lg:text-xs font-mono text-slate-500 shrink-0">Trust Score</span>
+        <span className="text-[10px] lg:text-xs font-mono text-slate-500 shrink-0">{label}</span>
         <div className="flex-1 h-2 rounded-full bg-white/5 overflow-hidden">
           <motion.div
             className="h-full rounded-full bg-linear-to-r from-emerald-500 via-cyan-400 to-blue-500"
@@ -452,7 +453,7 @@ function TrustScore() {
 
       {/* Cert badges */}
       <div className="hidden lg:flex items-center gap-2">
-        {["GDPR", "ISO", "SOC2"].map((cert, i) => (
+        {certBadges.map((cert, i) => (
           <motion.span
             key={cert}
             className="text-[9px] lg:text-[10px] font-mono font-bold px-2 py-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/5 text-emerald-400/70 tracking-wider"
@@ -553,6 +554,15 @@ function SecurityBackground() {
 // ─── Main Slide Component ────────────────────────────────────────
 export function SecurityComplianceSlide() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const content = useContent();
+  const c = content.slide9;
+
+  const localizedCards = complianceCards.map((card, i) => ({
+    ...card,
+    title: c.cards[i].title,
+    description: c.cards[i].description,
+    details: c.cards[i].details,
+  }));
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center bg-linear-to-br from-slate-950 via-[#060a14] to-slate-950 text-white relative overflow-hidden p-3 md:p-5 lg:p-8">
@@ -574,7 +584,7 @@ export function SecurityComplianceSlide() {
         >
           <Lock className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-400/60" />
           <span className="text-xs md:text-sm lg:text-base font-mono text-emerald-400/70 tracking-[0.25em] uppercase">
-            Security Command Center
+            {c.badge}
           </span>
           <Lock className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-400/60" />
         </motion.div>
@@ -585,15 +595,8 @@ export function SecurityComplianceSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, type: "spring", stiffness: 120 }}
         >
-          <span className="text-white">Security</span>
-          <motion.span
-            className="text-emerald-400 mx-1.5 md:mx-2.5 inline-block"
-            animate={{ rotate: [0, 5, -5, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            &
-          </motion.span>
-          <span className="text-white">Compliance</span>
+          <span className="text-white">{c.title}</span>{" "}
+          <span className="text-emerald-400">{c.titleHighlight}</span>
         </motion.h2>
 
         <motion.p
@@ -602,13 +605,13 @@ export function SecurityComplianceSlide() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.25 }}
         >
-          Enterprise-grade protection · Supabase Auth · PostgreSQL RLS · Cloudflare WAF
+          {c.subtitle}
         </motion.p>
       </motion.div>
 
       {/* ── Desktop: 2×2 Card Grid ── */}
       <div className="relative z-10 hidden md:grid grid-cols-2 gap-4 lg:gap-5 w-full max-w-4xl flex-1 min-h-0">
-        {complianceCards.map((card, i) => (
+        {localizedCards.map((card, i) => (
           <SecurityCard key={card.id} card={card} index={i} />
         ))}
       </div>
@@ -617,7 +620,7 @@ export function SecurityComplianceSlide() {
       <div className="relative z-10 flex md:hidden flex-col items-center gap-3 flex-1 justify-center min-h-0 w-full">
         {/* Mini card preview */}
         <div className="grid grid-cols-2 gap-2.5 w-full max-w-xs">
-          {complianceCards.map((card, i) => {
+          {localizedCards.map((card, i) => {
             const IconComp = card.Icon;
             return (
               <motion.div
@@ -652,25 +655,25 @@ export function SecurityComplianceSlide() {
         </div>
 
         <MobileExpandButton
-          label="Tap to view security details"
+          label={c.mobileExpand}
           onClick={() => setMobileOpen(true)}
         />
       </div>
 
       {/* ── Trust Score (desktop) ── */}
       <div className="relative z-10 mt-3 md:mt-4 w-full max-w-4xl hidden md:block">
-        <TrustScore />
+        <TrustScore label={c.trustScoreLabel} certBadges={c.certBadges} />
       </div>
 
       {/* ── Mobile Detail Modal ── */}
       <MobileDetailModal
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        title="Security & Compliance"
-        subtitle="4 pillars · Enterprise-grade protection"
+        title={c.mobileModal.title}
+        subtitle={c.mobileModal.subtitle}
       >
         <div className="space-y-4">
-          {complianceCards.map((card) => {
+          {localizedCards.map((card) => {
             const IconComp = card.Icon;
             return (
               <div key={card.id}>
@@ -745,14 +748,14 @@ export function SecurityComplianceSlide() {
           {/* Trust score in modal */}
           <div className="pt-3 border-t border-white/5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono text-slate-500">Trust Score</span>
+              <span className="text-[10px] font-mono text-slate-500">{c.trustScoreLabel}</span>
               <span className="text-base font-mono font-black text-emerald-400">100%</span>
             </div>
             <div className="h-2 rounded-full bg-white/5 overflow-hidden mt-1.5">
               <div className="h-full w-full rounded-full bg-linear-to-r from-emerald-500 via-cyan-400 to-blue-500" />
             </div>
             <div className="flex items-center gap-2 mt-2">
-              {["GDPR", "ISO", "SOC2"].map((cert) => (
+              {c.certBadges.map((cert) => (
                 <span
                   key={cert}
                   className="text-[8px] font-mono font-bold px-2 py-0.5 rounded-md border border-emerald-500/20 bg-emerald-500/5 text-emerald-400/70 tracking-wider"

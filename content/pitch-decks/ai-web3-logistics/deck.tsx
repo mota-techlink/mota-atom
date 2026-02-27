@@ -20,8 +20,8 @@ import { CTASlide } from "./CTASlide";
 import { useContent } from "./useContent";
 
 /** Locales supported by this deck (includes Arabic, which is NOT in global config) */
-const DECK_LOCALES = ["en", "zh", "ar"];
-const DECK_LOCALE_LABELS: Record<string, string> = { en: "EN", zh: "中文", ar: "عربي" };
+const DECK_LOCALES = ["en", "zh", "ja", "ar"];
+const DECK_LOCALE_LABELS: Record<string, string> = { en: "EN", zh: "中文", ja: "日本語", ar: "عربي" };
 
 interface AIWeb3LogisticsDeckProps {
   isAuthenticated?: boolean;

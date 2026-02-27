@@ -1,0 +1,444 @@
+{
+  "slide1": {
+    "subtitle": "欧洲物流管理系统",
+    "tagline": "AI 驱动的跨境电商基础设施",
+    "badges": [
+      { "icon": "🇪🇺", "text": "符合欧盟标准" },
+      { "icon": "🤖", "text": "AI 赋能" },
+      { "icon": "🔗", "text": "MCP 就绪" }
+    ],
+    "bottomDate": "2026年2月"
+  },
+  "slide2": {
+    "badge": "行业痛点",
+    "title": "壁垒重重：",
+    "subtitle": "全球物流的碎片化困局",
+    "description": "三个孤立的系统竖井，零互操作性。每一次交接都是故障点。",
+    "syncError": "同步错误",
+    "silos": [
+      {
+        "title": "电商平台",
+        "items": ["订单碎片化", "跨店铺 SKU 不匹配", "无实时库存同步", "人工 CSV 导出"]
+      },
+      {
+        "title": "海关合规",
+        "items": ["纸质报关", "HS 编码错误", "清关周期延误", "监管盲区"]
+      },
+      {
+        "title": "末端配送",
+        "items": ["手动重录面单", "地址格式错误", "无签收确认", "碳排追踪空白"]
+      }
+    ],
+    "mobileLabels": { "ecommerce": "电商", "customs": "海关", "lastMile": "末端配送", "syncErr": "同步错误" },
+    "mobileExpand": "点击查看详情",
+    "stats": [
+      { "value": "37%", "label": "数据丢失" },
+      { "value": "€4.2B", "label": "成本" },
+      { "value": "72h", "label": "延误" }
+    ],
+    "mobileModal": {
+      "title": "碎片化的物流孤岛",
+      "subtitle": "三个孤立系统，每一次交接都是故障点。",
+      "statLabels": ["交接中数据丢失", "欧盟年度成本", "平均清关延误"]
+    }
+  },
+  "slide3": {
+    "badge": "解决方案",
+    "title": "架构",
+    "titleHighlight": "双环",
+    "features": [
+      { "label": "无缝系统集成", "description": "消除系统之间的壁垒。为整个供应链的所有物流数据提供单一数据源。" },
+      { "label": "自动生成面单", "description": "基于同步的运输数据，自动生成准确的末端配送面单。" },
+      { "label": "海关合规", "description": "可信赖的验证数据，确保清关顺畅且零人工错误。" },
+      { "label": "碳排放追踪", "description": "集成碳排放追踪功能，满足欧盟环保标准与法规要求。" },
+      { "label": "AI 智能驱动", "description": "通过 MCP 实现预测分析、路线优化和自动化决策。" },
+      { "label": "IoT 设备集成", "description": "通过 IoT 设备获取温度、位置和状态的实时数据监控。" }
+    ],
+    "modules": [
+      { "label": "运输", "badge": "API 优先" },
+      { "label": "海关", "badge": "AEO 认证" },
+      { "label": "配送", "badge": "末端配送" },
+      { "label": "IoT", "badge": "实时" },
+      { "label": "AI / MCP", "badge": "MCP 原生" },
+      { "label": "碳排", "badge": "ISO 14067" }
+    ],
+    "techNodes": [
+      { "label": "Cloudflare", "sublabel": "边缘 · CDN · WAF", "features": ["300+ 全球边缘节点", "亚100毫秒响应", "DDoS 防护 & WAF", "零冷启动 Workers"] },
+      { "label": "GitHub", "sublabel": "CI/CD · GitOps", "features": ["推送到部署 <2 分钟", "自动化 CI/CD", "代码扫描 & Dependabot", "分支保护策略"] },
+      { "label": "Supabase", "sublabel": "数据库 · 认证 · RLS", "features": ["PostgreSQL 行级安全 (RLS)", "数据库内 RPC", "实时 WebSocket", "Auth + JWT + MFA"] },
+      { "label": "Next.js 15", "sublabel": "SSR · RSC · 边缘", "features": ["React 服务端组件", "ISR + 边缘运行时", "App Router + 中间件", "流式 SSR"] },
+      { "label": "Tailwind", "sublabel": "原子化 CSS", "features": ["零运行时 CSS", "设计系统一致性", "移动优先响应式", "内置暗黑模式"] },
+      { "label": "shadcn/ui", "sublabel": "组件 · 无障碍", "features": ["Radix UI 基础组件 (WAI-ARIA)", "复制粘贴即拥有", "企业级组件", "完整无障碍支持"] }
+    ],
+    "coreLabel": "ELMS",
+    "coreSublabel": "核心",
+    "techStackLabel": "技术栈",
+    "mobileExpand": "点击查看架构",
+    "mobileModal": {
+      "title": "解决方案架构",
+      "subtitle": "双环设计 · 6 大模块 · 6 大技术节点"
+    }
+  },
+  "slide4": {
+    "badge": "竞争优势",
+    "title": "传统物流",
+    "titleVs": "vs",
+    "titleHighlight": "ELMS",
+    "subtitle": "六个关键维度的对比分析。",
+    "traditionalHeader": "传统方案",
+    "elmsHeader": "ELMS",
+    "rows": [
+      { "dimension": "系统集成", "traditional": { "tag": "孤岛式", "text": "碎片化人工同步" }, "elms": { "tag": "统一化", "text": "即时 API 生态" } },
+      { "dimension": "海关", "traditional": { "tag": "人工", "text": "易出错的纸质流程" }, "elms": { "tag": "自动驾驶", "text": "100% 验证数字化" } },
+      { "dimension": "可持续性", "traditional": { "tag": "盲区", "text": "碳排放零可见度" }, "elms": { "tag": "合规达标", "text": "原生 ISO 追踪" } },
+      { "dimension": "IoT / 实时", "traditional": { "tag": "延迟", "text": "批量处理数据" }, "elms": { "tag": "实时", "text": "实时边缘智能" } },
+      { "dimension": "AI / MCP", "traditional": { "tag": "无", "text": "静态遗留软件" }, "elms": { "tag": "自主", "text": "MCP 原生 AI 代理" } },
+      { "dimension": "成本模型", "traditional": { "tag": "固定", "text": "高额前期许可费" }, "elms": { "tag": "弹性", "text": "可扩展按需付费" } }
+    ],
+    "verdict": {
+      "traditional": { "label": "传统方案", "sublabel": "收益递减" },
+      "elms": { "label": "ELMS", "sublabel": "优势叠加" }
+    },
+    "mobileExpand": "点击查看全部对比",
+    "mobileModal": {
+      "title": "ELMS vs 传统方案",
+      "subtitle": "六个维度全面对比"
+    }
+  },
+  "slide5": {
+    "badge": "实时演示",
+    "title": "AI 物流实验室",
+    "titleHighlight": "MCP",
+    "subtitle": "自然语言 → MCP 协议 → 自动化运输执行",
+    "mcpProtocol": "MCP 协议",
+    "processing": "处理中",
+    "connected": "已连接",
+    "systemMessages": [
+      "ELMS AI 就绪。MCP 服务器已连接。",
+      "可用工具：ship、track、customs、carbon"
+    ],
+    "userPrompt": "从深圳发 50 箱电子产品到都柏林，走最快路线。",
+    "callingTools": "正在调用 MCP 工具...",
+    "aiResponse": "✅ 货件创建成功。点击追踪：",
+    "shipmentCreated": "货件已创建",
+    "shipmentId": "ELMS-2026-SZX-DUB-0847",
+    "miniRoute": ["SZX → DUB", "50 箱", "SF Express"],
+    "viewRoute": "查看路线面板和单据",
+    "inputPlaceholder": "向 ELMS 提问...",
+    "outputHeader": "货件输出",
+    "outputReady": "就绪",
+    "outputIdLabel": "货件编号",
+    "outputFields": [
+      { "label": "承运商", "value": "SF Express International" },
+      { "label": "服务", "value": "优先快递（2-3 天）" },
+      { "label": "路线", "value": "SZX → DUB（经 AMS 枢纽）" },
+      { "label": "海关", "value": "符合欧盟标准 · 自动申报" },
+      { "label": "面单", "value": "50 张已生成 · 已附二维码" },
+      { "label": "碳排", "value": "1.2t CO₂ · 可购买碳抵消" }
+    ],
+    "outputFooter": ["1.2 秒内生成", "调用了 3 个 MCP 工具"],
+    "compatBar": { "compatible": "兼容", "protocol": "协议", "protocolValue": "MCP（Model Context Protocol）", "latency": "延迟", "latencyValue": "< 2 秒端到端" },
+    "mobileLabels": { "console": "AI 控制台", "mcp": "MCP", "output": "输出" },
+    "mobileExpand": "点击查看完整演示",
+    "businessLinks": ["ELMS 产品", "客户案例", "文档中心", "返回演示"],
+    "mobileModal": {
+      "title": "AI 物流实验室 × MCP",
+      "subtitle": "自然语言 → 自动化执行",
+      "userPromptLabel": "用户指令",
+      "mcpProtocolLabel": "MCP 协议",
+      "mcpTools": "调用了 3 个工具：ship、customs、carbon",
+      "outputLabel": "货件输出"
+    }
+  },
+  "slide6": {
+    "badge": "实时货运追踪",
+    "title": "路线面板",
+    "subtitle": "SF Express 优先 · 深圳 → 阿姆斯特丹 → 都柏林 · 50 箱",
+    "shipmentId": "ELMS-2026-SZX-DUB-0847",
+    "legend": { "completed": "已完成", "inProgress": "进行中", "pending": "待处理" },
+    "docStatuses": { "Approved": "已批准", "Pending": "待处理", "Processing": "处理中", "Generated": "已生成" },
+    "routeNodes": [
+      {
+        "label": "始发仓库",
+        "location": "中国深圳",
+        "timestamp": "2026-02-14 09:30 CST",
+        "documents": [
+          { "title": "采购订单", "details": { "订单编号": "PO-20260214-001", "客户": "TechRetail Europe GmbH", "商品": "50 × 消费电子（混合SKU）", "总价值": "€127,500.00", "币种": "EUR", "付款条款": "Net 30", "贸易条款": "DDP 都柏林" } },
+          { "title": "装箱单", "details": { "装箱单号": "PL-20260214-001", "总箱数": "50", "毛重": "1,250 kg", "净重": "1,080 kg", "尺寸": "50 × 40cm × 35cm × 30cm", "托盘数": "4 (欧标托盘)", "特殊处理": "易碎 — 小心搬运" } },
+          { "title": "商业发票", "details": { "发票号": "CI-20260214-001", "卖方": "深圳数码科技有限公司", "买方": "TechRetail Europe GmbH", "总金额": "€127,500.00", "HS编码": "8471.30 / 8528.72", "原产国": "中国 (CN)", "条款": "DDP 爱尔兰都柏林" } }
+        ]
+      },
+      {
+        "label": "承运商揽收",
+        "location": "深圳 SZX 枢纽",
+        "timestamp": "2026-02-14 14:15 CST",
+        "documents": [
+          { "title": "空运提单 (MAWB)", "details": { "提单号": "784-2026-0847", "承运商": "顺丰国际", "服务": "优先快递", "始发地": "SZX (深圳宝安国际机场)", "目的地": "DUB (都柏林机场)", "中转站": "AMS (阿姆斯特丹史基浦)", "预计时效": "2–3 个工作日" } },
+          { "title": "运输标签 (×50)", "details": { "标签批次": "LBL-SZX-50", "格式": "A6 热敏 (100×150mm)", "标签数量": "50 张", "二维码": "内嵌 — 链接至ELMS追踪", "条码标准": "Code 128", "自动生成": "是 (ELMS AI)", "状态": "已打印并贴附" } }
+        ]
+      },
+      {
+        "label": "中转枢纽",
+        "location": "阿姆斯特丹史基浦机场 (AMS)",
+        "timestamp": "2026-02-15 06:45 CET",
+        "documents": [
+          { "title": "转运申报 (T1)", "details": { "T1 MRN": "26NL00T1AMS003391", "类型": "联盟转运 (T1)", "出发海关": "NL000396 — 史基浦", "目的海关": "IE002100 — 都柏林机场", "担保编号": "GRN-NL-2026-08847", "封签号": "NL-SEAL-887441, NL-SEAL-887442", "状态": "已放行" } },
+          { "title": "物联网温度日志", "details": { "传感器ID": "ELMS-IOT-T7742", "位置": "AMS 冷链 B 区", "最低温度": "18.2°C", "最高温度": "22.1°C", "平均温度": "20.4°C", "阈值": "15°C – 25°C", "结果": "✅ 在可接受范围内" } }
+        ]
+      },
+      {
+        "label": "欧盟海关清关",
+        "location": "都柏林机场 (DUB)",
+        "timestamp": "2026-02-15 11:30 GMT — 处理中",
+        "documents": [
+          { "title": "ICS2 进口申报", "details": { "MRN": "26IE00ICS2DUB00847", "申报类型": "ICS2 入境摘要 (ENS)", "申报人": "ELMS 爱尔兰报关行", "HS编码": "8471.30.00, 8528.72.00", "关税税率": "0% (ITA 协定)", "增值税率": "23% (爱尔兰标准)", "状态": "⏳ 审核中" } },
+          { "title": "原产地证书", "details": { "证书号": "COO-CN-2026-44871", "签发机构": "中国贸促会深圳分会", "原产国": "中华人民共和国", "受益人": "TechRetail Europe GmbH", "贸易协定": "不适用 (最惠国税率)", "有效期至": "2026-08-14", "核验方": "ELMS 合规引擎" } },
+          { "title": "碳排放报告", "details": { "报告编号": "CARBON-DUB-0847", "总 CO₂": "1.2 吨", "空运段": "1.08t (SZX→AMS→DUB)", "陆运段": "0.12t (末端配送)", "欧盟标准": "CSRD / CBAM 对齐", "可用碳抵消": "是 — €18.60 (通过ETS)", "生成方": "ELMS 碳模块" } }
+        ]
+      },
+      {
+        "label": "末端配送",
+        "location": "爱尔兰都柏林",
+        "documents": [
+          { "title": "配送单", "details": { "配送编号": "DEL-DUB-0847", "收件人": "TechRetail Europe GmbH", "地址": "Unit 12, Citywest Business Park, Dublin 24", "联系人": "Michael O'Brien (+353 1 XXX XXXX)", "配送窗口": "2026-02-16 09:00–12:00 GMT", "末端承运商": "An Post / DPD Ireland", "状态": "⏳ 等待海关放行" } },
+          { "title": "签收证明", "details": { "POD编号": "POD-DUB-0847", "签名": "— (待签收)", "照片凭证": "— (待上传)", "送达时间": "— (待确认)", "状态检查": "— (待确认)", "签收人": "— (待确认)", "状态": "⏳ 尚未送达" } }
+        ]
+      }
+    ],
+    "statusBar": {
+      "nodesCompleted": "个节点已完成",
+      "documentsTracked": "份单据追踪中",
+      "customs": "海关：",
+      "customsStatus": "处理中",
+      "carbon": "碳排：",
+      "carbonValue": "1.2t CO₂"
+    },
+    "clickHint": "点击任意单据查看详情",
+    "docsSuffix": "份单据",
+    "documentModal": {
+      "shipmentRef": "货件编号",
+      "datePrefix": "日期：",
+      "autoGenerated": "ELMS 自动生成单据"
+    },
+    "mobileExpand": "点击查看路线和单据",
+    "mobileModal": {
+      "title": "路线面板",
+      "subtitle": "ELMS-2026-SZX-DUB-0847 · 5 个节点 · 12 份单据",
+      "stats": [
+        { "value": "3/5", "label": "已完成" },
+        { "value": "12", "label": "单据" },
+        { "value": "处理中", "label": "海关" },
+        { "value": "1.2t", "label": "CO₂" }
+      ]
+    }
+  },
+  "slide7": {
+    "badge": "投资方案",
+    "title": "财务",
+    "titleHighlight": "透明度",
+    "subtitle": "融资 €150K 以全球化扩展平台。资金分配完全透明。",
+    "fundAllocation": [
+      { "label": "产品研发 & AI", "pct": "40%", "detail": "€60,000 · AI/ML、MCP集成、平台开发" },
+      { "label": "市场 & 运营", "pct": "30%", "detail": "€45,000 · 欧盟/亚洲市场进入、商户对接" },
+      { "label": "安全 & 合规", "pct": "20%", "detail": "€30,000 · 欧盟服务器、GDPR审计、法律合规" },
+      { "label": "应急储备金", "pct": "10%", "detail": "€15,000 · 物流市场波动风险缓冲" }
+    ],
+    "totalRaise": "总融资额",
+    "totalRaiseAmount": "€150K",
+    "valuationBar": {
+      "preLabel": "投前估值",
+      "preValue": "€200K",
+      "postLabel": "投后估值",
+      "postValue": "€350K"
+    },
+    "investmentCard": {
+      "title": "投资亮点",
+      "items": [
+        "技术资产注入：€200K 资产价值",
+        "全栈平台已投入生产",
+        "资本效率：2.3× 杠杆",
+        "经常性SaaS + 交易型收入"
+      ]
+    },
+    "leverageVisual": {
+      "label": "1× 资本",
+      "arrow": "→ 2.3× 平台杠杆"
+    },
+    "keyMetrics": [
+      { "label": "资金跑道", "value": "18 月" },
+      { "label": "杠杆率", "value": "2.3×" },
+      { "label": "毛利率", "value": "75%" }
+    ],
+    "mobileExpand": "点击查看财务详情",
+    "mobileModal": {
+      "title": "财务透明度",
+      "subtitle": "资金分配与关键指标"
+    }
+  },
+  "slide8": {
+    "badge": "多层演进路线图",
+    "title": "产品",
+    "titleHighlight": "路线图",
+    "subtitle": "3 条并行赛道 · Q1 2026 → 2027+ · 基础设施 × 智能化 × 合规",
+    "timeColumns": [
+      { "period": "Q1–Q2 2026", "label": "奠基" },
+      { "period": "Q3–Q4 2026", "label": "扩展" },
+      { "period": "2027 年初", "label": "整合" },
+      { "period": "2027+ 及以后", "label": "领先" }
+    ],
+    "tracks": [
+      {
+        "label": "基础设施与运营",
+        "shortLabel": "运营 & 基建",
+        "milestones": [
+          { "title": "核心运输引擎", "description": "无缝面单生成与多承运商 API。为所有物流合作伙伴提供单一数据源。" },
+          { "title": "边缘原生扩展", "description": "旺季峰值亚100毫秒响应。Cloudflare Workers 覆盖全球 300+ 节点。" },
+          { "title": "WMS 深度同步", "description": "实时库存到运输网络联动。仓库运营与配送智能深度融合。" },
+          { "title": "全球扩展", "description": "面向全球合作伙伴的多租户基础设施。为企业客户提供白标服务。" }
+        ]
+      },
+      {
+        "label": "智能与创新",
+        "shortLabel": "AI & 智能",
+        "milestones": [
+          { "title": "AI 地址解析", "description": "自动多语言地址纠错。欧盟地址格式准确率达 99.7%。" },
+          { "title": "MCP 协议 V1", "description": "首个 AI 代理式运输接口。通过 Claude/GPT 进行对话式物流操作。" },
+          { "title": "IoT 节点网络", "description": "冷链与高价值货运的实时传感器数据。实时状态监控。" },
+          { "title": "自主物流", "description": "自优化路线与成本 AI。零人工干预的预测性需求规划。" }
+        ]
+      },
+      {
+        "label": "合规与绿色科技",
+        "shortLabel": "合规 & ESG",
+        "milestones": [
+          { "title": "GDPR 与隐私", "description": "数据驻留锁定在爱尔兰。完全符合爱尔兰 DPA 2018 和欧盟 GDPR。" },
+          { "title": "碳排 ISO 14067", "description": "实时范围三排放追踪。按每票货件计算碳足迹。" },
+          { "title": "海关自动驾驶", "description": "100% 无纸化 AI 验证申报。欧盟跨境零人工海关摩擦。" },
+          { "title": "绿色标准领导者", "description": "树立欧盟物流可持续性标杆。获得碳中和运营认证。" }
+        ]
+      }
+    ],
+    "statusLabels": { "done": "已完成", "active": "进行中", "planned": "已规划", "vision": "愿景" },
+    "crossLinks": ["AI → 碳排", "IoT → WMS", "边缘 → 海关", "自主 → 绿色"],
+    "techHealth": "技术健康度：最优",
+    "continuousRefresh": { "line1": "持续", "line2": "技术迭代", "quote": "当我们的技术栈开始老化时，竞争对手仍落后数年。" },
+    "trackPrefix": "赛道",
+    "techStackLabel": "技术栈",
+    "clickHint": "点击里程碑查看详情",
+    "progressLabel": "进度",
+    "mobileTrackDesc": "4 个里程碑 · Q1 2026 → 2027+",
+    "mobileExpand": "点击探索路线图",
+    "mobileModal": {
+      "title": "产品路线图",
+      "subtitle": "3 条赛道 · Q1 2026 → 2027+",
+      "continuousTitle": "持续技术迭代",
+      "recursiveLabel": "递归增长策略",
+      "recursiveDesc": "我们的架构为持续演进而设计——模块化、可替换、面向未来。"
+    }
+  },
+  "slide9": {
+    "badge": "安全指挥中心",
+    "title": "安全",
+    "titleHighlight": "合规",
+    "subtitle": "企业级防护 · Supabase Auth · PostgreSQL RLS · Cloudflare WAF",
+    "activeStatus": "运行中",
+    "trustScoreLabel": "信任评分",
+    "certBadges": ["GDPR", "ISO", "SOC2"],
+    "cards": [
+      {
+        "title": "欧盟数据主权",
+        "subtitle": "GDPR",
+        "badgeLabel": "符合欧盟标准",
+        "description": "数据严格本地化存储于都柏林 (eu-west-1)。100% 符合 GDPR 及爱尔兰数据保护法 2018。数据驻留零摩擦。",
+        "details": [
+          "AWS eu-west-1（爱尔兰）数据驻留",
+          "Supabase Auth 结合 JWT + MFA",
+          "符合爱尔兰数据保护法 2018",
+          "数据处理协议 (DPA) 就绪",
+          "内置被遗忘权与数据可携带权"
+        ]
+      },
+      {
+        "title": "股东权益保护",
+        "subtitle": "法律",
+        "badgeLabel": "已保障",
+        "description": "机构级股东协议。为所有投资者提供清晰的知识产权保护和责任隔离。",
+        "details": [
+          "专业股东协议",
+          "知识产权所有权与许可清晰",
+          "责任限制框架",
+          "已确定的董事会治理结构",
+          "退出策略与估值条款"
+        ]
+      },
+      {
+        "title": "军事级防护",
+        "subtitle": "安全",
+        "badgeLabel": "零信任",
+        "description": "零信任架构：静态数据 AES-256 加密，传输中 TLS 1.3 加密。PostgreSQL RLS 在内核级别防止未授权数据泄露。",
+        "details": [
+          "静态数据 AES-256 加密",
+          "传输中 TLS 1.3 加密",
+          "PostgreSQL 行级安全 (RLS)",
+          "Cloudflare WAF & DDoS 防护",
+          "自动化审计日志 & SIEM"
+        ]
+      },
+      {
+        "title": "ESG 自动化",
+        "subtitle": "环保",
+        "badgeLabel": "ISO 14067",
+        "description": "内置 ISO 14067 碳核算。零人工投入即可满足欧盟环保标准。自动化范围三排放报告。",
+        "details": [
+          "原生 ISO 14067 碳排追踪",
+          "自动化欧盟范围三报告",
+          "按每票货件计算碳足迹",
+          "面向利益相关者的 ESG 看板",
+          "符合欧盟环保法规"
+        ]
+      }
+    ],
+    "mobileExpand": "点击查看安全详情",
+    "mobileModal": {
+      "title": "安全与合规",
+      "subtitle": "4 大支柱 · 企业级防护",
+      "trustScoreValue": "100%"
+    }
+  },
+  "slide10": {
+    "badge": "范式变革已至",
+    "headline": {
+      "prefix": "在 AI 时代，没有",
+      "strikethrough": "追随者",
+      "only": "只有",
+      "architects": "架构者",
+      "and": "和",
+      "obsolete": "被淘汰者"
+    },
+    "leftBlock": {
+      "heading": "不可逆转的现实",
+      "text": "从实体到数字的物流桥梁{will}被建造。历史的窗口正在打开，但稍纵即逝。唯一的变量是——我们是{own}这套基础设施，还是向竞争对手租用。"
+    },
+    "rightBlock": {
+      "heading": "洗牌时刻",
+      "text": "这不是一次软件升级，而是对全球贸易的根本性重构。遗留系统无法在向{agentDriven}的转型中存活。我们正在构筑这座堡垒。",
+      "agentDriven": "代理驱动商业"
+    },
+    "cta": "与我们共同构筑未来",
+    "email": "contact@motaiot.com",
+    "brand": "MOTA TechLink",
+    "confidential": "保密文件"
+  },
+  "slideTitles": [
+    "ELMS",
+    "行业痛点",
+    "架构",
+    "竞争优势",
+    "AI × MCP",
+    "货运追踪",
+    "投资与资本",
+    "路线图",
+    "安全与合规",
+    "行动号召"
+  ]
+}

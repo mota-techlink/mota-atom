@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { useContent } from "./useContent";
 import {
   ArrowRight,
   Mail,
@@ -214,6 +215,9 @@ function FogLayers() {
 
 // ─── Main CTA Slide ─────────────────────────────────────────────
 export function CTASlide() {
+  const content = useContent();
+  const c = content.slide10;
+
   return (
     <div className="w-full h-full flex flex-col justify-center items-center bg-linear-to-b from-[#030712] via-[#0a1628] to-[#030712] text-white relative overflow-hidden">
       {/* ── Deep background layers ── */}
@@ -257,7 +261,7 @@ export function CTASlide() {
         >
           <Zap className="w-3 h-3 text-blue-400" />
           <span className="text-[9px] md:text-xs font-mono tracking-[0.2em] uppercase text-blue-400/90">
-            The Paradigm Shift is Here
+            {c.badge}
           </span>
         </motion.div>
 
@@ -268,19 +272,19 @@ export function CTASlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
-          In the AI Era, there are no{" "}
+          {c.headline.prefix}{" "}
           <span className="text-white/30 line-through decoration-red-500/50">
-            followers
+            {c.headline.strikethrough}
           </span>
           .
           <br />
-          <span className="hidden md:inline">Only </span>
-          <span className="md:hidden">Only </span>
+          <span className="hidden md:inline">{c.headline.only} </span>
+          <span className="md:hidden">{c.headline.only} </span>
           <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
-            Architects
+            {c.headline.architects}
           </span>{" "}
-          and the{" "}
-          <span className="text-red-500/80">Obsolete</span>.
+          {c.headline.and}{" "}
+          <span className="text-red-500/80">{c.headline.obsolete}</span>.
         </motion.h2>
 
         {/* ── Two-column logic blocks ── */}
@@ -292,15 +296,12 @@ export function CTASlide() {
             transition={{ delay: 0.9, duration: 0.6 }}
           >
             <h3 className="text-xs md:text-base lg:text-lg font-bold text-white mb-1 md:mb-2">
-              The Inevitable Reality
+              {c.leftBlock.heading}
             </h3>
             <p className="text-[9px] md:text-xs lg:text-sm text-slate-400 leading-relaxed">
-              The physical-to-digital logistics bridge{" "}
-              <strong className="text-white/80">will</strong> be built.
-              History&apos;s window is open now, but it closes fast. The only
-              variable is whether we{" "}
-              <strong className="text-blue-300/80">own</strong> this
-              infrastructure, or rent it from our competitors.
+              {c.leftBlock.text1}{" "}
+              <strong className="text-white/80">{c.leftBlock.bold1}</strong>{" "}{c.leftBlock.text2}{" "}
+              <strong className="text-blue-300/80">{c.leftBlock.bold2}</strong>{" "}{c.leftBlock.text3}
             </p>
           </motion.div>
 
@@ -311,13 +312,11 @@ export function CTASlide() {
             transition={{ delay: 1.1, duration: 0.6 }}
           >
             <h3 className="text-xs md:text-base lg:text-lg font-bold text-white mb-1 md:mb-2">
-              The Extinction Event
+              {c.rightBlock.heading}
             </h3>
             <p className="text-[9px] md:text-xs lg:text-sm text-slate-400 leading-relaxed">
-              This isn&apos;t a software upgrade; it&apos;s a fundamental rewrite
-              of global trade. Legacy systems won&apos;t survive the transition
-              to <strong className="text-cyan-300/80">Agent-driven commerce</strong>.
-              We are building the sanctuary.
+              {c.rightBlock.text1}{" "}
+              <strong className="text-cyan-300/80">{c.rightBlock.bold1}</strong>{c.rightBlock.text2}
             </p>
           </motion.div>
         </div>
@@ -349,7 +348,7 @@ export function CTASlide() {
               transition={{ duration: 0.8 }}
             />
             <span className="relative flex items-center gap-2">
-              Architect the Future With Us
+              {c.cta}
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </span>
           </motion.a>
@@ -363,7 +362,7 @@ export function CTASlide() {
           >
             <span className="flex items-center gap-1.5 hover:text-blue-400/70 transition-colors cursor-pointer">
               <Mail className="w-3 h-3" />
-              contact@motaiot.com
+              {c.email}
             </span>
             <span className="w-1 h-1 bg-slate-700 rounded-full" />
             <span className="flex items-center gap-1.5 hover:text-blue-400/70 transition-colors cursor-pointer">
@@ -381,13 +380,13 @@ export function CTASlide() {
                           height={16}
                           className="rounded-sm"
                         />
-                        MOTA TechLink
+                        {c.brand}
                       </a>
             </span>
             <span className="w-1 h-1 bg-slate-700 rounded-full" />
             <span className="flex items-center gap-1.5 text-slate-600">
               <Lock className="w-3 h-3" />
-              Confidential
+              {c.confidential}
             </span>
           </motion.div>
         </motion.div>

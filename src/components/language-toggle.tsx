@@ -10,13 +10,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Languages } from "lucide-react"
+import { locales, localeLabels } from "@/routing"
 
 export function LanguageToggle() {
   const pathname = usePathname()
   const router = useRouter()
 
   // 切换语言的逻辑 — 使用 next-intl 的 router，自动处理 locale 前缀
-  const switchLocale = (newLocale: 'en' | 'zh') => {
+  const switchLocale = (newLocale: string) => {
     router.replace(pathname, { locale: newLocale })
   }
 
@@ -29,12 +30,11 @@ export function LanguageToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => switchLocale('en')}>
-          English
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => switchLocale('zh')}>
-          中文
-        </DropdownMenuItem>
+        {locales.map((locale) => (
+          <DropdownMenuItem key={locale} onClick={() => switchLocale(locale)}>
+            {localeLabels[locale] ?? locale}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )

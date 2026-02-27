@@ -1,0 +1,52 @@
+---
+title: SEO 設定
+description: Google Analytics や Google Search Console を含むウェブサイトの SEO 設定方法について説明します。
+---
+
+## 概要
+
+検索エンジン最適化（SEO）は、検索エンジンにおけるウェブサイトの可視性を向上させるために不可欠です。本ガイドでは、Next.js アプリケーションに Google Analytics と Google Search Console を設定する方法を説明します。
+
+## 環境変数
+
+SEO 機能を有効にするには、`.env` または `.env.local` ファイルに以下の環境変数を設定する必要があります：
+
+```bash
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-verification-code
+```
+
+## Google Analytics (`NEXT_PUBLIC_GA_MEASUREMENT_ID`)
+
+Google Analytics 4（GA4）は、訪問者がウェブサイトとどのようにインタラクションしているかを把握するのに役立ちます。
+
+### 測定 ID（Measurement ID）の取得方法：
+
+1.  [Google Analytics](https://analytics.google.com/) にアクセスし、Google アカウントでログインします。
+2.  左下の **管理（Admin）**（歯車アイコン）をクリックします。
+3.  **プロパティ（Property）** 列の **データストリーム（Data Streams）** をクリックします。
+4.  **Web** データストリームを選択します。まだない場合は、**ストリームを追加（Add stream）** -> **Web** をクリックして作成します。
+5.  **Web データストリーム詳細** ウィンドウで、**測定 ID（MEASUREMENT ID）**（通常 `G-` で始まる）をコピーします。
+6.  この ID を `.env` ファイルの `NEXT_PUBLIC_GA_MEASUREMENT_ID` として貼り付けます。
+
+## Google Search Console (`NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`)
+
+Google Search Console ツールは、ウェブサイトの検索トラフィックとパフォーマンスを測定し、問題を修正し、Google 検索結果でサイトを目立たせるのに役立ちます。
+
+### 確認コード（Verification Code）の取得方法：
+
+1.  [Google Search Console](https://search.google.com/search-console) にアクセスしてログインします。
+2.  **プロパティを追加（Add property）** をクリックします（または既に追加済みの場合は、ドロップダウンメニューからプロパティを選択します）。
+3.  **URL プレフィックス（URL prefix）** 方式を選択し、ウェブサイトの URL（例：`https://your-domain.com`）を入力します。**続行（Continue）** をクリックします。
+4.  確認方法のオプションで、**HTML タグ（HTML tag）** までスクロールダウンします。
+5.  提供されたメタタグをコピーします。以下のような形式です：
+    `<meta name="google-site-verification" content="your-verification-code" />`
+6.  content の値（`your-verification-code`）のみを抽出します。
+7.  このコードを `.env` ファイルの `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` として貼り付けます。
+
+### 設定の検証
+
+これらの変数を追加し、ウェブサイトをデプロイ（またはローカルサーバーを再起動）した後：
+
+-   **Google Analytics**：ウェブサイトにアクセスし、Google Analytics の **リアルタイム（Realtime）** レポートで訪問が追跡されているか確認します。
+-   **Google Search Console**：Google Search Console の確認ページに戻り、**確認（Verify）** をクリックします。所有権の確認が完了したことが表示されるはずです。

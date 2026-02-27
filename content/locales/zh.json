@@ -326,6 +326,20 @@
     "send": "发送消息",
     "sending": "发送中..."
   },
+  "BionicToggle": {
+    "label": "仿生阅读",
+    "turnOn": "开启仿生阅读",
+    "turnOff": "关闭仿生阅读"
+  },
+  "HelpCenter": {
+    "newChat": "新建对话",
+    "recent": "最近",
+    "historyComing": "历史记录（即将推出）",
+    "greeting": "你好，旅行者。",
+    "subtitle": "今天我能帮你探索 MOTA ATOM 的什么？",
+    "placeholder": "向 MOTA ATOM 发消息...",
+    "disclaimer": "MOTA ATOM 可能会犯错。请核实重要信息。"
+  },
   "Footer": {
     "allRightsReserved": "保留所有权利。",
     "madeWithLove": "由开发者用 ❤️ 打造"

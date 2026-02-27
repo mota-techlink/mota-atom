@@ -12,6 +12,13 @@ export const locales = i18nConfig.locales as readonly string[];
 export type Locale = (typeof i18nConfig.locales)[number];
 export const defaultLocale: Locale = i18nConfig.defaultLocale as Locale;
 
+// 语言显示名称映射 — 新增语言时只需在此处添加
+export const localeLabels: Record<string, string> = {
+  en: 'English',
+  zh: '中文',
+  ja: '日本語',
+};
+
 export const routing = defineRouting({
   locales: [...i18nConfig.locales],
   defaultLocale: i18nConfig.defaultLocale,

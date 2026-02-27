@@ -26,6 +26,7 @@ import {
   MobileDetailModal,
   MobileExpandButton,
 } from "./MobileDetailModal";
+import { useContent } from "./useContent";
 
 // ─── Types ───────────────────────────────────────────────────────
 type NodeStatus = "completed" | "current" | "pending";
@@ -58,7 +59,7 @@ const routeNodes: RouteNode[] = [
     label: "Origin Warehouse",
     location: "Shenzhen, China",
     status: "completed",
-    icon: <Warehouse className="w-4 h-4" />,
+    icon: <Warehouse className="w-5 h-5" />,
     timestamp: "2026-02-14 09:30 CST",
     documents: [
       {
@@ -116,7 +117,7 @@ const routeNodes: RouteNode[] = [
     label: "Carrier Pickup",
     location: "SZX Hub, Shenzhen",
     status: "completed",
-    icon: <Truck className="w-4 h-4" />,
+    icon: <Truck className="w-5 h-5" />,
     timestamp: "2026-02-14 14:15 CST",
     documents: [
       {
@@ -158,7 +159,7 @@ const routeNodes: RouteNode[] = [
     label: "Transit Hub",
     location: "Amsterdam Schiphol (AMS)",
     status: "completed",
-    icon: <Globe className="w-4 h-4" />,
+    icon: <Globe className="w-5 h-5" />,
     timestamp: "2026-02-15 06:45 CET",
     documents: [
       {
@@ -200,7 +201,7 @@ const routeNodes: RouteNode[] = [
     label: "EU Customs Clearance",
     location: "Dublin Airport (DUB)",
     status: "current",
-    icon: <ShieldCheck className="w-4 h-4" />,
+    icon: <ShieldCheck className="w-5 h-5" />,
     timestamp: "2026-02-15 11:30 GMT — Processing",
     documents: [
       {
@@ -258,7 +259,7 @@ const routeNodes: RouteNode[] = [
     label: "Last-Mile Delivery",
     location: "Dublin, Ireland",
     status: "pending",
-    icon: <MapPin className="w-4 h-4" />,
+    icon: <MapPin className="w-5 h-5" />,
     documents: [
       {
         id: "DEL-DUB-0847",
@@ -329,47 +330,47 @@ function getStatusColors(status: NodeStatus) {
 function StatusIcon({ status }: { status: NodeStatus }) {
   switch (status) {
     case "completed":
-      return <CheckCircle2 className="w-3 h-3 text-emerald-400" />;
+      return <CheckCircle2 className="w-4 h-4 text-emerald-400" />;
     case "current":
       return (
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
         >
-          <Loader2 className="w-3 h-3 text-blue-400" />
+          <Loader2 className="w-4 h-4 text-blue-400" />
         </motion.div>
       );
     case "pending":
-      return <Circle className="w-3 h-3 text-slate-500" />;
+      return <Circle className="w-4 h-4 text-slate-500" />;
   }
 }
 
 function docTypeIcon(type: string) {
   switch (type) {
     case "Order":
-      return <ClipboardList className="w-3 h-3" />;
+      return <ClipboardList className="w-4 h-4" />;
     case "Logistics":
-      return <Package className="w-3 h-3" />;
+      return <Package className="w-4 h-4" />;
     case "Finance":
-      return <Receipt className="w-3 h-3" />;
+      return <Receipt className="w-4 h-4" />;
     case "Shipping":
-      return <Truck className="w-3 h-3" />;
+      return <Truck className="w-4 h-4" />;
     case "Labels":
-      return <Printer className="w-3 h-3" />;
+      return <Printer className="w-4 h-4" />;
     case "Customs":
-      return <ShieldCheck className="w-3 h-3" />;
+      return <ShieldCheck className="w-4 h-4" />;
     case "IoT":
-      return <Thermometer className="w-3 h-3" />;
+      return <Thermometer className="w-4 h-4" />;
     case "Compliance":
-      return <FileText className="w-3 h-3" />;
+      return <FileText className="w-4 h-4" />;
     case "Environment":
-      return <Leaf className="w-3 h-3" />;
+      return <Leaf className="w-4 h-4" />;
     case "Delivery":
-      return <MapPin className="w-3 h-3" />;
+      return <MapPin className="w-4 h-4" />;
     case "Confirmation":
-      return <ScanLine className="w-3 h-3" />;
+      return <ScanLine className="w-4 h-4" />;
     default:
-      return <FileText className="w-3 h-3" />;
+      return <FileText className="w-4 h-4" />;
   }
 }
 
@@ -389,11 +390,19 @@ function docStatusColor(status: Document["status"]) {
 // ─── Document Modal ──────────────────────────────────────────────
 function DocumentModal({
   doc,
+  localeDoc,
+  docStatuses,
   onClose,
 }: {
   doc: Document;
+  localeDoc?: { title: string; details: Record<string, string> };
+  docStatuses?: Record<string, string>;
   onClose: () => void;
 }) {
+  const dm = useContent().slide6.documentModal;
+  const displayTitle = localeDoc?.title ?? doc.title;
+  const displayStatus = docStatuses?.[doc.status] ?? doc.status;
+  const displayDetails = localeDoc?.details ?? doc.details;
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -407,7 +416,7 @@ function DocumentModal({
 
       {/* Modal */}
       <motion.div
-        className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-slate-900/95 backdrop-blur-xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-xl rounded-2xl border border-white/10 bg-slate-900/95 backdrop-blur-xl shadow-2xl overflow-hidden"
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 20 }}
@@ -415,62 +424,62 @@ function DocumentModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/10 bg-white/2">
-          <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-400">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/2">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400">
               {docTypeIcon(doc.type)}
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white font-mono">
-                {doc.title}
+              <h3 className="text-lg font-bold text-white font-mono">
+                {displayTitle}
               </h3>
               <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[10px] text-slate-500 font-mono">
+                <span className="text-[13px] text-slate-500 font-mono">
                   {doc.id}
                 </span>
                 <span
-                  className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${docStatusColor(doc.status)}`}
+                  className={`text-[12px] font-mono font-bold px-2 py-1 rounded ${docStatusColor(doc.status)}`}
                 >
-                  {doc.status}
+                  {displayStatus}
                 </span>
               </div>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-slate-400 hover:text-white"
+            className="p-2 rounded-lg hover:bg-white/10 transition-colors text-slate-400 hover:text-white"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Shipment reference */}
-        <div className="mx-5 mt-4 px-3 py-2 rounded-lg bg-emerald-500/5 border border-emerald-500/15">
+        <div className="mx-6 mt-4 px-4 py-2.5 rounded-lg bg-emerald-500/5 border border-emerald-500/15">
           <div className="flex items-center justify-between">
-            <div className="text-[9px] text-emerald-400/60 font-mono uppercase">
-              Shipment Reference
+            <div className="text-[12px] text-emerald-400/60 font-mono uppercase">
+              {dm.shipmentRef}
             </div>
-            <BarChart3 className="w-3 h-3 text-emerald-400/30" />
+            <BarChart3 className="w-4 h-4 text-emerald-400/30" />
           </div>
-          <div className="text-xs text-emerald-300 font-mono font-bold mt-0.5">
+          <div className="text-sm text-emerald-300 font-mono font-bold mt-0.5">
             {SHIPMENT_ID}
           </div>
         </div>
 
         {/* Details */}
-        <div className="p-5 space-y-2">
-          {Object.entries(doc.details).map(([key, value], i) => (
+        <div className="p-6 space-y-2.5">
+          {Object.entries(displayDetails).map(([key, value], i) => (
             <motion.div
               key={key}
-              className="flex items-start justify-between gap-4 px-3 py-2 rounded-lg bg-white/3 border border-white/5"
+              className="flex items-start justify-between gap-4 px-4 py-2.5 rounded-lg bg-white/3 border border-white/5"
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.04 }}
             >
-              <span className="text-[10px] lg:text-xs text-slate-500 font-mono uppercase tracking-wider whitespace-nowrap shrink-0">
+              <span className="text-[13px] lg:text-sm text-slate-500 font-mono uppercase tracking-wider whitespace-nowrap shrink-0">
                 {key}
               </span>
-              <span className="text-[10px] lg:text-xs text-white/90 font-mono text-right">
+              <span className="text-[13px] lg:text-sm text-white/90 font-mono text-right">
                 {value}
               </span>
             </motion.div>
@@ -478,12 +487,12 @@ function DocumentModal({
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 border-t border-white/10 bg-white/2 flex items-center justify-between">
-          <span className="text-[9px] text-slate-500 font-mono">
-            Date: {doc.date}
+        <div className="px-6 py-4 border-t border-white/10 bg-white/2 flex items-center justify-between">
+          <span className="text-[12px] text-slate-500 font-mono">
+            {dm.datePrefix} {doc.date}
           </span>
-          <span className="text-[9px] text-slate-500 font-mono">
-            ELMS Auto-Generated Document
+          <span className="text-[12px] text-slate-500 font-mono">
+            {dm.autoGenerated}
           </span>
         </div>
       </motion.div>
@@ -501,9 +510,13 @@ function RouteNodeCard({
   node: RouteNode;
   index: number;
   isLast: boolean;
-  onDocClick: (doc: Document) => void;
+  onDocClick: (doc: Document, docIndex: number) => void;
 }) {
   const colors = getStatusColors(node.status);
+  const rc = useContent().slide6;
+  const localeNode = rc.routeNodes[index];
+  const localeDocuments = localeNode?.documents as unknown as { title: string; details: Record<string, string> }[] | undefined;
+  const docStatuses = rc.docStatuses as Record<string, string> | undefined;
 
   return (
     <motion.div
@@ -517,31 +530,31 @@ function RouteNodeCard({
         {/* Pulse ring for current */}
         {node.status === "current" && (
           <motion.div
-            className="absolute -inset-2 rounded-full border-2 border-blue-400/30"
+            className="absolute -inset-3 rounded-full border-2 border-blue-400/30"
             animate={{ scale: [1, 1.4, 1], opacity: [0.5, 0, 0.5] }}
             transition={{ duration: 2, repeat: Infinity }}
           />
         )}
 
         <div
-          className={`w-9 h-9 rounded-full border-2 flex items-center justify-center ${colors.node}`}
+          className={`w-12 h-12 rounded-full border-2 flex items-center justify-center ${colors.node}`}
         >
           <span className="text-white">{node.icon}</span>
         </div>
 
         {/* Location label */}
-        <div className="mt-2 text-center max-w-28">
+        <div className="mt-2.5 text-center max-w-36">
           <div
-            className={`text-[10px] lg:text-xs font-bold font-mono leading-tight ${colors.text}`}
+            className={`text-[13px] lg:text-sm font-bold font-mono leading-tight ${colors.text}`}
           >
-            {node.label}
+            {localeNode?.label ?? node.label}
           </div>
-          <div className="text-[9px] text-slate-500 font-mono mt-0.5">
-            {node.location}
+          <div className="text-[12px] text-slate-500 font-mono mt-0.5">
+            {localeNode?.location ?? node.location}
           </div>
-          {node.timestamp && (
-            <div className="text-[8px] text-slate-600 font-mono mt-0.5 leading-tight">
-              {node.timestamp}
+          {(localeNode?.timestamp ?? node.timestamp) && (
+            <div className="text-[10px] text-slate-600 font-mono mt-0.5 leading-tight">
+              {localeNode?.timestamp ?? node.timestamp}
             </div>
           )}
         </div>
@@ -553,41 +566,44 @@ function RouteNodeCard({
       )}
 
       {/* ── Document List ── */}
-      <div className="mt-3 w-full max-w-36 space-y-1">
-        {node.documents.map((doc, di) => (
-          <motion.button
-            key={doc.id}
-            className={`w-full flex items-center gap-1.5 px-2 py-1.5 rounded-lg border cursor-pointer text-left transition-all
-              ${colors.badge} hover:ring-2 ${colors.ring} hover:scale-[1.03] active:scale-[0.98]`}
-            initial={{ opacity: 0, x: -8 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 + index * 0.15 + di * 0.08 }}
-            onClick={() => onDocClick(doc)}
-            whileHover={{ y: -1 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            <span className="shrink-0 opacity-70">
-              {docTypeIcon(doc.type)}
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="text-[9px] font-mono font-semibold truncate leading-tight">
-                {doc.title}
+      <div className="mt-4 w-full max-w-44 space-y-1.5">
+        {node.documents.map((doc, di) => {
+          const lDoc = localeDocuments?.[di];
+          return (
+            <motion.button
+              key={doc.id}
+              className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-lg border cursor-pointer text-left transition-all
+                ${colors.badge} hover:ring-2 ${colors.ring} hover:scale-[1.03] active:scale-[0.98]`}
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + index * 0.15 + di * 0.08 }}
+              onClick={() => onDocClick(doc, di)}
+              whileHover={{ y: -1 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <span className="shrink-0 opacity-70">
+                {docTypeIcon(doc.type)}
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="text-[12px] font-mono font-semibold truncate leading-tight">
+                  {lDoc?.title ?? doc.title}
+                </div>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <StatusIcon status={
+                    doc.status === "Approved" || doc.status === "Generated"
+                      ? "completed"
+                      : doc.status === "Processing"
+                      ? "current"
+                      : "pending"
+                  } />
+                  <span className="text-[10px] font-mono opacity-70">
+                    {docStatuses?.[doc.status] ?? doc.status}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-1 mt-0.5">
-                <StatusIcon status={
-                  doc.status === "Approved" || doc.status === "Generated"
-                    ? "completed"
-                    : doc.status === "Processing"
-                    ? "current"
-                    : "pending"
-                } />
-                <span className="text-[8px] font-mono opacity-70">
-                  {doc.status}
-                </span>
-              </div>
-            </div>
-          </motion.button>
-        ))}
+            </motion.button>
+          );
+        })}
       </div>
     </motion.div>
   );
@@ -605,12 +621,12 @@ function HorizontalConnector({
 
   return (
     <motion.div
-      className="flex items-start pt-4 self-start"
+      className="flex items-start pt-5 self-start"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.3 + index * 0.15 }}
     >
-      <div className="relative w-8 lg:w-14 xl:w-20 h-0.5 mt-3.5">
+      <div className="relative w-6 lg:w-12 xl:w-16 h-0.5 mt-5">
         {/* Base line */}
         <div
           className={`absolute inset-0 rounded-full ${
@@ -620,7 +636,7 @@ function HorizontalConnector({
         {/* Traveling dot */}
         {isActive && (
           <motion.div
-            className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.7)]"
+            className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.7)]"
             animate={{ left: ["0%", "100%"] }}
             transition={{
               duration: 1.5,
@@ -637,8 +653,10 @@ function HorizontalConnector({
 
 // ─── Main Slide Component ────────────────────────────────────────
 export function ShipmentTrackingSlide() {
-  const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
+  const [selectedDoc, setSelectedDoc] = useState<{ doc: Document; nodeIndex: number; docIndex: number } | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const content = useContent();
+  const c = content.slide6;
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center bg-linear-to-br from-slate-950 via-[#0b1222] to-slate-950 text-white relative overflow-hidden p-4 md:p-5 lg:p-8">
@@ -663,33 +681,33 @@ export function ShipmentTrackingSlide() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          <BarChart3 className="w-3 h-3 md:w-3.5 md:h-3.5 text-blue-400/60" />
-          <span className="text-[9px] md:text-[10px] lg:text-xs font-mono text-blue-400/70 tracking-[0.25em] uppercase">
-            Live Shipment Tracking
+          <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-blue-400/60" />
+          <span className="text-[12px] md:text-[13px] lg:text-sm font-mono text-blue-400/70 tracking-[0.25em] uppercase">
+            {c.badge}
           </span>
-          <BarChart3 className="w-3 h-3 md:w-3.5 md:h-3.5 text-blue-400/60" />
+          <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-blue-400/60" />
         </motion.div>
 
         <motion.h2
-          className="text-base md:text-lg lg:text-2xl xl:text-3xl font-black tracking-tight"
+          className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black tracking-tight"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.5 }}
         >
-          <span className="text-white">Route Dashboard</span>
+          <span className="text-white">{c.title}</span>
           <span className="text-blue-400 mx-1 md:mx-2">—</span>
-          <span className="text-emerald-300 font-mono text-xs md:text-base lg:text-xl">
-            {SHIPMENT_ID}
+          <span className="text-emerald-300 font-mono text-sm md:text-xl lg:text-2xl">
+            {c.shipmentId}
           </span>
         </motion.h2>
 
         <motion.p
-          className="mt-1 text-[9px] md:text-[10px] lg:text-xs text-slate-500 font-mono"
+          className="mt-1 text-[12px] md:text-[13px] lg:text-sm text-slate-500 font-mono"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.25 }}
         >
-          SF Express Priority · Shenzhen → Amsterdam → Dublin · 50 boxes
+          {c.subtitle}
         </motion.p>
 
         {/* Legend */}
@@ -700,13 +718,13 @@ export function ShipmentTrackingSlide() {
           transition={{ delay: 0.35 }}
         >
           {[
-            { color: "bg-emerald-500", label: "Completed" },
-            { color: "bg-blue-500", label: "In Progress" },
-            { color: "bg-slate-600", label: "Pending" },
+            { color: "bg-emerald-500", label: c.legend.completed },
+            { color: "bg-blue-500", label: c.legend.inProgress },
+            { color: "bg-slate-600", label: c.legend.pending },
           ].map((item) => (
             <div key={item.label} className="flex items-center gap-1.5">
-              <div className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full ${item.color}`} />
-              <span className="text-[8px] md:text-[9px] text-slate-500 font-mono">
+              <div className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full ${item.color}`} />
+              <span className="text-[10px] md:text-[12px] text-slate-500 font-mono">
                 {item.label}
               </span>
             </div>
@@ -715,14 +733,14 @@ export function ShipmentTrackingSlide() {
       </div>
 
       {/* ── Desktop: Horizontal Route Flow ── */}
-      <div className="relative z-10 hidden md:flex items-start justify-center gap-0 w-full max-w-6xl overflow-x-auto py-2">
+      <div className="relative z-10 hidden md:flex items-start justify-center gap-0 w-full max-w-7xl py-2">
         {routeNodes.map((node, i) => (
           <React.Fragment key={node.id}>
             <RouteNodeCard
               node={node}
               index={i}
               isLast={i === routeNodes.length - 1}
-              onDocClick={(doc) => setSelectedDoc(doc)}
+              onDocClick={(doc, di) => setSelectedDoc({ doc, nodeIndex: i, docIndex: di })}
             />
             {i < routeNodes.length - 1 && (
               <HorizontalConnector
@@ -749,21 +767,21 @@ export function ShipmentTrackingSlide() {
                   transition={{ delay: 0.2 + i * 0.1 }}
                 >
                   <div
-                    className={`w-5 h-5 rounded-full border flex items-center justify-center ${colors.node}`}
+                    className={`w-7 h-7 rounded-full border flex items-center justify-center ${colors.node}`}
                   >
                     <span className="text-white scale-75">{node.icon}</span>
                   </div>
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <span className={`text-[9px] font-mono font-bold ${colors.text} truncate max-w-20`}>
-                      {node.label}
+                    <span className={`text-[12px] font-mono font-bold ${colors.text} truncate max-w-28`}>
+                      {c.routeNodes[i]?.label ?? node.label}
                     </span>
-                    <span className="text-[8px] text-slate-600 font-mono">
-                      {node.documents.length} docs
+                    <span className="text-[10px] text-slate-600 font-mono">
+                      {node.documents.length} {c.docsSuffix}
                     </span>
                   </div>
                 </motion.div>
                 {i < routeNodes.length - 1 && (
-                  <div className={`w-px h-2 ${i < 2 ? "bg-emerald-500/40" : "bg-slate-700/40"}`} />
+                  <div className={`w-px h-3 ${i < 2 ? "bg-emerald-500/40" : "bg-slate-700/40"}`} />
                 )}
               </React.Fragment>
             );
@@ -771,43 +789,43 @@ export function ShipmentTrackingSlide() {
         </div>
 
         <MobileExpandButton
-          label="Tap to view route & documents"
+          label={c.mobileExpand}
           onClick={() => setMobileOpen(true)}
         />
       </div>
 
       {/* ── Desktop: Bottom status bar ── */}
       <motion.div
-        className="relative z-10 mt-3 md:mt-4 lg:mt-6 hidden md:flex flex-wrap items-center justify-center gap-3 lg:gap-5 text-[9px] lg:text-[10px] font-mono text-slate-500"
+        className="relative z-10 mt-3 md:mt-4 lg:mt-6 hidden md:flex flex-wrap items-center justify-center gap-4 lg:gap-6 text-[12px] lg:text-[13px] font-mono text-slate-500"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
       >
-        <div className="flex items-center gap-1.5">
-          <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+        <div className="flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           <span>
-            <span className="text-emerald-400 font-bold">3/5</span> nodes completed
+            <span className="text-emerald-400 font-bold">3/5</span> {c.statusBar.nodesCompleted}
           </span>
         </div>
-        <div className="h-3 w-px bg-slate-700" />
-        <div className="flex items-center gap-1.5">
-          <FileText className="w-3 h-3 text-blue-400" />
+        <div className="h-4 w-px bg-slate-700" />
+        <div className="flex items-center gap-2">
+          <FileText className="w-4 h-4 text-blue-400" />
           <span>
-            <span className="text-blue-400 font-bold">12</span> documents tracked
+            <span className="text-blue-400 font-bold">12</span> {c.statusBar.documentsTracked}
           </span>
         </div>
-        <div className="h-3 w-px bg-slate-700" />
-        <div className="flex items-center gap-1.5">
-          <ShieldCheck className="w-3 h-3 text-blue-400" />
+        <div className="h-4 w-px bg-slate-700" />
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-blue-400" />
           <span>
-            Customs: <span className="text-blue-400 font-bold">Processing</span>
+            {c.statusBar.customs} <span className="text-blue-400 font-bold">{c.statusBar.customsStatus}</span>
           </span>
         </div>
-        <div className="h-3 w-px bg-slate-700" />
-        <div className="flex items-center gap-1.5">
-          <Leaf className="w-3 h-3 text-green-400" />
+        <div className="h-4 w-px bg-slate-700" />
+        <div className="flex items-center gap-2">
+          <Leaf className="w-4 h-4 text-green-400" />
           <span>
-            Carbon: <span className="text-green-400 font-bold">1.2t CO₂</span>
+            {c.statusBar.carbon} <span className="text-green-400 font-bold">{c.statusBar.carbonValue}</span>
           </span>
         </div>
       </motion.div>
@@ -816,7 +834,9 @@ export function ShipmentTrackingSlide() {
       <AnimatePresence>
         {selectedDoc && (
           <DocumentModal
-            doc={selectedDoc}
+            doc={selectedDoc.doc}
+            localeDoc={(c.routeNodes[selectedDoc.nodeIndex]?.documents as unknown as { title: string; details: Record<string, string> }[] | undefined)?.[selectedDoc.docIndex]}
+            docStatuses={c.docStatuses as Record<string, string> | undefined}
             onClose={() => setSelectedDoc(null)}
           />
         )}
@@ -826,102 +846,105 @@ export function ShipmentTrackingSlide() {
       <MobileDetailModal
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        title="Route Dashboard"
-        subtitle={`${SHIPMENT_ID} · 5 nodes · 12 documents`}
+        title={c.mobileModal.title}
+        subtitle={c.mobileModal.subtitle}
       >
         <div className="space-y-4">
-          {routeNodes.map((node) => {
+          {routeNodes.map((node, i) => {
             const colors = getStatusColors(node.status);
+            const mNode = c.routeNodes[i];
             return (
               <div key={node.id}>
                 {/* Node header */}
-                <div className="flex items-center gap-2.5 mb-2">
+                <div className="flex items-center gap-3 mb-2.5">
                   <div
-                    className={`w-7 h-7 rounded-full border-2 flex items-center justify-center ${colors.node}`}
+                    className={`w-9 h-9 rounded-full border-2 flex items-center justify-center ${colors.node}`}
                   >
                     <span className="text-white">{node.icon}</span>
                   </div>
                   <div>
-                    <div className={`text-xs font-bold font-mono ${colors.text}`}>
-                      {node.label}
+                    <div className={`text-sm font-bold font-mono ${colors.text}`}>
+                      {mNode?.label ?? node.label}
                     </div>
-                    <div className="text-[9px] text-slate-500 font-mono">
-                      {node.location}
+                    <div className="text-[12px] text-slate-500 font-mono">
+                      {mNode?.location ?? node.location}
                     </div>
-                    {node.timestamp && (
-                      <div className="text-[8px] text-slate-600 font-mono">
-                        {node.timestamp}
+                    {(mNode?.timestamp ?? node.timestamp) && (
+                      <div className="text-[10px] text-slate-600 font-mono">
+                        {mNode?.timestamp ?? node.timestamp}
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Documents */}
-                <div className="ml-9 space-y-1.5">
-                  {node.documents.map((doc) => (
-                    <button
-                      key={doc.id}
-                      className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-lg border text-left transition-all ${colors.badge} active:scale-[0.98]`}
-                      onClick={() => {
-                        setMobileOpen(false);
-                        setTimeout(() => setSelectedDoc(doc), 300);
-                      }}
-                    >
-                      <span className="shrink-0 opacity-70">
-                        {docTypeIcon(doc.type)}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="text-[10px] font-mono font-semibold truncate">
-                          {doc.title}
+                <div className="ml-12 space-y-2">
+                  {node.documents.map((doc, di) => {
+                    const mlDoc = (mNode?.documents as unknown as { title: string; details: Record<string, string> }[] | undefined)?.[di];
+                    const mDocStatuses = c.docStatuses as Record<string, string> | undefined;
+                    return (
+                      <button
+                        key={doc.id}
+                        className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border text-left transition-all ${colors.badge} active:scale-[0.98]`}
+                        onClick={() => {
+                          setMobileOpen(false);
+                          setTimeout(() => setSelectedDoc({ doc, nodeIndex: i, docIndex: di }), 300);
+                        }}
+                      >
+                        <span className="shrink-0 opacity-70">
+                          {docTypeIcon(doc.type)}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-[13px] font-mono font-semibold truncate">
+                            {mlDoc?.title ?? doc.title}
+                          </div>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <StatusIcon
+                              status={
+                                doc.status === "Approved" || doc.status === "Generated"
+                                  ? "completed"
+                                  : doc.status === "Processing"
+                                    ? "current"
+                                    : "pending"
+                              }
+                            />
+                            <span className="text-[10px] font-mono opacity-70">
+                              {mDocStatuses?.[doc.status] ?? doc.status}
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1 mt-0.5">
-                          <StatusIcon
-                            status={
-                              doc.status === "Approved" || doc.status === "Generated"
-                                ? "completed"
-                                : doc.status === "Processing"
-                                  ? "current"
-                                  : "pending"
-                            }
-                          />
-                          <span className="text-[8px] font-mono opacity-70">
-                            {doc.status}
-                          </span>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             );
           })}
 
           {/* Stats */}
-          <div className="grid grid-cols-4 gap-2 pt-2 border-t border-white/5">
-            {[
-              { value: "3/5", label: "Completed", color: "text-emerald-400" },
-              { value: "12", label: "Documents", color: "text-blue-400" },
-              { value: "Processing", label: "Customs", color: "text-blue-400" },
-              { value: "1.2t", label: "CO₂", color: "text-green-400" },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center p-1.5 rounded-lg bg-white/3">
-                <div className={`text-xs font-mono font-bold ${stat.color}`}>{stat.value}</div>
-                <div className="text-[8px] text-slate-500 mt-0.5">{stat.label}</div>
-              </div>
-            ))}
+          <div className="grid grid-cols-4 gap-2.5 pt-2.5 border-t border-white/5">
+            {c.mobileModal.stats.map((stat: { value: string; label: string }, si: number) => {
+              const statColors = ["text-emerald-400", "text-blue-400", "text-blue-400", "text-green-400"];
+              return (
+                <div key={si} className="text-center p-2 rounded-lg bg-white/3">
+                  <div className={`text-sm font-mono font-bold ${statColors[si] ?? "text-slate-400"}`}>{stat.value}</div>
+                  <div className="text-[10px] text-slate-500 mt-0.5">{stat.label}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </MobileDetailModal>
 
       {/* Click hint (desktop only) */}
       <motion.div
-        className="absolute bottom-3 right-4 text-[9px] text-slate-600 font-mono hidden md:flex items-center gap-1"
+        className="absolute bottom-3 right-4 text-[12px] text-slate-600 font-mono hidden md:flex items-center gap-1.5"
         initial={{ opacity: 0 }}
         animate={{ opacity: [0, 0.6, 0] }}
         transition={{ duration: 3, repeat: Infinity, delay: 2 }}
       >
-        <FileText className="w-3 h-3" />
-        Click any document to view details
+        <FileText className="w-4 h-4" />
+        {c.clickHint}
       </motion.div>
     </div>
   );

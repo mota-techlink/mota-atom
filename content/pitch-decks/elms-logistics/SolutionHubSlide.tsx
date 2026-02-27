@@ -31,6 +31,7 @@ import {
   MobileDetailModal,
   MobileExpandButton,
 } from "./MobileDetailModal";
+import { useContent } from "./useContent";
 
 // ═══════════════════════════════════════════════════════════════
 // Inline SVG Tech Logos
@@ -308,7 +309,7 @@ function ConnectionLines({ highlightModule }: { highlightModule: ModuleKey | nul
 }
 
 // ── Core Hexagon ─────────────────────────────────────────────
-function CoreHexagon({ isAnyActive }: { isAnyActive: boolean }) {
+function CoreHexagon({ isAnyActive, coreLabel, coreSublabel }: { isAnyActive: boolean; coreLabel: string; coreSublabel: string }) {
   return (
     <motion.div
       className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center"
@@ -334,8 +335,8 @@ function CoreHexagon({ isAnyActive }: { isAnyActive: boolean }) {
         </svg>
         <div className="relative z-10 text-center">
           <Hexagon className="w-4 h-4 md:w-5 md:h-5 text-blue-400/70 mx-auto mb-0.5" />
-          <div className="text-[9px] md:text-[10px] font-bold tracking-widest text-blue-300/90">ELMS</div>
-          <div className="text-[6px] md:text-[7px] tracking-wider text-slate-500">CORE</div>
+          <div className="text-[9px] md:text-[10px] font-bold tracking-widest text-blue-300/90">{coreLabel}</div>
+          <div className="text-[6px] md:text-[7px] tracking-wider text-slate-500">{coreSublabel}</div>
         </div>
       </div>
     </motion.div>
@@ -344,9 +345,9 @@ function CoreHexagon({ isAnyActive }: { isAnyActive: boolean }) {
 
 // ── Inner Tech Node ──────────────────────────────────────────
 function InnerTechNode({
-  node, isSelected, onSelect,
+  node, isSelected, onSelect, localizedSublabel, localizedFeatures,
 }: {
-  node: TechNode; isSelected: boolean; onSelect: (id: string | null) => void;
+  node: TechNode; isSelected: boolean; onSelect: (id: string | null) => void; localizedSublabel?: string; localizedFeatures?: string[];
 }) {
   const innerR = 120, cx = 250, cy = 250;
   const rad = (node.angle * Math.PI) / 180;
@@ -406,12 +407,12 @@ function InnerTechNode({
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.15 }}
           >
-            <div className="text-sm font-bold text-white mb-2">{node.label} <span className="font-normal text-slate-500">· {node.sublabel}</span></div>
+            <div className="text-sm font-bold text-white mb-2">{node.label} <span className="font-normal text-slate-500">· {localizedSublabel ?? node.sublabel}</span></div>
             <div className="space-y-1.5">
               {node.features.map((feat, i) => (
                 <div key={i} className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: `rgba(${node.accentRgb},0.6)` }} />
-                  <span className="text-xs lg:text-sm text-slate-400 leading-tight">{feat}</span>
+                  <span className="text-xs lg:text-sm text-slate-400 leading-tight">{localizedFeatures?.[i] ?? feat}</span>
                 </div>
               ))}
             </div>
@@ -424,9 +425,9 @@ function InnerTechNode({
 
 // ── Outer Module Node ────────────────────────────────────────
 function OuterModuleNode({
-  mod, index, total, isHighlighted, isSelected, onClick,
+  mod, index, total, isHighlighted, isSelected, onClick, localizedModuleLabel, localizedModuleBadge, localizedFeatureLabel,
 }: {
-  mod: ModuleConfig; index: number; total: number; isHighlighted: boolean; isSelected: boolean; onClick: () => void;
+  mod: ModuleConfig; index: number; total: number; isHighlighted: boolean; isSelected: boolean; onClick: () => void; localizedModuleLabel?: string; localizedModuleBadge?: string; localizedFeatureLabel?: string;
 }) {
   const outerR = 215;
   const pos = getPosition(index, total, outerR);
@@ -470,7 +471,7 @@ function OuterModuleNode({
       >
         <IconComp className={`w-5 h-5 md:w-6 md:h-6 mb-0.5 transition-colors duration-300 ${isActive ? mod.color : "text-slate-500"}`} />
         <span className={`text-[10px] md:text-xs font-semibold tracking-wide transition-colors duration-300 ${isActive ? mod.color : "text-slate-600"}`}>
-          {mod.label}
+          {localizedModuleLabel ?? mod.label}
         </span>
       </motion.button>
 
@@ -483,7 +484,7 @@ function OuterModuleNode({
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
       >
         <div className={`text-sm font-semibold leading-snug ${isActive ? "text-white" : "text-slate-500"} ${anchor === "right" ? "text-left" : "text-right"}`}>
-          {feature.label}
+          {localizedFeatureLabel ?? feature.label}
         </div>
         {isActive && mod.badge && (
           <motion.div
@@ -492,7 +493,7 @@ function OuterModuleNode({
             animate={{ opacity: 1, y: 0 }}
           >
             <span className={`text-[10px] md:text-xs font-medium px-1.5 py-0.5 rounded-full border backdrop-blur-md ${mod.borderActive} ${mod.bgActive} ${mod.color}`}>
-              {mod.badge}
+              {localizedModuleBadge ?? mod.badge}
             </span>
           </motion.div>
         )}
@@ -503,9 +504,9 @@ function OuterModuleNode({
 
 // ── Detail Popover (click on outer module) ───────────────────
 function DetailPopover({
-  mod, feature, onClose,
+  mod, feature, onClose, localizedFeatureLabel, localizedFeatureDescription, localizedBadge,
 }: {
-  mod: ModuleConfig; feature: FeatureItem; onClose: () => void;
+  mod: ModuleConfig; feature: FeatureItem; onClose: () => void; localizedFeatureLabel?: string; localizedFeatureDescription?: string; localizedBadge?: string;
 }) {
   const IconComp = feature.Icon;
   return (
@@ -532,11 +533,11 @@ function DetailPopover({
             <IconComp className={`w-5 h-5 ${mod.color}`} />
           </div>
           <div>
-            <div className={`text-sm font-bold ${mod.color}`}>{feature.label}</div>
-            {mod.badge && <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full border ${mod.borderActive} ${mod.bgActive} ${mod.color}`}>{mod.badge}</span>}
+            <div className={`text-sm font-bold ${mod.color}`}>{localizedFeatureLabel ?? feature.label}</div>
+            {mod.badge && <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full border ${mod.borderActive} ${mod.bgActive} ${mod.color}`}>{localizedBadge ?? mod.badge}</span>}
           </div>
         </div>
-        <p className="text-xs text-slate-300 leading-relaxed">{feature.description}</p>
+        <p className="text-xs text-slate-300 leading-relaxed">{localizedFeatureDescription ?? feature.description}</p>
       </motion.div>
     </motion.div>
   );
@@ -563,6 +564,10 @@ export function SolutionHubSlide() {
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const content = useContent();
+  const c = content.slide3;
+  const featureIndexByKey = Object.fromEntries(features.map((f, i) => [f.moduleKey, i])) as Record<ModuleKey, number>;
+
   const cycleKey = useAutoCycle(modules.map((m) => m.key), 2500, selectedModule !== null);
   const highlightModule = selectedModule ?? cycleKey;
 
@@ -573,6 +578,8 @@ export function SolutionHubSlide() {
 
   const selectedMod = selectedModule ? modules.find((m) => m.key === selectedModule)! : null;
   const selectedFeature = selectedModule ? featureByKey[selectedModule] : null;
+  const selectedFeatureIdx = selectedModule != null ? featureIndexByKey[selectedModule] : -1;
+  const selectedModuleIdx = selectedModule != null ? modules.findIndex(m => m.key === selectedModule) : -1;
 
   return (
     <div className="w-full h-full flex flex-col relative overflow-hidden bg-[#020617]">
@@ -591,14 +598,12 @@ export function SolutionHubSlide() {
           <div className="flex items-center gap-2 mb-1 justify-center">
             <div className="w-1 h-5 rounded-full bg-blue-500" />
             <span className="text-[10px] md:text-xs font-semibold tracking-widest text-blue-400/80 uppercase">
-              Platform Architecture
+              {c.badge}
             </span>
           </div>
           <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-white tracking-tight">
-            <span className="text-cyan-400">Unified</span>{" "}
-            Solution{" · "}
-            <span className="text-violet-400">Technical</span>{" "}
-            Edge
+            <span className="text-cyan-400">{c.titleHighlight}</span>{" "}
+            {c.title}
           </h2>
           <p className="text-[10px] md:text-xs text-slate-500 mt-1 max-w-xl mx-auto">
             Infrastructure inside, functional modules outside — one interlocking ecosystem. Hover to explore.
@@ -619,15 +624,17 @@ export function SolutionHubSlide() {
             <ConnectionLines highlightModule={highlightModule} />
 
             {/* Center */}
-            <CoreHexagon isAnyActive={highlightModule !== null} />
+            <CoreHexagon isAnyActive={highlightModule !== null} coreLabel={c.coreLabel} coreSublabel={c.coreSublabel} />
 
             {/* Inner ring: Tech nodes */}
-            {techNodes.map((node) => (
+            {techNodes.map((node, tidx) => (
               <InnerTechNode
                 key={node.id}
                 node={node}
                 isSelected={selectedTech === node.id}
                 onSelect={setSelectedTech}
+                localizedSublabel={c.techNodes[tidx]?.sublabel}
+                localizedFeatures={c.techNodes[tidx]?.features}
               />
             ))}
 
@@ -641,6 +648,9 @@ export function SolutionHubSlide() {
                 isHighlighted={highlightModule === mod.key}
                 isSelected={selectedModule === mod.key}
                 onClick={() => handleNodeClick(mod.key)}
+                localizedModuleLabel={c.modules[i]?.label}
+                localizedModuleBadge={c.modules[i]?.badge}
+                localizedFeatureLabel={c.features[featureIndexByKey[mod.key]]?.label}
               />
             ))}
           </motion.div>
@@ -648,7 +658,14 @@ export function SolutionHubSlide() {
           {/* Detail popover */}
           <AnimatePresence>
             {selectedMod && selectedFeature && (
-              <DetailPopover mod={selectedMod} feature={selectedFeature} onClose={handleCloseDetail} />
+              <DetailPopover
+                mod={selectedMod}
+                feature={selectedFeature}
+                onClose={handleCloseDetail}
+                localizedFeatureLabel={selectedFeatureIdx >= 0 ? c.features[selectedFeatureIdx]?.label : undefined}
+                localizedFeatureDescription={selectedFeatureIdx >= 0 ? c.features[selectedFeatureIdx]?.description : undefined}
+                localizedBadge={selectedModuleIdx >= 0 ? c.modules[selectedModuleIdx]?.badge : undefined}
+              />
             )}
           </AnimatePresence>
         </div>
@@ -658,16 +675,16 @@ export function SolutionHubSlide() {
           <motion.div className="origin-center" initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 0.65 }} transition={{ delay: 0.3 }}>
             <div className="relative" style={{ width: 320, height: 320 }}>
               <DualOrbitalRings />
-              <CoreHexagon isAnyActive={true} />
-              {techNodes.map((node) => (
-                <InnerTechNode key={node.id} node={node} isSelected={false} onSelect={() => setMobileOpen(true)} />
+              <CoreHexagon isAnyActive={true} coreLabel={c.coreLabel} coreSublabel={c.coreSublabel} />
+              {techNodes.map((node, tidx) => (
+                <InnerTechNode key={node.id} node={node} isSelected={false} onSelect={() => setMobileOpen(true)} localizedSublabel={c.techNodes[tidx]?.sublabel} localizedFeatures={c.techNodes[tidx]?.features} />
               ))}
               {modules.map((mod, i) => (
-                <OuterModuleNode key={mod.key} mod={mod} index={i} total={modules.length} isHighlighted={highlightModule === mod.key} isSelected={false} onClick={() => setMobileOpen(true)} />
+                <OuterModuleNode key={mod.key} mod={mod} index={i} total={modules.length} isHighlighted={highlightModule === mod.key} isSelected={false} onClick={() => setMobileOpen(true)} localizedModuleLabel={c.modules[i]?.label} localizedModuleBadge={c.modules[i]?.badge} localizedFeatureLabel={c.features[featureIndexByKey[mod.key]]?.label} />
               ))}
             </div>
           </motion.div>
-          <MobileExpandButton label="Tap to explore architecture" onClick={() => setMobileOpen(true)} />
+          <MobileExpandButton label={c.mobileExpand} onClick={() => setMobileOpen(true)} />
         </div>
 
         {/* ── Bottom status ── */}
@@ -691,15 +708,15 @@ export function SolutionHubSlide() {
       <MobileDetailModal
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        title="Platform Architecture"
-        subtitle="Infrastructure + Functional Modules"
+        title={c.mobileModal.title}
+        subtitle={c.mobileModal.subtitle}
       >
         <div className="space-y-4">
           {/* Tech Stack */}
           <div>
-            <div className="text-[10px] font-mono text-cyan-400/60 uppercase tracking-widest mb-2">Infrastructure</div>
+            <div className="text-[10px] font-mono text-cyan-400/60 uppercase tracking-widest mb-2">{c.techStackLabel}</div>
             <div className="space-y-2.5">
-              {techNodes.map((node) => {
+              {techNodes.map((node, tidx) => {
                 const LogoComp = node.Logo;
                 return (
                   <div key={node.id} className="flex items-start gap-2.5 p-2.5 rounded-xl bg-white/3 border border-white/5">
@@ -708,12 +725,12 @@ export function SolutionHubSlide() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className={`text-xs font-bold ${node.logoColor}`}>{node.label}</div>
-                      <div className="text-[8px] font-mono text-slate-600">{node.sublabel}</div>
+                      <div className="text-[8px] font-mono text-slate-600">{c.techNodes[tidx]?.sublabel ?? node.sublabel}</div>
                       <div className="mt-1 space-y-0.5">
                         {node.features.slice(0, 2).map((f, j) => (
                           <div key={j} className="flex items-start gap-1.5">
                             <CheckCircle2 className="w-2.5 h-2.5 shrink-0 mt-px" style={{ color: `rgba(${node.accentRgb},0.5)` }} />
-                            <span className="text-[9px] text-slate-400 leading-tight">{f}</span>
+                            <span className="text-[9px] text-slate-400 leading-tight">{c.techNodes[tidx]?.features?.[j] ?? f}</span>
                           </div>
                         ))}
                       </div>
@@ -727,8 +744,9 @@ export function SolutionHubSlide() {
           <div className="pt-3 border-t border-white/5">
             <div className="text-[10px] font-mono text-blue-400/60 uppercase tracking-widest mb-2">Functional Modules</div>
             <div className="space-y-2.5">
-              {features.map((feature) => {
+              {features.map((feature, fidx) => {
                 const modConfig = modules.find((m) => m.key === feature.moduleKey);
+                const modIdx = modules.findIndex((m) => m.key === feature.moduleKey);
                 const IconComp = feature.Icon;
                 return (
                   <div key={feature.moduleKey} className="flex items-start gap-3 p-2.5 rounded-xl bg-white/3 border border-white/5">
@@ -736,9 +754,9 @@ export function SolutionHubSlide() {
                       <IconComp className={`w-4 h-4 ${modConfig?.color ?? "text-white"}`} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-semibold text-white">{feature.label}</div>
-                      <div className="text-[10px] text-slate-400 mt-0.5 leading-relaxed">{feature.description}</div>
-                      {modConfig?.badge && <span className={`inline-block mt-1 text-[9px] font-medium px-2 py-0.5 rounded-full border ${modConfig.borderActive} ${modConfig.bgActive} ${modConfig.color}`}>{modConfig.badge}</span>}
+                      <div className="text-xs font-semibold text-white">{c.features[fidx]?.label ?? feature.label}</div>
+                      <div className="text-[10px] text-slate-400 mt-0.5 leading-relaxed">{c.features[fidx]?.description ?? feature.description}</div>
+                      {modConfig?.badge && <span className={`inline-block mt-1 text-[9px] font-medium px-2 py-0.5 rounded-full border ${modConfig.borderActive} ${modConfig.bgActive} ${modConfig.color}`}>{c.modules[modIdx]?.badge ?? modConfig.badge}</span>}
                     </div>
                   </div>
                 );

@@ -1,0 +1,89 @@
+---
+title: OAuth Setup
+description: How to leverage 3rd party account to login 
+---
+
+## Google 側の設定
+1. Google Cloud プロジェクトを作成：[Google Cloud Console](https://console.cloud.google.com/) にアクセスして新しいプロジェクトを作成します。
+
+2. OAuth 同意画面を設定：「API とサービス」->「OAuth 同意画面」で「外部」を選択し、必要な情報を入力します。
+
+3. 認証情報を作成：「[認証情報](https://console.cloud.google.com/apis/credentials)」ページで、「認証情報を作成」->「OAuth クライアント ID」をクリックします。
+![Create OAuth Client ID](/images/docs/CreateOAuthClientID.webp)
+
+- アプリケーションの種類で「ウェブアプリケーション」を選択します。
+
+- 承認済みの JavaScript 生成元：http://localhost:3000 を追加します。
+
+- 承認済みのリダイレクト URI：ローカル Supabase のコールバックアドレスを追加します。形式は http://127.0.0.1:54321/auth/v1/callback です。
+
+4. Client ID と Secret を取得：作成が成功すると、Client ID と Client Secret が取得できます。
+
+5. ローカル Supabase を設定：ローカル Supabase Studio (http://127.0.0.1:54323) を開き、「Authentication」->「Providers」に移動して「Google」を有効にし、先ほど取得した Client ID と Client Secret を入力します。
+
+
+## Local Supabase Setup
+
+ローカルで Supabase を使用する場合、Authentication のサードパーティログインプロバイダー（Providers：Google、GitHub など）はローカルの Studio UI から直接有効にすることはできません。
+
+プロジェクト内の Supabase 設定ファイルを編集して有効にする必要があります。
+
+以下は、ローカル Supabase Auth Providers を有効にする詳細な手順です：
+
+** 核心ステップ：config.toml ファイルの編集 **
+ローカル Supabase のすべての設定は、プロジェクトルートディレクトリの supabase/config.toml ファイルにあります。このファイルで対応する OAuth プロバイダーの設定ブロックを見つけるか追加し、Client ID と Secret を入力する必要があります。
+
+1. 設定ファイルを見つける
+プロジェクトを開き、以下のファイルを見つけます： プロジェクトルートディレクトリ/supabase/config.toml
+
+2. サードパーティプロバイダーの認証情報を取得
+設定の前に、有効にしたいサードパーティサービス（例：Google Cloud Console、GitHub Developer Settings など）でアプリケーションを登録し、以下の2つの重要な情報を取得する必要があります：
+
+- Client ID（クライアント ID）
+
+- Client Secret（クライアントシークレット）
+
+ローカル開発に関する重要な注意点：サードパーティアプリの「Authorized redirect URIs」（承認済みのリダイレクト URI）を設定する際、ローカル Supabase のデフォルトコールバックアドレスは通常次のとおりです：http://127.0.0.1:54321/auth/v1/callback（ポート番号が supabase 起動時に表示される API URL のポートと一致していることを確認してください）
+
+3. config.toml を編集
+config.toml ファイルで下にスクロールし、[auth.external] 関連の領域を見つけます。見つからない場合は、手動で追加する必要があります。
+
+例：Google ログインを有効にする
+
+ファイルに以下の内容を追加または変更し、your_client_id と your_client_secret を実際に取得した値に置き換えます：
+
+```Ini, TOML
+# supabase/config.toml
+
+# ... その他の設定 ...
+
+[auth.external.google]
+enabled = true
+client_id = "あなたのGoogle Client IDを入力"
+secret = "あなたのGoogle Client Secretを入力"
+# redirect_uri は通常ローカルで明示的に設定する必要はなく、Supabase が自動的に処理します。
+# ただし、Google コンソールで正しい localhost コールバックアドレスを設定していることを確認してください。
+
+# 例：GitHub ログインを有効にする
+# [auth.external.github]
+# enabled = true
+# client_id = "あなたのGitHub Client IDを入力"
+# secret = "あなたのGitHub Client Secretを入力"
+
+# ... その他の設定 ...
+```
+enabled = true になっていることを確認してください。
+
+4. ローカル Supabase を再起動
+設定ファイルを変更した後、変更を反映するにはローカル Supabase サービスを再起動する必要があります。
+
+ターミナルで以下を実行します：
+
+```Bash
+npx supabase stop
+npx supabase start
+```
+5. 確認
+再起動が完了したら、ローカルの Supabase Studio パネル（通常は http://127.0.0.1:54323）に再度アクセスします。
+
+Authentication -> Providers ページに移動します。設定ファイルに追加したプロバイダー（例：Google）が「Enabled」（有効）状態で表示され、展開すると設定した Client ID が確認できるはずです。

@@ -327,6 +327,20 @@
     "send": "Send Message",
     "sending": "Sending..."
   },
+  "BionicToggle": {
+    "label": "Bionic",
+    "turnOn": "Turn on Bionic Reading",
+    "turnOff": "Turn off Bionic Reading"
+  },
+  "HelpCenter": {
+    "newChat": "New chat",
+    "recent": "RECENT",
+    "historyComing": "History (Coming Soon)",
+    "greeting": "Hello, Traveler.",
+    "subtitle": "How can I help you explore MOTA ATOM today?",
+    "placeholder": "Message MOTA ATOM...",
+    "disclaimer": "MOTA ATOM can make mistakes. Check important info."
+  },
   "Footer": {
     "allRightsReserved": "All rights reserved.",
     "madeWithLove": "Made with ❤️ by Developers"

@@ -1,0 +1,81 @@
+---
+title: データベースデプロイ
+description: データモデル構造の同期方法
+---
+
+## はじめに
+1つのコマンドでローカルのデータベース構造をリモートに同期します。
+
+## 操作手順
+
+<Steps>
+
+<Step title = "準備作業" >
+ 
+```bash
+# CLI をインストール
+npm install supabase --save-dev
+
+# ブラウザが開き認証を行います
+npx supabase login
+```
+![](/images/docs/2026-02-05-00-09-37.webp)![](/images/docs/2026-02-05-00-05-36.webp)
+
+</Step>
+
+<Step title = "接続の設定">
+
+> ローカルコードにリモートのメインデータベースを指定する必要があります。
+
+* Supabase コンソール -> Settings -> General から Reference ID（vjqwxqz... のような文字列）をコピーします。
+
+```bash
+# 初期化（初回使用時）
+npx supabase init
+
+# リモートプロジェクトに接続（Reference ID）
+npx supabase link --project-ref ReferenceID
+# このステップではデータベースのパスワード入力が求められます
+```
+</Step>
+
+<Step title = "マイグレーションファイルの生成（自動比較）">
+
+```bash
+# リモートからベースラインとして取得（初回使用時）
+npx supabase db pull
+
+# 新しい更新を作成（例：documents テーブルを追加した場合）
+# supabase/migrations フォルダに新しい .sql ファイルが生成されます
+npx supabase db diff --use-migra -f update_schema
+```
+</Step>
+<Step title = "自動化">
+
+（オプション）package.json に以下を追加します。
+```json
+"scripts": {
+  // ... その他
+  "db:pull": "supabase db pull",
+  "db:push": "supabase db push" 
+}
+```
+</Step>
+
+</Steps>
+
+## 日常の運用
+以降のフローは次のとおりです：
+
+1. ローカルコンソールの [Table Editor](http://127.0.0.1:54323/project/default/editor/) または [SQL Edit](http://127.0.0.1:54323/project/default/sql/) でデータベースを更新
+2. ローカルでのテストが完了。
+3. 差分比較を実行
+```bash
+npx supabase db diff -f feature_name
+```
+4. コマンドを実行してリモートに同期
+```bash
+npx supabase db push
+# または package.json でショートカットを定義した場合
+# npm run db:push
+```

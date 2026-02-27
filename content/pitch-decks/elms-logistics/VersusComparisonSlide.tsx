@@ -23,6 +23,7 @@ import {
   MobileDetailModal,
   MobileExpandButton,
 } from "./MobileDetailModal";
+import { useContent } from "./useContent";
 
 // ─── Types ───────────────────────────────────────────────────────
 interface ComparisonRow {
@@ -462,6 +463,8 @@ function FeatureRow({
 // ─── Main Slide Component ────────────────────────────────────────
 export function VersusComparisonSlide() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const content = useContent();
+  const c = content.slide4;
 
   return (
     <div className="w-full h-full flex flex-col justify-center items-center bg-linear-to-br from-slate-950 via-[#060b18] to-slate-950 text-white relative overflow-hidden p-3 md:p-5 lg:p-8">
@@ -491,15 +494,16 @@ export function VersusComparisonSlide() {
         <div className="flex items-center justify-center gap-2 mb-1">
           <Zap className="w-4 h-4 md:w-5 md:h-5 text-blue-400/60" />
           <span className="text-[10px] sm:text-xs md:text-sm lg:text-base font-mono text-blue-400/70 tracking-[0.25em] uppercase">
-            Competitive Advantage
+            {c.badge}
           </span>
           <Zap className="w-4 h-4 md:w-5 md:h-5 text-blue-400/60" />
         </div>
         <h2 className="text-2xl md:text-3xl lg:text-5xl font-black tracking-tight">
-          <span className="text-slate-400">Why</span>
-          <span className="text-white mx-1.5 md:mx-2">ELMS</span>
-          <span className="text-slate-400">?</span>
+          <span className="text-slate-400">{c.title}</span>
+          <span className="text-white/50 mx-1.5 md:mx-2">{c.titleVs}</span>
+          <span className="text-white">{c.titleHighlight}</span>
         </h2>
+        <p className="text-xs md:text-sm lg:text-base text-slate-500 mt-1">{c.subtitle}</p>
       </motion.div>
 
       {/* ── Desktop: Versus Layout ── */}
@@ -555,10 +559,10 @@ export function VersusComparisonSlide() {
                   animate={{ opacity: [0.7, 0.4, 0.7, 0.5, 0.7] }}
                   transition={{ duration: 3, repeat: Infinity }}
                 >
-                  Traditional Logistics
+                  {c.traditionalHeader}
                 </motion.div>
                 <div className="text-[10px] lg:text-xs font-mono text-slate-600 tracking-wider">
-                  LEGACY FRICTION
+                  {c.verdict.traditional.sublabel}
                 </div>
               </div>
             </div>
@@ -665,10 +669,10 @@ export function VersusComparisonSlide() {
               </div>
               <div>
                 <div className="text-sm lg:text-lg font-bold text-emerald-300">
-                  ELMS Platform
+                  {c.elmsHeader}
                 </div>
                 <div className="text-[10px] lg:text-xs font-mono text-emerald-400/60 tracking-wider">
-                  THE FUTURE
+                  {c.verdict.elms.sublabel}
                 </div>
               </div>
             </div>
@@ -688,8 +692,13 @@ export function VersusComparisonSlide() {
           <div className="flex-1 flex flex-col justify-center px-0 pointer-events-auto">
             {comparisonRows.map((row, i) => (
               <FeatureRow
-                key={row.dimension}
-                row={row}
+                key={i}
+                row={{
+                  ...row,
+                  dimension: c.rows[i].dimension,
+                  traditional: c.rows[i].traditional,
+                  elms: c.rows[i].elms,
+                }}
                 index={i}
                 totalRows={comparisonRows.length}
               />
@@ -726,7 +735,7 @@ export function VersusComparisonSlide() {
             transition={{ delay: 0.2 }}
           >
             <Monitor className="w-4 h-4 text-slate-500/60 mx-auto mb-1" />
-            <div className="text-xs font-mono text-slate-500 text-center">Traditional</div>
+            <div className="text-xs font-mono text-slate-500 text-center">{c.traditionalHeader}</div>
           </motion.div>
 
           <motion.div
@@ -746,7 +755,7 @@ export function VersusComparisonSlide() {
             transition={{ delay: 0.2 }}
           >
             <Sparkles className="w-4 h-4 text-emerald-400 mx-auto mb-1" />
-            <div className="text-xs font-mono text-emerald-400 text-center">ELMS</div>
+            <div className="text-xs font-mono text-emerald-400 text-center">{c.elmsHeader}</div>
           </motion.div>
         </div>
 
@@ -764,7 +773,7 @@ export function VersusComparisonSlide() {
         </motion.div>
 
         <MobileExpandButton
-          label="Tap to compare all features"
+          label={c.mobileExpand}
           onClick={() => setMobileOpen(true)}
         />
       </div>
@@ -802,19 +811,19 @@ export function VersusComparisonSlide() {
       <MobileDetailModal
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        title="Why ELMS?"
-        subtitle="6 dimensions · Head-to-head comparison"
+        title={c.mobileModal.title}
+        subtitle={c.mobileModal.subtitle}
       >
         <div className="space-y-3">
-          {comparisonRows.map((row) => (
+          {comparisonRows.map((row, i) => (
             <div
-              key={row.dimension}
+              key={i}
               className="rounded-xl border border-white/5 overflow-hidden"
             >
               {/* Dimension header */}
               <div className="flex items-center gap-2 px-3 py-2 bg-white/3 border-b border-white/5">
                 <span className="text-slate-400">{row.icon}</span>
-                <span className="text-sm font-bold text-white/80">{row.dimension}</span>
+                <span className="text-sm font-bold text-white/80">{c.rows[i].dimension}</span>
                 {row.elmsExclusive && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 uppercase">
                     Exclusive
@@ -827,10 +836,10 @@ export function VersusComparisonSlide() {
                 <XCircle className="w-4 h-4 text-red-400/40 shrink-0" />
                 <div>
                   <span className="text-xs font-mono font-bold text-red-400/50 uppercase mr-1">
-                    {row.traditional.tag}:
+                    {c.rows[i].traditional.tag}:
                   </span>
                   <span className="text-[11px] text-slate-500">
-                    {row.traditional.text}
+                    {c.rows[i].traditional.text}
                   </span>
                 </div>
               </div>
@@ -840,10 +849,10 @@ export function VersusComparisonSlide() {
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                 <div>
                   <span className="text-xs font-mono font-bold text-emerald-400 uppercase mr-1">
-                    {row.elms.tag}:
+                    {c.rows[i].elms.tag}:
                   </span>
                   <span className="text-[11px] text-emerald-200/80">
-                    {row.elms.text}
+                    {c.rows[i].elms.text}
                   </span>
                 </div>
               </div>

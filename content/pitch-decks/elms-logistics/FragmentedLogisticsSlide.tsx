@@ -14,6 +14,7 @@ import {
   MobileDetailModal,
   MobileExpandButton,
 } from "./MobileDetailModal";
+import { useContent } from "./useContent";
 
 // ─── Broken Particle ────────────────────────────────────────────────
 interface ParticleProps {
@@ -122,7 +123,7 @@ function GlitchText({ text }: { text: string }) {
 }
 
 // ─── Sync Error Badge ────────────────────────────────────────────
-function SyncErrorBadge({ delay = 0 }: { delay?: number }) {
+function SyncErrorBadge({ delay = 0, label = "Sync Error" }: { delay?: number; label?: string }) {
   return (
     <motion.div
       className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 text-[10px] lg:text-xs font-mono font-bold tracking-wider uppercase"
@@ -136,7 +137,7 @@ function SyncErrorBadge({ delay = 0 }: { delay?: number }) {
         transition={{ duration: 1.2, repeat: Infinity }}
       />
       <RefreshCcwDot className="w-3 h-3" />
-      Sync Error
+      {label}
     </motion.div>
   );
 }
@@ -147,9 +148,10 @@ interface SiloCardProps {
   title: string;
   items: string[];
   delay: number;
+  label?: string;
 }
 
-function SiloCard({ icon, title, items, delay }: SiloCardProps) {
+function SiloCard({ icon, title, items, delay, label }: SiloCardProps) {
   return (
     <motion.div
       className="relative flex flex-col items-center p-5 lg:p-6 rounded-2xl border-2 border-dashed border-slate-500/40 bg-slate-800/40 backdrop-blur-sm group hover:border-red-500/30 transition-colors duration-500"
@@ -180,7 +182,7 @@ function SiloCard({ icon, title, items, delay }: SiloCardProps) {
 
       {/* Badge */}
       <div className="mb-3">
-        <SyncErrorBadge delay={delay + 0.6} />
+        <SyncErrorBadge delay={delay + 0.6} label={label} />
       </div>
 
       {/* Items */}
@@ -228,6 +230,9 @@ export function FragmentedLogisticsSlide() {
   const [mobileOpen, setMobileOpen] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  const content = useContent();
+  const c = content.slide2;
+
   return (
     <div className="w-full h-full flex flex-col justify-center items-center bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 text-white relative overflow-hidden p-3 sm:p-5 md:p-8 lg:p-12">
       {/* Background grid */}
@@ -261,7 +266,7 @@ export function FragmentedLogisticsSlide() {
             transition={{ duration: 2, repeat: Infinity }}
           />
           <span className="text-[10px] lg:text-xs font-mono text-red-400/80 tracking-[0.3em] uppercase">
-            The Problem
+            {c.badge}
           </span>
           <motion.span
             className="inline-block w-8 h-0.5 bg-red-500/60"
@@ -276,10 +281,10 @@ export function FragmentedLogisticsSlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          <GlitchText text="The Barricades:" />
+          <GlitchText text={c.title} />
           <br />
           <span className="text-slate-400 text-base md:text-2xl lg:text-4xl xl:text-5xl">
-            Fragmentation in Global Logistics
+            {c.subtitle}
           </span>
         </motion.h2>
 
@@ -289,7 +294,7 @@ export function FragmentedLogisticsSlide() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          Three isolated silos. Zero interoperability. Every handoff is a failure point.
+          {c.description}
         </motion.p>
       </div>
 
@@ -300,14 +305,10 @@ export function FragmentedLogisticsSlide() {
           <div className="flex-1 min-w-0 max-w-xs">
             <SiloCard
               icon={<ShoppingCart className="w-6 h-6" />}
-              title="E-commerce Platforms"
-              items={[
-                "Order fragmentation",
-                "SKU mismatch across stores",
-                "No real-time inventory sync",
-                "Manual CSV exports",
-              ]}
+              title={c.silos[0].title}
+              items={c.silos[0].items}
               delay={0.3}
+              label={c.syncError}
             />
           </div>
 
@@ -318,14 +319,10 @@ export function FragmentedLogisticsSlide() {
           <div className="flex-1 min-w-0 max-w-xs">
             <SiloCard
               icon={<FileCheck className="w-6 h-6" />}
-              title="Customs Compliance"
-              items={[
-                "Paper-based declarations",
-                "HS code errors",
-                "Delayed clearance cycles",
-                "Regulatory blind spots",
-              ]}
+              title={c.silos[1].title}
+              items={c.silos[1].items}
               delay={0.6}
+              label={c.syncError}
             />
           </div>
 
@@ -336,14 +333,10 @@ export function FragmentedLogisticsSlide() {
           <div className="flex-1 min-w-0 max-w-xs">
             <SiloCard
               icon={<Truck className="w-6 h-6" />}
-              title="Last-Mile Carriers"
-              items={[
-                "Label re-entry by hand",
-                "Wrong address formats",
-                "No delivery confirmation",
-                "Carbon tracking gap",
-              ]}
+              title={c.silos[2].title}
+              items={c.silos[2].items}
               delay={0.9}
+              label={c.syncError}
             />
           </div>
         </div>
@@ -354,11 +347,11 @@ export function FragmentedLogisticsSlide() {
         {/* Mini silo row */}
         <div className="flex items-center gap-3">
           {[
-            { icon: <ShoppingCart className="w-4 h-4" />, label: "E-commerce", color: "text-red-400" },
+            { icon: <ShoppingCart className="w-4 h-4" />, label: c.mobileLabels.ecommerce, color: "text-red-400" },
             { icon: <Unplug className="w-3 h-3 text-red-500/40" />, label: "" },
-            { icon: <FileCheck className="w-4 h-4" />, label: "Customs", color: "text-red-400" },
+            { icon: <FileCheck className="w-4 h-4" />, label: c.mobileLabels.customs, color: "text-red-400" },
             { icon: <Unplug className="w-3 h-3 text-red-500/40" />, label: "" },
-            { icon: <Truck className="w-4 h-4" />, label: "Last-Mile", color: "text-red-400" },
+            { icon: <Truck className="w-4 h-4" />, label: c.mobileLabels.lastMile, color: "text-red-400" },
           ].map((item, i) =>
             item.label ? (
               <motion.div
@@ -374,7 +367,7 @@ export function FragmentedLogisticsSlide() {
                 <span className="text-[8px] font-mono text-slate-400 uppercase">{item.label}</span>
                 <div className="flex items-center gap-1">
                   <span className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-[7px] font-mono text-red-400/70">SYNC ERR</span>
+                  <span className="text-[7px] font-mono text-red-400/70">{c.mobileLabels.syncErr}</span>
                 </div>
               </motion.div>
             ) : (
@@ -392,7 +385,7 @@ export function FragmentedLogisticsSlide() {
         </div>
 
         <MobileExpandButton
-          label="Tap to view silo details"
+          label={c.mobileExpand}
           onClick={() => setMobileOpen(true)}
         />
       </div>
@@ -407,21 +400,21 @@ export function FragmentedLogisticsSlide() {
         <div className="flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-red-500/60 animate-pulse" />
           <span>
-            <span className="text-red-400 font-bold">37%</span> data lost
+            <span className="text-red-400 font-bold">37%</span> {c.stats[0].label}
           </span>
         </div>
         <div className="h-3 w-px bg-slate-700" />
         <div className="flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-amber-500/60 animate-pulse" />
           <span>
-            <span className="text-amber-400 font-bold">€4.2B</span> cost
+            <span className="text-amber-400 font-bold">€4.2B</span> {c.stats[1].label}
           </span>
         </div>
         <div className="h-3 w-px bg-slate-700" />
         <div className="flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-red-500/60 animate-pulse" />
           <span>
-            <span className="text-red-400 font-bold">72h</span> delay
+            <span className="text-red-400 font-bold">72h</span> {c.stats[2].label}
           </span>
         </div>
       </motion.div>
@@ -430,40 +423,25 @@ export function FragmentedLogisticsSlide() {
       <MobileDetailModal
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        title="Fragmented Logistics Silos"
-        subtitle="Three isolated systems. Every handoff is a failure point."
+        title={c.mobileModal.title}
+        subtitle={c.mobileModal.subtitle}
       >
         <div className="space-y-4">
           {[
             {
               icon: <ShoppingCart className="w-5 h-5" />,
-              title: "E-commerce Platforms",
-              items: [
-                "Order fragmentation",
-                "SKU mismatch across stores",
-                "No real-time inventory sync",
-                "Manual CSV exports",
-              ],
+              title: c.silos[0].title,
+              items: c.silos[0].items,
             },
             {
               icon: <FileCheck className="w-5 h-5" />,
-              title: "Customs Compliance",
-              items: [
-                "Paper-based declarations",
-                "HS code errors",
-                "Delayed clearance cycles",
-                "Regulatory blind spots",
-              ],
+              title: c.silos[1].title,
+              items: c.silos[1].items,
             },
             {
               icon: <Truck className="w-5 h-5" />,
-              title: "Last-Mile Carriers",
-              items: [
-                "Label re-entry by hand",
-                "Wrong address formats",
-                "No delivery confirmation",
-                "Carbon tracking gap",
-              ],
+              title: c.silos[2].title,
+              items: c.silos[2].items,
             },
           ].map((silo, si) => (
             <div
@@ -481,7 +459,7 @@ export function FragmentedLogisticsSlide() {
                   <div className="flex items-center gap-1 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
                     <span className="text-[10px] font-mono text-red-400">
-                      Sync Error
+                      {c.syncError}
                     </span>
                   </div>
                 </div>
@@ -503,9 +481,9 @@ export function FragmentedLogisticsSlide() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-2 pt-2">
             {[
-              { value: "37%", label: "Data lost in handoffs", color: "text-red-400" },
-              { value: "€4.2B", label: "Annual EU cost", color: "text-amber-400" },
-              { value: "72h", label: "Avg customs delay", color: "text-red-400" },
+              { value: "37%", label: c.mobileModal.statLabels[0], color: "text-red-400" },
+              { value: "€4.2B", label: c.mobileModal.statLabels[1], color: "text-amber-400" },
+              { value: "72h", label: c.mobileModal.statLabels[2], color: "text-red-400" },
             ].map((stat) => (
               <div
                 key={stat.value}

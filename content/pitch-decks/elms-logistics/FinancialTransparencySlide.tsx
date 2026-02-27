@@ -21,6 +21,7 @@ import {
   MobileDetailModal,
   MobileExpandButton,
 } from "./MobileDetailModal";
+import { useContent } from "./useContent";
 
 // ─── Color Palette ───────────────────────────────────────────────
 const DEEP_BLUE = "#0a1628";
@@ -124,7 +125,8 @@ function CustomTooltip({ active, payload }: any) {
 }
 
 // ─── Valuation Stacked Bar ───────────────────────────────────────
-function ValuationBar() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ValuationBar({ c }: { c: any }) {
   return (
     <motion.div
       className="w-full"
@@ -134,7 +136,7 @@ function ValuationBar() {
     >
       <div className="flex items-center justify-between mb-2">
         <span className="text-sm lg:text-base font-mono text-slate-400 uppercase tracking-wider">
-          Valuation at Launch
+          {c.valuationBar.preLabel}
         </span>
         <motion.span
           className="text-base lg:text-lg font-black font-mono"
@@ -143,7 +145,7 @@ function ValuationBar() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8 }}
         >
-          €350k+
+          {c.valuationBar.postValue}
         </motion.span>
       </div>
 
@@ -158,7 +160,7 @@ function ValuationBar() {
           transition={{ delay: 0.8, duration: 1, ease: "easeOut" }}
         >
           <span className="text-xs lg:text-sm font-mono font-bold text-white/90 truncate px-2">
-            Technical Equity €200k
+            {c.valuationBar.preLabel} {c.valuationBar.preValue}
           </span>
         </motion.div>
 
@@ -175,7 +177,7 @@ function ValuationBar() {
           transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
         >
           <span className="text-xs lg:text-sm font-mono font-bold text-slate-900 truncate px-2">
-            Investor €150k
+            {c.valuationBar.postLabel} {c.valuationBar.postValue}
           </span>
         </motion.div>
       </div>
@@ -185,13 +187,13 @@ function ValuationBar() {
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: EQUITY_BLUE }} />
           <span className="text-xs lg:text-sm font-mono text-slate-400">
-            Founder Tech Equity (57%)
+            {c.valuationBar.preLabel}
           </span>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: INVESTOR_GOLD }} />
           <span className="text-xs lg:text-sm font-mono text-slate-400">
-            Cash Injection (43%)
+            {c.valuationBar.postLabel}
           </span>
         </div>
       </div>
@@ -269,10 +271,13 @@ function renderPieIconLabel({ cx, cy, midAngle, innerRadius, outerRadius, index 
 
 // ─── Interactive Use of Funds Pie (icons inside slices) ──────────
 function UseOfFundsPie({
+  c,
   activeIndex,
   onHover,
   onClick,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  c: any;
   activeIndex: number | null;
   onHover: (index: number | null) => void;
   onClick: (index: number) => void;
@@ -285,7 +290,7 @@ function UseOfFundsPie({
       transition={{ delay: 1.0, duration: 0.6 }}
     >
       <div className="text-xs lg:text-sm font-mono text-slate-400 uppercase tracking-wider mb-0">
-        Allocation of Funds
+        {c.totalRaise}
       </div>
       <div className="w-full relative" style={{ height: "clamp(200px, 40vh, 480px)" }}>
         <ResponsiveContainer width="100%" height="100%">
@@ -335,7 +340,7 @@ function UseOfFundsPie({
                   fontFamily="monospace"
                   fontWeight="900"
                 >
-                  {fundAllocation[activeIndex].value}%
+                  {c.fundAllocation[activeIndex]?.pct ?? `${fundAllocation[activeIndex].value}%`}
                 </text>
                 <text
                   x="50%"
@@ -346,7 +351,7 @@ function UseOfFundsPie({
                   fontSize="10"
                   fontFamily="monospace"
                 >
-                  {fundAllocation[activeIndex].amount}
+                  {c.fundAllocation[activeIndex]?.detail ?? fundAllocation[activeIndex].amount}
                 </text>
               </>
             )}
@@ -358,7 +363,8 @@ function UseOfFundsPie({
 }
 
 // ─── 18-Month Runway Badge ───────────────────────────────────────
-function RunwayBadge() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function RunwayBadge({ c }: { c: any }) {
   return (
     <motion.div
       className="relative flex items-center gap-3 px-4 py-3 rounded-xl overflow-hidden"
@@ -417,7 +423,8 @@ function RunwayBadge() {
 }
 
 // ─── Investment Ask Hero Card (compact) ──────────────────────────
-function InvestmentAskCard() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function InvestmentAskCard({ c }: { c: any }) {
   return (
     <motion.div
       className="relative rounded-2xl overflow-hidden"
@@ -459,13 +466,13 @@ function InvestmentAskCard() {
             </motion.div>
             <div>
               <div className="text-base lg:text-lg font-bold text-white/95">
-                Seed Round
+                {c.investmentCard.title}
               </div>
               <div
                 className="text-xs lg:text-sm font-mono uppercase tracking-wider"
                 style={{ color: GOLD_DIM }}
               >
-                Total Investment Ask
+                {c.totalRaise}
               </div>
             </div>
           </div>
@@ -484,19 +491,13 @@ function InvestmentAskCard() {
               className="text-[9px] font-mono uppercase tracking-wider"
               style={{ color: GOLD_DIM }}
             >
-              Raise
+              {c.totalRaise}
             </div>
             <div
               className="text-2xl lg:text-3xl font-black font-mono"
               style={{ color: GOLD_LIGHT }}
             >
-              <AnimatedCounter
-                target={150}
-                prefix="€"
-                suffix="k"
-                delay={0.5}
-                duration={1.8}
-              />
+              {c.totalRaiseAmount}
             </div>
           </motion.div>
         </div>
@@ -517,10 +518,10 @@ function InvestmentAskCard() {
             <Crown className="w-5 h-5 text-blue-400 shrink-0" />
             <div className="flex-1 min-w-0">
               <div className="text-sm lg:text-base font-bold text-blue-300">
-                Tech Equity: €200k
+                {c.investmentCard.items[0]}
               </div>
               <div className="text-[10px] lg:text-xs text-slate-400 font-mono truncate">
-                Pre-built framework &amp; API libraries (FMV)
+                {c.investmentCard.items[1]}
               </div>
             </div>
           </motion.div>
@@ -539,10 +540,10 @@ function InvestmentAskCard() {
             <Zap className="w-5 h-5 text-emerald-400 shrink-0" />
             <div className="flex-1 min-w-0">
               <div className="text-sm lg:text-base font-semibold text-white/80">
-                Capital Efficiency: 0% Waste
+                {c.investmentCard.items[2]}
               </div>
               <div className="text-[10px] lg:text-xs text-slate-500 font-mono truncate">
-                Lead Architect as shareholder — 100% drives product
+                {c.investmentCard.items[3]}
               </div>
             </div>
           </motion.div>
@@ -554,10 +555,13 @@ function InvestmentAskCard() {
 
 // ─── 2×2 Grid Fund Legend with icons (below pie, z-50 tooltips) ──
 function FundLegend({
+  c,
   activeIndex,
   onHover,
   onClick,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  c: any;
   activeIndex: number | null;
   onHover: (index: number | null) => void;
   onClick: (index: number) => void;
@@ -603,17 +607,17 @@ function FundLegend({
                 className="text-xs lg:text-sm font-bold leading-tight truncate"
                 style={{ color: isActive ? item.color : "rgba(255,255,255,0.75)" }}
               >
-                {item.name}
+                {c.fundAllocation[i]?.label ?? item.name}
               </div>
               <div className="text-[10px] font-mono text-slate-500 leading-tight">
-                {item.amount}
+                {c.fundAllocation[i]?.detail ?? item.amount}
               </div>
             </div>
             <span
               className="text-base lg:text-lg font-mono font-black shrink-0"
               style={{ color: item.color }}
             >
-              {item.value}%
+              {c.fundAllocation[i]?.pct ?? `${item.value}%`}
             </span>
 
             {/* Tooltip on hover — z-50 to overlay other components */}
@@ -632,17 +636,17 @@ function FundLegend({
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <div style={{ color: item.color }}>{item.icon}</div>
                     <span className="text-xs font-bold text-white/90">
-                      {item.name}
+                      {c.fundAllocation[i]?.label ?? item.name}
                     </span>
                   </div>
                   <div
                     className="text-xs font-mono font-bold mb-0.5"
                     style={{ color: item.color }}
                   >
-                    {item.amount} · {item.value}%
+                    {c.fundAllocation[i]?.pct ?? `${item.value}%`}
                   </div>
                   <div className="text-[10px] text-slate-400 leading-relaxed">
-                    {item.description}
+                    {c.fundAllocation[i]?.detail ?? item.description}
                   </div>
                 </div>
                 <div className="flex justify-center -mt-px">
@@ -665,7 +669,8 @@ function FundLegend({
 }
 
 // ─── Capital Leverage Visual ─────────────────────────────────────
-function CapitalLeverageVisual() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CapitalLeverageVisual({ c }: { c: any }) {
   return (
     <motion.div
       className="relative w-full rounded-xl overflow-hidden"
@@ -740,7 +745,7 @@ function CapitalLeverageVisual() {
               fontSize="7"
               fontFamily="monospace"
             >
-              INVEST
+              {c.leverageVisual.label}
             </text>
           </motion.g>
 
@@ -800,7 +805,7 @@ function CapitalLeverageVisual() {
               fontSize="6"
               fontFamily="monospace"
             >
-              ▲ 2.3× LEVERAGE
+              {c.leverageVisual.arrow}
             </text>
           </motion.g>
 
@@ -835,6 +840,8 @@ function CapitalLeverageVisual() {
 export function FinancialTransparencySlide() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const content = useContent();
+  const c = content.slide7;
 
   const handleHover = (index: number | null) => setActiveIndex(index);
   const handleClick = (index: number) =>
@@ -886,7 +893,7 @@ export function FinancialTransparencySlide() {
             className="text-xs md:text-sm lg:text-base font-mono tracking-[0.25em] uppercase"
             style={{ color: GOLD_DIM }}
           >
-            Investment Opportunity
+            {c.badge}
           </span>
           <PieChartIcon
             className="w-4 h-4 md:w-5 md:h-5"
@@ -900,9 +907,8 @@ export function FinancialTransparencySlide() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          Investment Opportunity{" "}
-          <span style={{ color: METALLIC_GOLD }}>&amp;</span> Capital
-          Efficiency
+          {c.title}{" "}
+          <span style={{ color: METALLIC_GOLD }}>{c.titleHighlight}</span>
         </motion.h2>
         <motion.p
           className="text-[10px] md:text-xs lg:text-sm text-slate-500 font-mono"
@@ -910,7 +916,7 @@ export function FinancialTransparencySlide() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Scaling ELMS to a World-Class Logistics Infrastructure
+          {c.subtitle}
         </motion.p>
       </div>
 
@@ -922,14 +928,15 @@ export function FinancialTransparencySlide() {
         <div className="flex gap-4 lg:gap-5 items-stretch">
           {/* ── LEFT column: Investment info (enlarged fonts) ── */}
           <div className="flex-1 flex flex-col gap-1.5 min-w-0 justify-center">
-            <InvestmentAskCard />
-            <ValuationBar />
-            <CapitalLeverageVisual />
+            <InvestmentAskCard c={c} />
+            <ValuationBar c={c} />
+            <CapitalLeverageVisual c={c} />
           </div>
 
           {/* ── RIGHT column: Pie Chart + 2×2 Legend Grid ── */}
           <div className="w-80 lg:w-90 2xl:w-100 shrink-0 flex flex-col justify-end gap-1">
             <UseOfFundsPie
+              c={c}
               activeIndex={activeIndex}
               onHover={handleHover}
               onClick={handleClick}
@@ -937,6 +944,7 @@ export function FinancialTransparencySlide() {
             {/* 2×2 legend grid directly below pie */}
             <div className="shrink-0">
               <FundLegend
+                c={c}
                 activeIndex={activeIndex}
                 onHover={handleHover}
                 onClick={handleClick}
@@ -948,22 +956,20 @@ export function FinancialTransparencySlide() {
         {/* Bottom: Runway Badge + inline key metrics */}
         <div className="shrink-0 flex gap-1 items-stretch mt-2">
           <div className="flex-1 min-w-0">
-            <RunwayBadge />
+            <RunwayBadge c={c} />
           </div>
           {/* Inline key metrics — compact horizontal strip */}
           <div className="flex gap-1 shrink-0">
-            {[
-              { label: "Total Ask", value: "€150k", color: METALLIC_GOLD },
-              { label: "Tech Equity", value: "€200k", color: "#60a5fa" },
-              { label: "Launch Value", value: "€350k+", color: "#10b981" },
-              { label: "Runway", value: "18 Mo", color: "#a78bfa" },
-            ].map((m) => (
+            {c.keyMetrics.map((m: { label: string; value: string }, i: number) => {
+              const colors = [METALLIC_GOLD, "#60a5fa", "#10b981", "#a78bfa"];
+              const color = colors[i % colors.length];
+              return (
               <motion.div
                 key={m.label}
                 className="flex flex-col items-center justify-center px-3 py-1.5 rounded-lg"
                 style={{
-                  backgroundColor: `${m.color}10`,
-                  border: `1px solid ${m.color}25`,
+                  backgroundColor: `${color}10`,
+                  border: `1px solid ${color}25`,
                 }}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -971,7 +977,7 @@ export function FinancialTransparencySlide() {
               >
                 <div
                   className="text-sm lg:text-base font-black font-mono leading-tight"
-                  style={{ color: m.color }}
+                  style={{ color }}
                 >
                   {m.value}
                 </div>
@@ -979,7 +985,8 @@ export function FinancialTransparencySlide() {
                   {m.label}
                 </div>
               </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -1005,31 +1012,31 @@ export function FinancialTransparencySlide() {
                 className="text-[8px] font-mono uppercase tracking-wider"
                 style={{ color: GOLD_DIM }}
               >
-                Seed Round
+                {c.investmentCard.title}
               </div>
               <div
                 className="text-2xl font-black font-mono"
                 style={{ color: GOLD_LIGHT }}
               >
-                €150k
+                {c.totalRaiseAmount}
               </div>
             </div>
             <ArrowRight className="w-4 h-4 text-slate-500" />
             <div className="text-center">
               <div className="text-[8px] font-mono uppercase tracking-wider text-blue-400/60">
-                Tech Equity
+                {c.valuationBar.preLabel}
               </div>
               <div className="text-xl font-black font-mono text-blue-400">
-                €200k
+                {c.valuationBar.preValue}
               </div>
             </div>
             <ArrowRight className="w-4 h-4 text-slate-500" />
             <div className="text-right">
               <div className="text-[8px] font-mono uppercase tracking-wider text-emerald-400/60">
-                Launch Value
+                {c.valuationBar.postLabel}
               </div>
               <div className="text-xl font-black font-mono text-emerald-400">
-                €350k+
+                {c.valuationBar.postValue}
               </div>
             </div>
           </motion.div>
@@ -1037,46 +1044,33 @@ export function FinancialTransparencySlide() {
 
         {/* Key badges row */}
         <div className="flex gap-2 w-full">
-          <motion.div
-            className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg"
-            style={{
-              background: `${METALLIC_GOLD}10`,
-              border: `1px solid ${METALLIC_GOLD}25`,
-            }}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <Clock className="w-3 h-3" style={{ color: METALLIC_GOLD }} />
-            <span
-              className="text-[8px] font-mono font-bold"
-              style={{ color: METALLIC_GOLD }}
+          {c.keyMetrics.map((km: { label: string; value: string }, i: number) => {
+            const badgeColors = [METALLIC_GOLD, "#10b981", "#3b82f6"];
+            const badgeIcons = [Clock, Zap, TrendingUp];
+            const color = badgeColors[i % badgeColors.length];
+            const Icon = badgeIcons[i % badgeIcons.length];
+            return (
+            <motion.div
+              key={km.label}
+              className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg"
+              style={{
+                background: `${color}10`,
+                border: `1px solid ${color}25`,
+              }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 + i * 0.1 }}
             >
-              18-Mo Runway
-            </span>
-          </motion.div>
-          <motion.div
-            className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <Zap className="w-3 h-3 text-emerald-400" />
-            <span className="text-[8px] font-mono font-bold text-emerald-400">
-              0% Vendor Waste
-            </span>
-          </motion.div>
-          <motion.div
-            className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-          >
-            <TrendingUp className="w-3 h-3 text-blue-400" />
-            <span className="text-[8px] font-mono font-bold text-blue-400">
-              2.3× Leverage
-            </span>
-          </motion.div>
+              <Icon className="w-3 h-3" style={{ color }} />
+              <span
+                className="text-[8px] font-mono font-bold"
+                style={{ color }}
+              >
+                {km.label}: {km.value}
+              </span>
+            </motion.div>
+            );
+          })}
         </div>
 
         {/* Compact allocation */}
@@ -1086,7 +1080,7 @@ export function FinancialTransparencySlide() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          {fundAllocation.map((item) => (
+          {fundAllocation.map((item, i) => (
             <div
               key={item.name}
               className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.05]"
@@ -1096,20 +1090,20 @@ export function FinancialTransparencySlide() {
                 style={{ backgroundColor: item.color }}
               />
               <span className="text-[7px] font-mono text-white/60 truncate">
-                {item.name}
+                {c.fundAllocation[i]?.label ?? item.name}
               </span>
               <span
                 className="text-[8px] font-mono font-bold ml-auto"
                 style={{ color: item.color }}
               >
-                {item.value}%
+                {c.fundAllocation[i]?.pct ?? `${item.value}%`}
               </span>
             </div>
           ))}
         </motion.div>
 
         <MobileExpandButton
-          label="Tap to explore full investment breakdown"
+          label={c.mobileExpand}
           onClick={() => setMobileOpen(true)}
         />
       </div>
@@ -1120,8 +1114,8 @@ export function FinancialTransparencySlide() {
       <MobileDetailModal
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        title="Investment Opportunity & Capital Efficiency"
-        subtitle="Scaling ELMS to World-Class Logistics"
+        title={c.mobileModal.title}
+        subtitle={c.mobileModal.subtitle}
       >
         <div className="space-y-4">
           {/* Investment Ask */}
@@ -1144,13 +1138,13 @@ export function FinancialTransparencySlide() {
               </div>
               <div>
                 <div className="text-[11px] font-bold text-white/90">
-                  Seed Round Investment
+                  {c.investmentCard.title}
                 </div>
                 <div
                   className="text-[8px] font-mono uppercase tracking-wider"
                   style={{ color: GOLD_DIM }}
                 >
-                  Total Ask
+                  {c.totalRaise}
                 </div>
               </div>
               <div className="ml-auto text-right">
@@ -1158,7 +1152,7 @@ export function FinancialTransparencySlide() {
                   className="text-xl font-black font-mono"
                   style={{ color: GOLD_LIGHT }}
                 >
-                  €150k
+                  {c.totalRaiseAmount}
                 </div>
               </div>
             </div>
@@ -1169,18 +1163,16 @@ export function FinancialTransparencySlide() {
             <div className="flex items-center gap-2 mb-1.5">
               <Crown className="w-3.5 h-3.5 text-blue-400" />
               <span className="text-[10px] font-bold text-blue-300">
-                Technical Equity Asset Injection
+                {c.investmentCard.items[0]}
               </span>
             </div>
             <div className="text-[9px] text-slate-400 leading-relaxed mb-2">
-              Pre-developed framework, API logic libraries &amp; architecture
-              design contributed by core technical partner. Fair Market Value:{" "}
-              <span className="font-bold text-blue-300">€200,000</span>
+              {c.investmentCard.items[1]}
             </div>
             <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-blue-500/[0.08] border border-blue-500/15">
               <Zap className="w-3 h-3 text-blue-400" />
               <span className="text-[8px] font-mono text-blue-400/80">
-                Investors enter with a €200k technical foundation already built
+                {c.investmentCard.items[2]}
               </span>
             </div>
           </div>
@@ -1188,7 +1180,7 @@ export function FinancialTransparencySlide() {
           {/* Valuation Bar */}
           <div>
             <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider mb-2">
-              Launch Valuation Composition
+              {c.valuationBar.preLabel} / {c.valuationBar.postLabel}
             </div>
             <div className="w-full h-8 rounded-lg overflow-hidden flex">
               <div
@@ -1196,7 +1188,7 @@ export function FinancialTransparencySlide() {
                 style={{ backgroundColor: `${EQUITY_BLUE}99`, width: "57%" }}
               >
                 <span className="text-[8px] font-mono font-bold text-white/90">
-                  Tech €200k
+                  {c.valuationBar.preLabel} {c.valuationBar.preValue}
                 </span>
               </div>
               <div
@@ -1204,13 +1196,13 @@ export function FinancialTransparencySlide() {
                 style={{ backgroundColor: `${METALLIC_GOLD}99`, width: "43%" }}
               >
                 <span className="text-[8px] font-mono font-bold text-slate-900">
-                  Cash €150k
+                  {c.valuationBar.postLabel} {c.valuationBar.postValue}
                 </span>
               </div>
             </div>
             <div className="text-center mt-1.5">
               <span className="text-sm font-black font-mono text-emerald-400">
-                Total: €350k+
+                {c.totalRaise}: {c.totalRaiseAmount}
               </span>
             </div>
           </div>
@@ -1231,7 +1223,7 @@ export function FinancialTransparencySlide() {
 
           {/* Allocation breakdown */}
           <div className="space-y-2">
-            {fundAllocation.map((item) => (
+            {fundAllocation.map((item, i) => (
               <div
                 key={item.name}
                 className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white/[0.03] border border-white/[0.05]"
@@ -1247,10 +1239,10 @@ export function FinancialTransparencySlide() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-[10px] font-semibold text-white/70">
-                    {item.name}
+                    {c.fundAllocation[i]?.label ?? item.name}
                   </div>
                   <div className="text-[8px] text-slate-500 font-mono truncate">
-                    {item.description}
+                    {c.fundAllocation[i]?.detail ?? item.description}
                   </div>
                 </div>
                 <div className="text-right shrink-0">
@@ -1258,10 +1250,10 @@ export function FinancialTransparencySlide() {
                     className="text-[10px] font-black font-mono"
                     style={{ color: item.color }}
                   >
-                    {item.value}%
+                    {c.fundAllocation[i]?.pct ?? `${item.value}%`}
                   </div>
                   <div className="text-[8px] font-mono text-slate-500">
-                    {item.amount}
+                    {c.fundAllocation[i]?.detail ?? item.amount}
                   </div>
                 </div>
               </div>
@@ -1299,55 +1291,35 @@ export function FinancialTransparencySlide() {
 
           {/* Key metrics */}
           <div className="grid grid-cols-2 gap-2 pt-1">
-            {[
-              {
-                label: "Seed Round",
-                value: "€150k",
-                color: METALLIC_GOLD,
-                bg: `${METALLIC_GOLD}10`,
-                border: `${METALLIC_GOLD}25`,
-              },
-              {
-                label: "Tech Equity",
-                value: "€200k",
-                color: "#60a5fa",
-                bg: `${EQUITY_BLUE}10`,
-                border: `${EQUITY_BLUE}25`,
-              },
-              {
-                label: "Launch Value",
-                value: "€350k+",
-                color: "#10b981",
-                bg: "rgba(16,185,129,0.08)",
-                border: "rgba(16,185,129,0.2)",
-              },
-              {
-                label: "Leverage Ratio",
-                value: "2.3×",
-                color: "#a78bfa",
-                bg: "rgba(139,92,246,0.08)",
-                border: "rgba(139,92,246,0.2)",
-              },
-            ].map((m) => (
+            {c.keyMetrics.map((km: { label: string; value: string }, i: number) => {
+              const metricColors = [
+                { color: METALLIC_GOLD, bg: `${METALLIC_GOLD}10`, border: `${METALLIC_GOLD}25` },
+                { color: "#60a5fa", bg: `${EQUITY_BLUE}10`, border: `${EQUITY_BLUE}25` },
+                { color: "#10b981", bg: "rgba(16,185,129,0.08)", border: "rgba(16,185,129,0.2)" },
+                { color: "#a78bfa", bg: "rgba(139,92,246,0.08)", border: "rgba(139,92,246,0.2)" },
+              ];
+              const mc = metricColors[i % metricColors.length];
+              return (
               <div
-                key={m.label}
+                key={km.label}
                 className="flex flex-col items-center p-2 rounded-lg"
                 style={{
-                  backgroundColor: m.bg,
-                  border: `1px solid ${m.border}`,
+                  backgroundColor: mc.bg,
+                  border: `1px solid ${mc.border}`,
                 }}
               >
                 <span
                   className="text-sm font-black font-mono"
-                  style={{ color: m.color }}
+                  style={{ color: mc.color }}
                 >
-                  {m.value}
+                  {km.value}
                 </span>
                 <span className="text-[8px] text-slate-500 font-mono">
-                  {m.label}
+                  {km.label}
                 </span>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Trust signals */}

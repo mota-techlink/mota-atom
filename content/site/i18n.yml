@@ -1,4 +1,5 @@
 locales:
   - en
   - zh
+  - ja
 defaultLocale: en

@@ -1,0 +1,444 @@
+{
+  "slide1": {
+    "subtitle": "European Logistics Management System",
+    "tagline": "AI-Powered Infrastructure for Cross-Border Commerce",
+    "badges": [
+      { "icon": "🇪🇺", "text": "EU Compliant" },
+      { "icon": "🤖", "text": "AI-Empowered" },
+      { "icon": "🔗", "text": "MCP Ready" }
+    ],
+    "bottomDate": "February 2026"
+  },
+  "slide2": {
+    "badge": "The Problem",
+    "title": "The Barricades:",
+    "subtitle": "Fragmentation in Global Logistics",
+    "description": "Three isolated silos. Zero interoperability. Every handoff is a failure point.",
+    "syncError": "Sync Error",
+    "silos": [
+      {
+        "title": "E-commerce Platforms",
+        "items": ["Order fragmentation", "SKU mismatch across stores", "No real-time inventory sync", "Manual CSV exports"]
+      },
+      {
+        "title": "Customs Compliance",
+        "items": ["Paper-based declarations", "HS code errors", "Delayed clearance cycles", "Regulatory blind spots"]
+      },
+      {
+        "title": "Last-Mile Carriers",
+        "items": ["Label re-entry by hand", "Wrong address formats", "No delivery confirmation", "Carbon tracking gap"]
+      }
+    ],
+    "mobileLabels": { "ecommerce": "E-commerce", "customs": "Customs", "lastMile": "Last-Mile", "syncErr": "SYNC ERR" },
+    "mobileExpand": "Tap to view silo details",
+    "stats": [
+      { "value": "37%", "label": "data lost" },
+      { "value": "€4.2B", "label": "cost" },
+      { "value": "72h", "label": "delay" }
+    ],
+    "mobileModal": {
+      "title": "Fragmented Logistics Silos",
+      "subtitle": "Three isolated systems. Every handoff is a failure point.",
+      "statLabels": ["Data lost in handoffs", "Annual EU cost", "Avg customs delay"]
+    }
+  },
+  "slide3": {
+    "badge": "The Solution",
+    "title": "Architecture",
+    "titleHighlight": "Dual-Ring",
+    "features": [
+      { "label": "Seamless System Integration", "description": "Eliminate barriers between systems. One source of truth for all logistics data across the entire supply chain." },
+      { "label": "Auto Label Generation", "description": "Generate accurate last-mile delivery labels automatically from synced shipping data." },
+      { "label": "Customs Compliance", "description": "Trustworthy, validated data ensures smooth customs clearance with zero manual errors." },
+      { "label": "Carbon Emission Tracking", "description": "Integrated carbon emission tracking meeting EU environmental standards and regulations." },
+      { "label": "AI-Powered Intelligence", "description": "Predictive analytics, route optimization, and automated decision-making via MCP." },
+      { "label": "IoT Device Integration", "description": "Real-time data from IoT devices for temperature, location, and condition monitoring." }
+    ],
+    "modules": [
+      { "label": "Shipping", "badge": "API-First" },
+      { "label": "Customs", "badge": "AEO Certified" },
+      { "label": "Delivery", "badge": "Last-Mile" },
+      { "label": "IoT", "badge": "Real-Time" },
+      { "label": "AI / MCP", "badge": "MCP Native" },
+      { "label": "Carbon", "badge": "ISO 14067" }
+    ],
+    "techNodes": [
+      { "label": "Cloudflare", "sublabel": "Edge · CDN · WAF", "features": ["300+ PoPs global edge network", "Sub-100ms response", "DDoS protection & WAF", "Zero cold-start Workers"] },
+      { "label": "GitHub", "sublabel": "CI/CD · GitOps", "features": ["Push → deploy in <2 min", "Automated CI/CD", "Code scanning & Dependabot", "Branch protection gates"] },
+      { "label": "Supabase", "sublabel": "DB · Auth · RLS", "features": ["PostgreSQL Row-Level Security", "In-database RPC", "Real-time WebSocket", "Auth + JWT + MFA"] },
+      { "label": "Next.js 15", "sublabel": "SSR · RSC · Edge", "features": ["React Server Components", "ISR + Edge Runtime", "App Router + Middleware", "Streaming SSR"] },
+      { "label": "Tailwind", "sublabel": "Utility-First UI", "features": ["Zero-runtime CSS", "Design system consistency", "Mobile-first responsive", "Dark mode built-in"] },
+      { "label": "shadcn/ui", "sublabel": "Components · A11y", "features": ["Radix UI primitives (WAI-ARIA)", "Copy-paste ownership", "Enterprise components", "Full accessibility"] }
+    ],
+    "coreLabel": "ELMS",
+    "coreSublabel": "CORE",
+    "techStackLabel": "Technology Stack",
+    "mobileExpand": "Tap to view architecture",
+    "mobileModal": {
+      "title": "Solution Architecture",
+      "subtitle": "Dual-ring design · 6 modules · 6 tech nodes"
+    }
+  },
+  "slide4": {
+    "badge": "Competitive Advantage",
+    "title": "Traditional Logistics",
+    "titleVs": "vs",
+    "titleHighlight": "ELMS",
+    "subtitle": "Side-by-side comparison across 6 critical dimensions.",
+    "traditionalHeader": "Traditional",
+    "elmsHeader": "ELMS",
+    "rows": [
+      { "dimension": "System Integration", "traditional": { "tag": "Siloed", "text": "Fragmented manual sync" }, "elms": { "tag": "Unified", "text": "Instant API Ecosystem" } },
+      { "dimension": "Customs", "traditional": { "tag": "Manual", "text": "Error-prone paper trails" }, "elms": { "tag": "Auto-Pilot", "text": "100% Validated Digital" } },
+      { "dimension": "Sustainability", "traditional": { "tag": "Blind", "text": "Zero visibility on Carbon" }, "elms": { "tag": "Eco-Compliant", "text": "Native ISO Tracking" } },
+      { "dimension": "IoT / Real-time", "traditional": { "tag": "Delayed", "text": "Batch-processed data" }, "elms": { "tag": "Live", "text": "Real-time Edge Intelligence" } },
+      { "dimension": "AI / MCP", "traditional": { "tag": "None", "text": "Static legacy software" }, "elms": { "tag": "Autonomous", "text": "MCP-Native AI Agent" } },
+      { "dimension": "Cost Model", "traditional": { "tag": "Fixed", "text": "Heavy upfront licensing" }, "elms": { "tag": "Elastic", "text": "Scalable Pay-as-you-go" } }
+    ],
+    "verdict": {
+      "traditional": { "label": "Legacy", "sublabel": "Diminishing Returns" },
+      "elms": { "label": "ELMS", "sublabel": "Compounding Advantage" }
+    },
+    "mobileExpand": "Tap to compare all dimensions",
+    "mobileModal": {
+      "title": "ELMS vs Traditional",
+      "subtitle": "6 dimensions compared"
+    }
+  },
+  "slide5": {
+    "badge": "Live Demo",
+    "title": "AI Logistics Lab",
+    "titleHighlight": "MCP",
+    "subtitle": "Natural language → MCP Protocol → Automated shipment execution",
+    "mcpProtocol": "MCP Protocol",
+    "processing": "Processing",
+    "connected": "CONNECTED",
+    "systemMessages": [
+      "ELMS AI ready. MCP server connected.",
+      "Available tools: ship, track, customs, carbon"
+    ],
+    "userPrompt": "Ship 50 boxes of electronics from Shenzhen to Dublin via the fastest route.",
+    "callingTools": "Calling MCP tools...",
+    "aiResponse": "✅ Shipment created successfully. Click to track:",
+    "shipmentCreated": "Shipment Created",
+    "shipmentId": "ELMS-2026-SZX-DUB-0847",
+    "miniRoute": ["SZX → DUB", "50 boxes", "SF Express"],
+    "viewRoute": "View Route Dashboard & Documents",
+    "inputPlaceholder": "Ask ELMS anything...",
+    "outputHeader": "Shipment Output",
+    "outputReady": "READY",
+    "outputIdLabel": "Shipment ID",
+    "outputFields": [
+      { "label": "Carrier", "value": "SF Express International" },
+      { "label": "Service", "value": "Priority Express (2-3 days)" },
+      { "label": "Route", "value": "SZX → DUB (via AMS hub)" },
+      { "label": "Customs", "value": "EU-Compliant · Auto-declared" },
+      { "label": "Labels", "value": "50x generated · QR attached" },
+      { "label": "Carbon", "value": "1.2t CO₂ · Offset available" }
+    ],
+    "outputFooter": ["Generated in 1.2s", "3 MCP tools called"],
+    "compatBar": { "compatible": "Compatible", "protocol": "Protocol", "protocolValue": "MCP (Model Context Protocol)", "latency": "Latency", "latencyValue": "< 2s end-to-end" },
+    "mobileLabels": { "console": "AI Console", "mcp": "MCP", "output": "Output" },
+    "mobileExpand": "Tap to view full demo",
+    "businessLinks": ["ELMS Products", "Case Studies", "Documentation", "Back to Deck"],
+    "mobileModal": {
+      "title": "AI Logistics Lab × MCP",
+      "subtitle": "Natural language → Automated execution",
+      "userPromptLabel": "User Prompt",
+      "mcpProtocolLabel": "MCP Protocol",
+      "mcpTools": "3 tools called: ship, customs, carbon",
+      "outputLabel": "Shipment Output"
+    }
+  },
+  "slide6": {
+    "badge": "Live Shipment Tracking",
+    "title": "Route Dashboard",
+    "subtitle": "SF Express Priority · Shenzhen → Amsterdam → Dublin · 50 boxes",
+    "shipmentId": "ELMS-2026-SZX-DUB-0847",
+    "legend": { "completed": "Completed", "inProgress": "In Progress", "pending": "Pending" },
+    "docStatuses": { "Approved": "Approved", "Pending": "Pending", "Processing": "Processing", "Generated": "Generated" },
+    "routeNodes": [
+      {
+        "label": "Origin Warehouse",
+        "location": "Shenzhen, China",
+        "timestamp": "2026-02-14 09:30 CST",
+        "documents": [
+          { "title": "Purchase Order", "details": { "Order ID": "PO-20260214-001", "Customer": "TechRetail Europe GmbH", "Items": "50 × Consumer Electronics (Mixed SKUs)", "Total Value": "€127,500.00", "Currency": "EUR", "Payment Terms": "Net 30", "Incoterms": "DDP Dublin" } },
+          { "title": "Packing List", "details": { "Packing List ID": "PL-20260214-001", "Total Boxes": "50", "Gross Weight": "1,250 kg", "Net Weight": "1,080 kg", "Dimensions": "50 × 40cm × 35cm × 30cm", "Pallet Count": "4 (Euro Pallets)", "Special Handling": "Fragile — Handle with Care" } },
+          { "title": "Commercial Invoice", "details": { "Invoice No": "CI-20260214-001", "Seller": "Shenzhen Digi-Tech Co., Ltd", "Buyer": "TechRetail Europe GmbH", "Total Amount": "€127,500.00", "HS Code": "8471.30 / 8528.72", "Country of Origin": "China (CN)", "Terms": "DDP Dublin, Ireland" } }
+        ]
+      },
+      {
+        "label": "Carrier Pickup",
+        "location": "SZX Hub, Shenzhen",
+        "timestamp": "2026-02-14 14:15 CST",
+        "documents": [
+          { "title": "Air Waybill (MAWB)", "details": { "AWB Number": "784-2026-0847", "Carrier": "SF Express International", "Service": "Priority Express", "Origin": "SZX (Shenzhen Bao'an Intl.)", "Destination": "DUB (Dublin Airport)", "Transit Hub": "AMS (Amsterdam Schiphol)", "Est. Transit": "2–3 Business Days" } },
+          { "title": "Shipping Labels (×50)", "details": { "Label Batch": "LBL-SZX-50", "Format": "A6 Thermal (100×150mm)", "Label Count": "50 labels", "QR Code": "Embedded — links to ELMS tracking", "Barcode Standard": "Code 128", "Auto-Generated": "Yes (ELMS AI)", "Status": "Printed & Applied" } }
+        ]
+      },
+      {
+        "label": "Transit Hub",
+        "location": "Amsterdam Schiphol (AMS)",
+        "timestamp": "2026-02-15 06:45 CET",
+        "documents": [
+          { "title": "Transit Declaration (T1)", "details": { "T1 MRN": "26NL00T1AMS003391", "Type": "Union Transit (T1)", "Office of Departure": "NL000396 — Schiphol", "Office of Destination": "IE002100 — Dublin Airport", "Guarantee Ref": "GRN-NL-2026-08847", "Seal Numbers": "NL-SEAL-887441, NL-SEAL-887442", "Status": "Released" } },
+          { "title": "IoT Temperature Log", "details": { "Sensor ID": "ELMS-IOT-T7742", "Location": "AMS Cold Chain Zone B", "Min Temp": "18.2°C", "Max Temp": "22.1°C", "Avg Temp": "20.4°C", "Threshold": "15°C – 25°C", "Result": "✅ Within Acceptable Range" } }
+        ]
+      },
+      {
+        "label": "EU Customs Clearance",
+        "location": "Dublin Airport (DUB)",
+        "timestamp": "2026-02-15 11:30 GMT — Processing",
+        "documents": [
+          { "title": "ICS2 Import Declaration", "details": { "MRN": "26IE00ICS2DUB00847", "Declaration Type": "ICS2 Entry Summary (ENS)", "Declarant": "ELMS Customs Broker IE", "HS Codes": "8471.30.00, 8528.72.00", "Duty Rate": "0% (ITA Agreement)", "VAT Rate": "23% (Irish Standard)", "Status": "⏳ Under Review" } },
+          { "title": "Certificate of Origin", "details": { "Certificate No": "COO-CN-2026-44871", "Issuing Authority": "CCPIT Shenzhen", "Country of Origin": "People's Republic of China", "Beneficiary": "TechRetail Europe GmbH", "Trade Agreement": "N/A (MFN Rates Apply)", "Valid Until": "2026-08-14", "Verified By": "ELMS Compliance Engine" } },
+          { "title": "Carbon Emission Report", "details": { "Report ID": "CARBON-DUB-0847", "Total CO₂": "1.2 tonnes", "Air Segment": "1.08t (SZX→AMS→DUB)", "Ground Segment": "0.12t (Last-mile)", "EU Standard": "CSRD / CBAM Aligned", "Offset Available": "Yes — €18.60 via ETS", "Generated By": "ELMS Carbon Module" } }
+        ]
+      },
+      {
+        "label": "Last-Mile Delivery",
+        "location": "Dublin, Ireland",
+        "documents": [
+          { "title": "Delivery Order", "details": { "Delivery ID": "DEL-DUB-0847", "Recipient": "TechRetail Europe GmbH", "Address": "Unit 12, Citywest Business Park, Dublin 24", "Contact": "Michael O'Brien (+353 1 XXX XXXX)", "Time Window": "2026-02-16 09:00–12:00 GMT", "Last-Mile Carrier": "An Post / DPD Ireland", "Status": "⏳ Awaiting Customs Release" } },
+          { "title": "Proof of Delivery", "details": { "POD ID": "POD-DUB-0847", "Signature": "— (Pending)", "Photo Proof": "— (Pending)", "Delivery Time": "— (Pending)", "Condition Check": "— (Pending)", "Receiver Name": "— (Pending)", "Status": "⏳ Not Yet Delivered" } }
+        ]
+      }
+    ],
+    "statusBar": {
+      "nodesCompleted": "nodes completed",
+      "documentsTracked": "documents tracked",
+      "customs": "Customs:",
+      "customsStatus": "Processing",
+      "carbon": "Carbon:",
+      "carbonValue": "1.2t CO₂"
+    },
+    "clickHint": "Click any document to view details",
+    "docsSuffix": "docs",
+    "documentModal": {
+      "shipmentRef": "Shipment Reference",
+      "datePrefix": "Date:",
+      "autoGenerated": "ELMS Auto-Generated Document"
+    },
+    "mobileExpand": "Tap to view route & documents",
+    "mobileModal": {
+      "title": "Route Dashboard",
+      "subtitle": "ELMS-2026-SZX-DUB-0847 · 5 nodes · 12 documents",
+      "stats": [
+        { "value": "3/5", "label": "Completed" },
+        { "value": "12", "label": "Documents" },
+        { "value": "Processing", "label": "Customs" },
+        { "value": "1.2t", "label": "CO₂" }
+      ]
+    }
+  },
+  "slide7": {
+    "badge": "Investment Ask",
+    "title": "Financial",
+    "titleHighlight": "Transparency",
+    "subtitle": "Raising €150K to scale platform globally. Full transparency on fund allocation.",
+    "fundAllocation": [
+      { "label": "Product R&D & AI", "pct": "40%", "detail": "€60,000 · AI/ML, MCP integration, Platform dev" },
+      { "label": "Market & Operations", "pct": "30%", "detail": "€45,000 · EU/Asia market entry, Merchant onboarding" },
+      { "label": "Security & Compliance", "pct": "20%", "detail": "€30,000 · EU servers, GDPR audit, Legal compliance" },
+      { "label": "Contingency Reserve", "pct": "10%", "detail": "€15,000 · Risk buffer for market fluctuations" }
+    ],
+    "totalRaise": "Total Raise",
+    "totalRaiseAmount": "€150K",
+    "valuationBar": {
+      "preLabel": "Pre-Money",
+      "preValue": "€200K",
+      "postLabel": "Post-Money",
+      "postValue": "€350K"
+    },
+    "investmentCard": {
+      "title": "Investment Highlights",
+      "items": [
+        "Technical Equity: €200K asset value",
+        "Full-stack platform already production-ready",
+        "Capital Efficiency: 2.3× leverage",
+        "Recurring SaaS + transaction-based revenue"
+      ]
+    },
+    "leverageVisual": {
+      "label": "1× Capital",
+      "arrow": "→ 2.3× Platform Leverage"
+    },
+    "keyMetrics": [
+      { "label": "Runway", "value": "18 mo" },
+      { "label": "Leverage", "value": "2.3×" },
+      { "label": "Gross Margin", "value": "75%" }
+    ],
+    "mobileExpand": "Tap to view financials",
+    "mobileModal": {
+      "title": "Financial Transparency",
+      "subtitle": "Fund allocation & key metrics"
+    }
+  },
+  "slide8": {
+    "badge": "Multi-Layer Evolution Map",
+    "title": "Product",
+    "titleHighlight": "Roadmap",
+    "subtitle": "3 parallel tracks · Q1 2026 → 2027+ · Infrastructure × Intelligence × Compliance",
+    "timeColumns": [
+      { "period": "Q1–Q2 2026", "label": "Foundation" },
+      { "period": "Q3–Q4 2026", "label": "Scale" },
+      { "period": "Early 2027", "label": "Integrate" },
+      { "period": "2027+ & Beyond", "label": "Dominate" }
+    ],
+    "tracks": [
+      {
+        "label": "Infrastructure & Operations",
+        "shortLabel": "Ops & Infra",
+        "milestones": [
+          { "title": "Core Shipping Engine", "description": "Seamless label generation & Multi-carrier API. Single data-source for all logistics partners." },
+          { "title": "Edge-Native Scaling", "description": "Sub-100ms response for peak seasons. Cloudflare Workers at 300+ global PoPs." },
+          { "title": "WMS Deep Sync", "description": "Real-time inventory-to-shipping mesh. Warehouse operations fused with delivery intelligence." },
+          { "title": "Global Expansion", "description": "Multi-tenant infrastructure for global partners. White-label ready for enterprise clients." }
+        ]
+      },
+      {
+        "label": "Intelligence & Innovation",
+        "shortLabel": "AI & Intelligence",
+        "milestones": [
+          { "title": "AI Address Parsing", "description": "Automated multi-lingual address correction. 99.7% accuracy across EU address formats." },
+          { "title": "MCP Protocol V1", "description": "First AI-Agentic shipping interface. Conversational logistics operations via Claude/GPT." },
+          { "title": "IoT Node Network", "description": "Live sensor data for cold-chain & high-value freight. Real-time condition monitoring." },
+          { "title": "Autonomous Logistics", "description": "Self-optimizing route & cost AI. Predictive demand planning with zero human intervention." }
+        ]
+      },
+      {
+        "label": "Compliance & Green Tech",
+        "shortLabel": "Compliance & ESG",
+        "milestones": [
+          { "title": "GDPR & Privacy", "description": "Ireland-based data residency lockdown. Full Irish DPA 2018 & EU GDPR compliance." },
+          { "title": "Carbon ISO 14067", "description": "Real-time scope-3 emission tracking. Per-shipment carbon footprint calculation." },
+          { "title": "Customs Autopilot", "description": "100% paperless AI-validated declarations. Zero manual customs friction across EU borders." },
+          { "title": "Green Standards Leader", "description": "Setting the benchmark for EU logistics sustainability. Carbon-neutral operations certified." }
+        ]
+      }
+    ],
+    "statusLabels": { "done": "Done", "active": "Active", "planned": "Planned", "vision": "Vision" },
+    "crossLinks": ["AI → Carbon", "IoT → WMS", "Edge → Customs", "Auto → Green"],
+    "techHealth": "Tech Health: Optimum",
+    "continuousRefresh": { "line1": "CONTINUOUS", "line2": "TECH REFRESH", "quote": "By the time our stack ages, competitors are still years behind." },
+    "trackPrefix": "Track",
+    "techStackLabel": "Technology Stack",
+    "clickHint": "Click milestones to see details",
+    "progressLabel": "Progress",
+    "mobileTrackDesc": "4 milestones · Q1 2026 → 2027+",
+    "mobileExpand": "Tap to explore roadmap",
+    "mobileModal": {
+      "title": "Product Roadmap",
+      "subtitle": "3 tracks · Q1 2026 → 2027+",
+      "continuousTitle": "Continuous Tech Refresh",
+      "recursiveLabel": "Recursive Growth Strategy",
+      "recursiveDesc": "Our architecture is designed for perpetual evolution — modular, swappable, future-proof."
+    }
+  },
+  "slide9": {
+    "badge": "Security Command Center",
+    "title": "Security",
+    "titleHighlight": "Compliance",
+    "subtitle": "Enterprise-grade protection · Supabase Auth · PostgreSQL RLS · Cloudflare WAF",
+    "activeStatus": "Active",
+    "trustScoreLabel": "Trust Score",
+    "certBadges": ["GDPR", "ISO", "SOC2"],
+    "cards": [
+      {
+        "title": "EU Data Sovereignty",
+        "subtitle": "GDPR",
+        "badgeLabel": "EU COMPLIANT",
+        "description": "Data strictly localized in Dublin (eu-west-1). 100% GDPR & Irish Data Protection Act 2018 compliant. Zero data residency friction.",
+        "details": [
+          "AWS eu-west-1 (Ireland) data residency",
+          "Supabase Auth with JWT + MFA",
+          "Irish Data Protection Act 2018 aligned",
+          "Data Processing Agreements (DPA) ready",
+          "Right to erasure & portability built-in"
+        ]
+      },
+      {
+        "title": "Shareholder Protection",
+        "subtitle": "Legal",
+        "badgeLabel": "SECURED",
+        "description": "Institutional-grade Shareholder Agreements. Clear IP protections and liability shielding for all investors.",
+        "details": [
+          "Professional shareholder agreements",
+          "IP ownership & licensing clarity",
+          "Liability limitation framework",
+          "Board governance structure defined",
+          "Exit strategy & valuation clauses"
+        ]
+      },
+      {
+        "title": "Military-Grade Defense",
+        "subtitle": "Security",
+        "badgeLabel": "ZERO-TRUST",
+        "description": "Zero-Trust Architecture: AES-256 encryption at-rest, TLS 1.3 in-transit. PostgreSQL RLS prevents unauthorized data leakage at the kernel level.",
+        "details": [
+          "AES-256 encryption at-rest",
+          "TLS 1.3 in-transit encryption",
+          "PostgreSQL Row-Level Security (RLS)",
+          "Cloudflare WAF & DDoS protection",
+          "Automated audit logging & SIEM"
+        ]
+      },
+      {
+        "title": "ESG Automation",
+        "subtitle": "Eco",
+        "badgeLabel": "ISO 14067",
+        "description": "Built-in ISO 14067 carbon accounting. Meet EU environmental standards with zero manual effort. Automated scope-3 emission reporting.",
+        "details": [
+          "Native ISO 14067 carbon tracking",
+          "Automated EU scope-3 reporting",
+          "Per-shipment carbon footprint calc",
+          "ESG dashboard for stakeholders",
+          "EU environmental regulation aligned"
+        ]
+      }
+    ],
+    "mobileExpand": "Tap to view security details",
+    "mobileModal": {
+      "title": "Security & Compliance",
+      "subtitle": "4 pillars · Enterprise-grade protection",
+      "trustScoreValue": "100%"
+    }
+  },
+  "slide10": {
+    "badge": "The Paradigm Shift is Here",
+    "headline": {
+      "prefix": "In the AI Era, there are no",
+      "strikethrough": "followers",
+      "only": "Only",
+      "architects": "Architects",
+      "and": "and the",
+      "obsolete": "Obsolete"
+    },
+    "leftBlock": {
+      "heading": "The Inevitable Reality",
+      "text": "The physical-to-digital logistics bridge {will} be built. History's window is open now, but it closes fast. The only variable is whether we {own} this infrastructure, or rent it from our competitors."
+    },
+    "rightBlock": {
+      "heading": "The Extinction Event",
+      "text": "This isn't a software upgrade; it's a fundamental rewrite of global trade. Legacy systems won't survive the transition to {agentDriven}. We are building the sanctuary.",
+      "agentDriven": "Agent-driven commerce"
+    },
+    "cta": "Architect the Future With Us",
+    "email": "contact@motaiot.com",
+    "brand": "MOTA TechLink",
+    "confidential": "Confidential"
+  },
+  "slideTitles": [
+    "ELMS",
+    "The Problem",
+    "Architecture",
+    "Competitive Advantage",
+    "AI × MCP",
+    "Shipment Tracking",
+    "Investment & Capital",
+    "Roadmap",
+    "Security & Compliance",
+    "Call to Action"
+  ]
+}
