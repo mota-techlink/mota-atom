@@ -4,14 +4,64 @@ description: 如何安装 MOTA ATOM SDK
 ---
 
 # 安装与配置指南
-本指南将帮助你从零开始搭建 Mota Atom 开发环境。项目基于 Next.js、Supabase 和 Cloudflare Pages 构建。
 
-**目录**
-- 环境准备
-- 项目初始化
-- 后端集成
-- 核心功能
-- 部署构建
+本指南分为两部分：
+1. **基于模板开发**：如果你已经 Fork 或 Clone 了本项目，请看这里。
+2. **从零搭建**：如果你想了解项目是如何一步步构建的，请阅读后续章节。
+
+## 🚀 快速开始（基于模板）
+
+如果你已经 `git clone` 了本项目，请按照以下步骤初始化环境。
+
+### 1. 环境准备
+
+推荐使用 Conda 管理项目环境，以隔离 Node.js 版本（建议 v20+）。
+
+```bash
+# 创建独立环境
+conda create -n mota-atom nodejs=20 -y
+conda activate mota-atom
+```
+
+### 2. 安装依赖（关键）
+
+Clone 项目后，**必须**首先安装所有依赖，包括构建脚本所需的工具库（如 `js-yaml`、`glob` 等）。
+
+> ⚠️ **常见错误**：直接运行 `npm run dev` 可能会报错 `Cannot find package 'js-yaml'`。这是因为构建脚本依赖未安装。
+
+```bash
+# 1. 进入项目目录
+cd mota-atom
+
+# 2. 安装所有依赖
+npm install
+
+# 3. (可选) 如果依然报错脚本依赖丢失，请手动补全：
+npm install -D js-yaml glob gray-matter dotenv
+```
+
+### 3. 环境配置
+
+复制环境变量示例文件：
+
+```bash
+cp .env.example .env.local
+```
+并配置 `.env.local` 中的各个项（如 Supabase URL 和 Key，邮件服务配置等）。
+
+### 4. 启动开发服务器
+
+```bash
+npm run dev
+```
+
+启动成功后，访问 `http://localhost:3000`。
+
+---
+
+## 🛠️ 从零搭建指南（参考）
+
+以下内容用于记录项目的构建过程，仅供参考。
 
 ## 1. 环境准备
 推荐使用 Conda 管理项目环境，以隔离 Node.js 版本。

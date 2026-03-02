@@ -1,28 +1,78 @@
 ---
 title: Installation
-description: How to install MOTA ATOM SDK.
+description: How to install MOTA ATOM SDK
 ---
 
 # Installation & Setup Guide
-This guide will help you set up the Mota Atom development environment from scratch. The project is built on Next.js, Supabase, and Cloudflare Pages.
 
-** Table of Contents **
-1. Environment
-2. Project Initialization
-3. Supabase Integration
-4. Core Features
-5. Deployment
+This guide is split into two parts:
+1. **Template-based Development**: If you have already forked or cloned this project, start here.
+2. **Build from Scratch**: If you want to understand how the project is built step by step, read the subsequent sections.
 
-## 1. Environment
-It is recommended to use Conda to manage the project environment and isolate the Node.js version.
+## 🚀 Quick Start (Template-based)
+
+If you have already `git clone`d this project, follow these steps to initialize the environment.
+
+### 1. Environment Setup
+
+We recommend using Conda to manage the project environment and isolate the Node.js version (v20+ recommended).
 
 ```bash
-# Create an independent environment (specify Node.js 20)
+# Create an isolated environment
 conda create -n mota-atom nodejs=20 -y
+conda activate mota-atom
+```
+
+### 2. Install Dependencies (Critical)
+
+After cloning the project, you **must** install all dependencies first, including the tool libraries required by build scripts (e.g., `js-yaml`, `glob`, etc.).
+
+> ⚠️ **Common Error**: Running `npm run dev` directly may throw `Cannot find package 'js-yaml'`. This is because build script dependencies are not installed.
+
+```bash
+# 1. Enter the project directory
+cd mota-atom
+
+# 2. Install all dependencies
+npm install
+
+# 3. (Optional) If script dependency errors persist, install manually:
+npm install -D js-yaml glob gray-matter dotenv
+```
+
+### 3. Environment Configuration
+
+Copy the environment variable example file:
+
+```bash
+cp .env.example .env.local
+```
+Then configure each entry in `.env.local` (e.g., Supabase URL and Key, email service settings, etc.).
+
+### 4. Start Development Server
+
+```bash
+npm run dev
+```
+
+Once started successfully, visit `http://localhost:3000`.
+
+---
+
+## 🛠️ Build from Scratch Guide (Reference)
+
+The following content documents the project build process and is for reference only.
+
+## 1. Environment Setup
+We recommend using Conda to manage the project environment and isolate the Node.js version.
+
+```bash
+# Create an isolated environment (specify Node.js 20)
+conda create -n mota-atom nodejs=20 -y
+```
 
 # Activate environment
 conda activate mota-atom
-```
 
 ## 2. Project Initialization
 Initialize the Next.js framework and the Shadcn UI component library.
@@ -36,10 +86,10 @@ cd mota-atom
 
 # 2. Initialize Shadcn UI
 npx shadcn@latest init
-```
 💡 Tip: When configuring Shadcn UI, it is recommended to choose Slate or Gray as the color theme for the best visual effect.
+```
 
-## 3. Supabase Integration
+## 3. Backend Integration (Supabase)
 This project uses Supabase as the backend service (database, authentication).
 
 ### 3.1 CLI Installation & Initialization
@@ -59,11 +109,12 @@ Ensure your Docker is running, then start the local Supabase instance:
 
 ```bash
 npx supabase start
-```
 After starting successfully, you will get the following local service addresses:
+```
 
-- Console (Studio): http://127.0.0.1:54323
-- Mailpit (Email testing): http://127.0.0.1:54323/project/default
+Console (Studio): http://127.0.0.1:54323
+
+Mailpit (Email testing): http://127.0.0.1:54323/project/default
 
 ### 3.3 Install Dependencies
 ```bash
@@ -72,24 +123,23 @@ npm install @supabase/supabase-js @supabase/ssr
 ```
 
 ### 3.4 Environment Variable Configuration
-Create a `.env.local` file in the project root:
+Create a .env.local file in the project root:
 
-```bash
+```Code snippet
 # Get from npx supabase status
 NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-local-anon-key
 ```
 
 ### 3.5 Database Workflow
-**Development**: When you modify the local database structure, use the following command to generate SQL migration files:
+Development: When you modify the local database structure, use the following commands to generate SQL migration files:
 
 ```bash
 # Extract local changes to supabase/migrations directory
 npx supabase db diff -f init_schema
 npx supabase db diff -f add_user_table
 ```
-
-**Production Sync**: Push local schema changes to the remote production database:
+Production Sync: Push local schema changes to the remote production database:
 
 ```bash
 # Must run npx supabase login first
@@ -97,6 +147,7 @@ npx supabase db push
 ```
 
 ## 4. Core Features
+
 ### 🌓 Theme Support (Light/Dark Mode)
 Integrate next-themes to support light/dark mode switching.
 
@@ -104,7 +155,7 @@ Integrate next-themes to support light/dark mode switching.
 npm install next-themes
 ```
 
-**Configuration**: Wrap `ThemeProvider` in `layout.tsx`. Shadcn components will adapt automatically.
+Configuration: Wrap `ThemeProvider` in `layout.tsx`. Shadcn components will adapt automatically.
 
 ### 🌐 Multi-language Support (i18n)
 Use next-intl to implement internationalization.
@@ -112,9 +163,11 @@ Use next-intl to implement internationalization.
 ```bash
 npm install next-intl
 ```
-- **Configuration Files**: `src/i18n.ts`, `src/middleware.ts`
-- **Translation Files**: `src/messages/zh.json`, `src/messages/en.json`
-- **Routing Structure**: Use `src/app/[locale]/` dynamic routing
+Configuration Files: src/i18n.ts, src/middleware.ts
+
+Translation Files: src/messages/zh.json, src/messages/en.json
+
+Routing Structure: Use src/app/[locale]/ dynamic routing
 
 ### 📝 Blog System (Taxonomy Template)
 Build a content engine based on MDX and Tailwind Typography.
@@ -124,11 +177,13 @@ Build a content engine based on MDX and Tailwind Typography.
 npm install gray-matter next-mdx-remote
 npm install -D @tailwindcss/typography
 ```
-- **Configure Plugin**: Update `tailwind.config.ts` to include the typography plugin.
-- **Read Engine**: `src/lib/mdx.ts`
-- **Page Implementation**: `src/app/[locale]/(portal)/blog/page.tsx` (Resend style list)
+Configure Plugin: Update tailwind.config.ts to include the typography plugin.
 
-## 5. Deployment
+Read Engine: src/lib/mdx.ts
+
+Page Implementation: src/app/[locale]/(portal)/blog/page.tsx (Resend style list)
+
+## 5. Deployment & Build
 This project is optimized for Cloudflare Pages.
 
 ### 5.1 Adapter Installation
@@ -153,6 +208,6 @@ Before pushing to GitHub, simulate the Cloudflare Edge environment locally for t
 npx wrangler pages dev .vercel/output/static
 ```
 
-### Appendix: Common Commands
-- **Check Supabase Status**: `npx supabase status`
-- **Reset Local Database**: `npx supabase db reset`
+## Appendix: Common Commands
+- Check Supabase Status: `npx supabase status`
+- Reset Local Database: `npx supabase db reset`

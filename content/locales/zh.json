@@ -51,7 +51,7 @@
     "database": "数据库",
     "oauth": "OAuth 认证",
     "hosting": "Vercel / Cloudflare",
-    "fork": "Template Fork 工作流",
+    "fork": "模板Fork",
     "features": "功能",
     "i18n": "国际化支持",
     "mdx": "MDX 组件",

@@ -52,11 +52,59 @@ git merge upstream/main
 2. 替换 `public/` 下品牌资源（logo、图、视频）
 3. 保留 `src/` 功能层，避免与模板功能分叉冲突
 
-## 冲突最小化建议
+## 最佳实践：规避冲突策略
 
-- 不在正式项目里直接修改 `src/config/*` 结构
-- 将业务文本全部移到 `content/locales/`
-- 将导航和站点信息修改集中在 `content/site/*`
+### 核心痛点
+
+当模板仓库（Repo A）更新了功能代码，同时也修改了 `content/` 下的示例文档或图片时，正式项目（Repo B）在执行 `git merge upstream/main` 时可能会遇到：
+1. **冲突（Conflict）**：Repo B 也修改了同名文件。
+2. **覆盖（Overwrite）**：Repo B 未修改的文件被 Repo A 的新示例覆盖。
+
+### 解决方案：Git Attributes 内容保护（推荐）
+
+通过定义 merge driver，告诉 Git 在合并 `content` 和 `public` 目录时，**永远以当前分支（Repo B）为准**，自动忽略 Upstream 的内容变动。
+
+**1. 在正式项目根目录配置 Merge Driver：**
+
+这是一个一次性配置（本地生效）：
+
+```bash
+git config merge.ours.driver true
+```
+
+**2. 在正式项目根目录新建 `.gitattributes` 文件：**
+
+提交此文件到仓库，确保团队成员共享此策略：
+
+```text
+content/**/* merge=ours
+public/**/* merge=ours
+```
+
+**3. 效果验证**
+
+配置后，当你执行 `git merge upstream/main`：
+- `src/` 下的代码变更：**正常合并**（获取新功能）。
+- `content/` 下的内容变更：**自动丢弃 Upstream 变动**，保留你自己的业务数据。
+
+### 备选方案：手动解决冲突
+
+如果你不想配置 `.gitattributes`，在合并遇到冲突时，可以使用以下命令快速保留己方版本：
+
+```bash
+git merge upstream/main
+# 如果提示 content/ 冲突
+git checkout --ours content/
+git checkout --ours public/
+git add .
+git commit -m "Merge upstream features but keep local content"
+```
+
+## 冲突最小化建议（日常开发）
+
+- **结构分离**：不在正式项目里直接修改 `src/config/*` 结构，该目录应跟随模板更新。
+- **文案抽离**：将业务文本全部移到 `content/locales/`，避免硬编码在组件中。
+- **配置集中**：将导航和站点信息修改集中在 `content/site/*`。
 
 ## 新增页面内容规范
 
@@ -90,3 +138,4 @@ npm run hooks:install
 - 构建链路已使用 `node scripts/*.mjs` 直接执行关键脚本，避免嵌套 `npm run` 带来的不确定性。
 - 推荐 Pages Build command 使用：`npm run pages:build`
 - 若只生成数据清单可使用：`npm run build:data`
+

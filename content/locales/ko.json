@@ -51,7 +51,7 @@
     "database": "데이터베이스",
     "oauth": "OAuth",
     "hosting": "Vercel / Cloudflare",
-    "fork": "템플릿 Fork 워크플로우",
+    "fork": "템플릿 Fork",
     "features": "기능",
     "i18n": "다국어 지원",
     "mdx": "MDX 컴포넌트",

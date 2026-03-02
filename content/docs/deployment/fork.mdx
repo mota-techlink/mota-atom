@@ -53,11 +53,59 @@ git merge upstream/main
 2. Replace brand assets under `public/` (logos, images, videos)
 3. Keep `src/` feature layer, avoid divergence conflicts with template features
 
-## Conflict Minimization Tips
+## Best Practice: Conflict Avoidance Strategy
 
-- Do not directly modify `src/config/*` structure in production projects
-- Move all business text to `content/locales/`
-- Concentrate navigation and site info changes in `content/site/*`
+### Core Pain Point
+
+When the template repository (Repo A) updates feature code and also modifies example documentation or images in `content/`, the production project (Repo B) may encounter issues when running `git merge upstream/main`:
+1. **Conflict**: Repo B has also modified the same file.
+2. **Overwrite**: Files unmodified in Repo B are overwritten by new examples from Repo A.
+
+### Solution: Git Attributes Content Protection (Recommended)
+
+Define a merge driver to tell Git to **always prioritize the current branch (Repo B)** when merging `content` and `public` directories, automatically ignoring Upstream content changes.
+
+**1. Configure Merge Driver in Production Project Root:**
+
+This is a one-time local configuration:
+
+```bash
+git config merge.ours.driver true
+```
+
+**2. Create `.gitattributes` File in Production Project Root:**
+
+Commit this file to the repository to ensure the strategy is shared among team members:
+
+```text
+content/**/* merge=ours
+public/**/* merge=ours
+```
+
+**3. Verification**
+
+After configuration, when you run `git merge upstream/main`:
+- Code changes in `src/`: **Merged normally** (get new features).
+- Content changes in `content/`: **Automatically discard Upstream changes**, keeping your own business data.
+
+### Alternative: Manual Conflict Resolution
+
+If you prefer not to configure `.gitattributes`, you can use the following commands to quickly keep your version when conflicts occur:
+
+```bash
+git merge upstream/main
+# If content/ conflict occurs
+git checkout --ours content/
+git checkout --ours public/
+git add .
+git commit -m "Merge upstream features but keep local content"
+```
+
+## Conflict Minimization Tips (Daily Development)
+
+- **Separate Structure**: Do not directly modify `src/config/*` structure in production projects; this directory should follow template updates.
+- **Extract Text**: Move all business text to `content/locales/` to avoid hardcoding in components.
+- **Centralize Config**: Concentrate navigation and site info changes in `content/site/*`.
 
 ## New Page Content Standards
 

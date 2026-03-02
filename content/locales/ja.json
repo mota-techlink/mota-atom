@@ -51,7 +51,7 @@
     "database": "データベース",
     "oauth": "OAuth",
     "hosting": "Vercel / Cloudflare",
-    "fork": "テンプレート Fork ワークフロー",
+    "fork": "テンプレート Fork",
     "features": "機能",
     "i18n": "多言語対応",
     "mdx": "MDX コンポーネント",

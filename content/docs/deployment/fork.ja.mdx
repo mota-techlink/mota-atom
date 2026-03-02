@@ -53,11 +53,46 @@ git merge upstream/main
 2. `public/` 配下のブランドアセットを差し替え（ロゴ、画像、動画）
 3. `src/` 機能レイヤーを維持し、テンプレート機能との分岐コンフリクトを回避
 
-## コンフリクト最小化のヒント
+## ベストプラクティス：コンフリクト回避戦略
 
-- 本番プロジェクトで `src/config/*` 構造を直接変更しない
-- すべてのビジネステキストを `content/locales/` に移動する
-- ナビゲーションとサイト情報の変更を `content/site/*` に集中させる
+### 核心的な課題
+テンプレートリポジトリ（Repo A）が機能コードを更新し、同時に `content/` 内のサンプルドキュメントや画像を修正した場合、本番プロジェクト（Repo B）で `git merge upstream/main` を実行すると以下の問題が発生する可能性があります：
+1. **コンフリクト（衝突）**：Repo B も同じファイルを修正している場合。
+2. **上書き（Overwrite）**：Repo B で修正していないファイルが Repo A の新しいサンプルで上書きされる場合。
+### 解決策：Git Attributes コンテンツ保護（推奨）
+merge driver を定義し、`content` と `public` ディレクトリをマージする際は**常に現在のブランチ（Repo B）を優先**するように Git に指示し、Upstream のコンテンツ変更を自動的に無視します。
+**1. 本番プロジェクトのルートで Merge Driver を設定：**
+これは一度限りの設定です（ローカルで有効）：
+```bash
+git config merge.ours.driver true
+```
+**2. 本番プロジェクトのルートに `.gitattributes` ファイルを作成：**
+このファイルをリポジトリにコミットし、チームメンバー間で戦略を共有します：
+```text
+content/**/* merge=ours
+public/**/* merge=ours
+```
+**3. 効果の確認**
+設定後、`git merge upstream/main` を実行すると：
+- `src/` 配下のコード変更：**通常通りマージ**（新機能を取得）。
+- `content/` 配下のコンテンツ変更：**Upstream の変更を自動破棄**し、独自のビジネスデータを保持。
+### 代替案：手動でのコンフリクト解決
+`.gitattributes` を設定したくない場合、コンフリクト発生時に以下のコマンドを使用して自側のバージョンを素早く保持できます：
+```bash
+git merge upstream/main
+# content/ でコンフリクトが発生した場合
+git checkout --ours content/
+git checkout --ours public/
+git add .
+git commit -m "Merge upstream features but keep local content"
+```
+
+## コンフリクト最小化のヒント（日常開発）
+
+- **構造の分離**：本番プロジェクトで `src/config/*` 構造を直接変更しないでください。このディレクトリはテンプレートの更新に従うべきです。
+- **テキストの抽出**：すべてのビジネステキストを `content/locales/` に移動し、コンポーネント内へのハードコードを避けてください。
+- **設定の集中**：ナビゲーションとサイト情報の変更を `content/site/*` に集中させてください。
+
 
 ## 新規ページコンテンツ規約
 
