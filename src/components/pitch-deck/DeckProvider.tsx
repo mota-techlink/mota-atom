@@ -108,6 +108,14 @@ export function DeckProvider({
           e.preventDefault();
           prevSlide();
           break;
+        case "PageDown":
+          e.preventDefault();
+          nextSlide();
+          break;
+        case "PageUp":
+          e.preventDefault();
+          prevSlide();
+          break;
         case "Home":
           e.preventDefault();
           goToFirst();

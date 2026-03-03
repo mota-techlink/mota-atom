@@ -8,7 +8,8 @@ import { useDeck } from "./DeckProvider";
 import { SlideTransition } from "./SlideTransition";
 import { SlideNavigation } from "./SlideNavigation";
 import { ProgressBar } from "./ProgressBar";
-import { Lock, LogIn, Home, Globe, ChevronDown, Check } from "lucide-react";
+import { Lock, LogIn, Home, Globe, ChevronDown, Check, Languages } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { LoginModal } from "@/components/auth/login-modal";
 import { siteConfig } from "@/config/site";
 import { locales } from "@/routing";
@@ -47,6 +48,7 @@ export function SlideRenderer({ slides, slideTitles }: SlideRendererProps) {
 
   // ── Language dropdown state ──
   const [langOpen, setLangOpen] = useState(false);
+  const [langHintVisible, setLangHintVisible] = useState(true);
   const langRef = useRef<HTMLDivElement>(null);
 
   // Close on click-outside
@@ -139,8 +141,16 @@ export function SlideRenderer({ slides, slideTitles }: SlideRendererProps) {
               {/* ── Language dropdown ── */}
               <div ref={langRef} className="relative">
                 <button
-                  onClick={() => setLangOpen((v) => !v)}
-                  className="flex items-center gap-1 px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/8 backdrop-blur-sm transition-colors cursor-pointer"
+                  onClick={() => {
+                    setLangOpen((v) => !v);
+                    setLangHintVisible(false);
+                  }}
+                  className={cn(
+                    "flex items-center gap-1 px-1.5 py-1 sm:px-2 sm:py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border backdrop-blur-sm transition-all cursor-pointer",
+                    langHintVisible && !langOpen
+                      ? "animate-lang-ring border-blue-400/30"
+                      : "border-white/8"
+                  )}
                   aria-label="Switch language"
                   aria-expanded={langOpen}
                 >
@@ -171,6 +181,16 @@ export function SlideRenderer({ slides, slideTitles }: SlideRendererProps) {
                         </button>
                       );
                     })}
+                  </div>
+                )}
+
+                {/* Blinking language switch hint */}
+                {langHintVisible && !langOpen && (
+                  <div className="absolute right-0 top-full mt-1.5 animate-lang-hint pointer-events-none z-40">
+                    <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-blue-600/80 backdrop-blur-sm whitespace-nowrap shadow-lg">
+                      <Languages className="w-3 h-3 text-white" />
+                      <span className="text-[9px] sm:text-[10px] text-white font-mono tracking-wide">Language</span>
+                    </div>
                   </div>
                 )}
               </div>

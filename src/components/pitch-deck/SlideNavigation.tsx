@@ -23,35 +23,40 @@ export function SlideNavigation() {
 
   return (
     <>
-      {/* Left / Right hover zones */}
+      {/* Left arrow with pulsing fade effect + PgUp hint */}
       <button
         onClick={prevSlide}
         disabled={isFirst}
         className={cn(
-          "absolute left-0 top-0 bottom-0 w-10 sm:w-16 flex items-center justify-center",
-          "opacity-0 hover:opacity-100 active:opacity-100 transition-opacity duration-300",
+          "absolute left-0 top-0 bottom-0 w-10 sm:w-16 flex flex-col items-center justify-center gap-0.5",
           "bg-linear-to-r from-black/20 to-transparent",
           "z-20 cursor-pointer",
-          isFirst && "pointer-events-none"
+          isFirst
+            ? "pointer-events-none opacity-0"
+            : "animate-nav-pulse hover:animate-none hover:opacity-100 active:animate-none active:opacity-100"
         )}
-        aria-label="Previous slide"
+        aria-label="Previous slide (Page Up)"
       >
         <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 text-white/80" />
+        <span className="text-[7px] sm:text-[9px] text-white/60 font-mono tracking-wider">PgUp</span>
       </button>
 
+      {/* Right arrow with pulsing fade effect + PgDn hint */}
       <button
         onClick={nextSlide}
         disabled={isLast}
         className={cn(
-          "absolute right-0 top-0 bottom-0 w-10 sm:w-16 flex items-center justify-center",
-          "opacity-0 hover:opacity-100 active:opacity-100 transition-opacity duration-300",
+          "absolute right-0 top-0 bottom-0 w-10 sm:w-16 flex flex-col items-center justify-center gap-0.5",
           "bg-linear-to-l from-black/20 to-transparent",
           "z-20 cursor-pointer",
-          isLast && "pointer-events-none"
+          isLast
+            ? "pointer-events-none opacity-0"
+            : "animate-nav-pulse hover:animate-none hover:opacity-100 active:animate-none active:opacity-100"
         )}
-        aria-label="Next slide"
+        aria-label="Next slide (Page Down)"
       >
         <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 text-white/80" />
+        <span className="text-[7px] sm:text-[9px] text-white/60 font-mono tracking-wider">PgDn</span>
       </button>
 
       {/* Fullscreen toggle */}

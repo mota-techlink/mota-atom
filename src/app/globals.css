@@ -45,6 +45,24 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  /* Pitch Deck navigation animations */
+  --animate-nav-pulse: nav-pulse 5s ease-in-out infinite;
+  --animate-lang-hint: lang-hint-fade 5s ease-in-out infinite;
+  --animate-lang-ring: lang-ring-glow 5s ease-in-out infinite;
+}
+
+/* === Pitch Deck Navigation Animations === */
+@keyframes nav-pulse {
+  0%, 100% { opacity: 0.12; }
+  50% { opacity: 0.65; }
+}
+@keyframes lang-hint-fade {
+  0%, 100% { opacity: 0; }
+  40%, 60% { opacity: 1; }
+}
+@keyframes lang-ring-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0); }
+  50% { box-shadow: 0 0 8px 2px rgba(96, 165, 250, 0.35); }
 }
 
 :root {
