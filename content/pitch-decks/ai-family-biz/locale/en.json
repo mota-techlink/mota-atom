@@ -1,0 +1,411 @@
+{
+  "slideTitles": [
+    "Vision",
+    "Strategy",
+    "Phase 1 Overview",
+    "Data Topology",
+    "Command Dashboard",
+    "AI Agent Matrix",
+    "Growth Architecture",
+    "AI-Speed Delivery",
+    "Next Steps"
+  ],
+  "slide1": {
+    "badge": "Strategic Proposal v1.0",
+    "title": "Dual-Track Digital Transformation",
+    "titleHighlight": "Digital Transformation",
+    "subtitle": "Full-Link Intelligent Management for TAKI Group",
+    "proposedBy": "Proposed by MOTA TECHLINK INC.",
+    "vision": "Reshape family heavy-asset management with \"Zero-Friction\" senior-friendly interaction; safeguard cross-border coffee supply chain with \"Agile Full-Link\" architecture.",
+    "visionHighlight": "Zero-Friction",
+    "tagline": "Command your empire with the ease of a gesture — across borders, across generations.",
+    "stats": [
+      { "value": "11", "label": "Commercial / Medical Buildings" },
+      { "value": "7,500+", "label": "Related Personnel" },
+      { "value": "2", "label": "Strategic Phases" }
+    ],
+    "website": "atom.motaiot.com"
+  },
+  "slide2": {
+    "badge": "Core Principles",
+    "title": "Three Strategic Pillars",
+    "titleHighlight": "Strategic Pillars",
+    "subtitle": "Guiding principles for a frictionless transformation",
+    "principles": [
+      {
+        "icon": "🎯",
+        "title": "Senior-Friendly & Seamless Access",
+        "description": "Respect decades of work habits. AI silently translates traditional actions into digital operations — no forced change.",
+        "details": [
+          "Voice commands and photo capture replace complex software interfaces",
+          "Multi-language OCR auto-extracts structured data from paper documents",
+          "Tablet/phone multi-modal input terminals for on-site staff",
+          "Zero learning curve — works like their existing workflow"
+        ]
+      },
+      {
+        "icon": "👁️",
+        "title": "Executive Eagle-Eye View",
+        "description": "Multi-layered data drill-down management — see the whole picture on one screen, dive into any detail instantly.",
+        "details": [
+          "One-screen dashboard showing asset ROI, vacancy rates, anomaly alerts",
+          "Drill-through from macro KPIs down to individual invoices or events",
+          "Real-time anomaly detection and predictive maintenance alerts",
+          "Remote management from anywhere in the world"
+        ]
+      },
+      {
+        "icon": "🔒",
+        "title": "Data Sovereignty & Absolute Compliance",
+        "description": "Strict adherence to Japan's APPI and medical data regulations. Core data never leaves the country.",
+        "details": [
+          "End-Edge-Cloud hybrid architecture keeps sensitive data on-premises",
+          "Full compliance with Japan's Personal Information Protection Act (APPI)",
+          "Medical data handled per healthcare privacy regulations",
+          "No data export — LLMs run locally, immune to data leakage"
+        ]
+      }
+    ]
+  },
+  "slide3": {
+    "badge": "Phase 1: Home-Base",
+    "title": "Family Property & Asset Management",
+    "titleHighlight": "Asset Management",
+    "subtitle": "Digitize 11 commercial & medical buildings — enable remote command from across the Pacific",
+    "objective": "Resolve daily operations, cash flow, and vendor coordination for 11 buildings. Enable the chairman to manage remotely from the United States.",
+    "clickHint": "Tap any card to see details",
+    "features": [
+      {
+        "icon": "🏥",
+        "title": "11 Buildings",
+        "description": "Commercial & medical properties under unified management",
+        "details": ["Integrated property database", "Real-time occupancy tracking", "Cross-building resource sharing", "Centralized vendor management"]
+      },
+      {
+        "icon": "💰",
+        "title": "Cash Flow",
+        "description": "Automated revenue tracking, rent collection & expense approval",
+        "details": ["Auto-generated rent invoices", "Bank feed reconciliation", "Expense approval workflow", "Multi-entity consolidation"]
+      },
+      {
+        "icon": "🤝",
+        "title": "Vendor Sync",
+        "description": "Seamless coordination with external maintenance & service providers",
+        "details": ["Vendor performance scoring", "Auto-dispatch work orders", "Contract compliance monitoring", "Payment milestone tracking"]
+      },
+      {
+        "icon": "🌏",
+        "title": "Remote Control",
+        "description": "Full operational oversight from Los Angeles to Tokyo",
+        "details": ["Real-time event notifications", "Video call integration", "Time-zone-aware scheduling", "Emergency escalation protocols"]
+      }
+    ]
+  },
+  "slide4": {
+    "badge": "Business Data Flow",
+    "title": "Intelligent Operations Topology",
+    "titleHighlight": "Operations Topology",
+    "subtitle": "From field devices to AI processing to secure cloud storage — seamless data flow",
+    "inputSources": [
+      { "icon": "📱", "label": "Mobile App", "detail": "Field staff submit voice reports and photos anytime, anywhere via smartphone. Supports offline mode with auto-sync." },
+      { "icon": "🖥️", "label": "Desktop Portal", "detail": "Office staff manage approvals, generate reports, and handle complex document workflows via web browser." },
+      { "icon": "🎤", "label": "Voice Reports", "detail": "Natural language speech auto-transcribed in Japanese, English, and Chinese. AI structures content into actionable tasks." },
+      { "icon": "📄", "label": "Document Upload", "detail": "Paper invoices, maintenance reports, and contracts scanned via camera. Multi-language OCR extracts all structured data instantly." },
+      { "icon": "🔗", "label": "External Integration", "detail": "Bank feeds, government portals, vendor APIs, and utility systems auto-synced. Protocol adapters handle legacy Japanese EDI formats." }
+    ],
+    "aiHub": {
+      "title": "AI Processing Engine",
+      "subtitle": "Continuous learning from enterprise feedback",
+      "items": [
+        { "icon": "🧠", "label": "NLP & OCR", "detail": "Multi-language text extraction and document understanding with 99.2% accuracy on Japanese business documents" },
+        { "icon": "📊", "label": "Auto-Classification", "detail": "Smart routing to correct department and responsible agents based on content analysis and historical patterns" },
+        { "icon": "⚠️", "label": "Anomaly Detection", "detail": "Real-time flagging of unusual patterns in expenses, maintenance requests, occupancy drops, or vendor billing" },
+        { "icon": "🔄", "label": "Iterative Training", "detail": "Models continuously improve from corrected outputs. Enterprise-specific fine-tuning runs on local hardware nightly" }
+      ]
+    },
+    "storage": {
+      "title": "Japan-Hosted Cloud OSS",
+      "icon": "☁️",
+      "detail": "All processed data securely stored in Japan-based object storage (Cloudflare R2 / Supabase Storage) with vector indexing for instant semantic retrieval. Full APPI compliance — data never crosses borders.",
+      "badge": "🛡️ APPI Compliant"
+    },
+    "flowLabels": ["Input Devices", "AI Engine", "Cloud Storage"]
+  },
+  "slide5": {
+    "badge": "Executive Command Center",
+    "title": "Real-Time Command Dashboard",
+    "titleHighlight": "Command Dashboard",
+    "subtitle": "One screen for the full picture — click any metric to drill down to individual cases",
+    "drillHint": "↓ Click any card to drill down to details",
+    "propertyMap": {
+      "title": "Property Portfolio",
+      "count": "11 Buildings",
+      "locations": ["Shinjuku ×3", "Shibuya ×2", "Minato ×2", "Chiyoda ×2", "Meguro ×1", "Setagaya ×1"]
+    },
+    "revenueTrend": {
+      "title": "Revenue & Expense Trend (¥M)",
+      "months": ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar"],
+      "revenue": [42, 45, 41, 48, 51, 53],
+      "expense": [28, 31, 29, 32, 27, 29],
+      "revenueLabel": "Revenue",
+      "expenseLabel": "Expense"
+    },
+    "warrantyPie": {
+      "title": "Maintenance Status",
+      "segments": [
+        { "label": "Completed", "value": 72, "color": "#22C55E" },
+        { "label": "In Progress", "value": 18, "color": "#F59E0B" },
+        { "label": "Pending", "value": 10, "color": "#EF4444" }
+      ]
+    },
+    "occupancyBar": {
+      "title": "Occupancy Rate by Building",
+      "buildings": ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11"],
+      "rates": [95, 88, 92, 100, 78, 96, 85, 91, 97, 83, 90]
+    },
+    "todoList": {
+      "title": "Pending Tasks",
+      "items": [
+        { "text": "Approve elevator maintenance — Building 3", "priority": "high" },
+        { "text": "Review Q2 lease renewals (7 units)", "priority": "medium" },
+        { "text": "Insurance claim follow-up — B7 water damage", "priority": "high" },
+        { "text": "Monthly financial report sign-off", "priority": "low" }
+      ]
+    },
+    "drillDown": {
+      "title": "Drill-Down: Case Detail",
+      "case": {
+        "id": "#MNT-2847",
+        "title": "Water Leak Repair — Building 3, Floor 5",
+        "status": "In Progress",
+        "assignee": "Yamamoto Maintenance Co.",
+        "cost": "¥380,000",
+        "timeline": "Est. 3 days remaining",
+        "history": [
+          "Mar 1 — Tenant reported water stain on ceiling",
+          "Mar 1 — AI auto-dispatched inspection request to vendor",
+          "Mar 2 — Vendor inspection complete: pipe joint deterioration identified",
+          "Mar 3 — Repair work commenced, replacement parts ordered"
+        ]
+      }
+    }
+  },
+  "slide6": {
+    "badge": "AI Agent Matrix",
+    "title": "Enterprise Agent Ecosystem",
+    "titleHighlight": "Agent Ecosystem",
+    "subtitle": "Department × Expert matrix — every intersection is a live project. Click any header or cell for details.",
+    "stats": [
+      { "value": "10", "label": "Live AI Projects" },
+      { "value": "4×4", "label": "Dept × Expert Grid" },
+      { "value": "40+", "label": "Role Agents Active" },
+      { "value": "24/7", "label": "Always-On Learning" }
+    ],
+    "departments": [
+      {
+        "id": "prop", "label": "Property Mgmt", "icon": "🏢",
+        "historicalEvents": ["2018 — Acquired Shinjuku Medical Tower, expanded to 11 buildings", "2020 — COVID vacancy crisis: AI-driven pricing recovered 92% occupancy in 6 months", "2023 — Launched predictive maintenance pilot across 3 buildings", "2025 — Full digital twin deployment for all 11 properties"],
+        "workInsights": "Strongest in vendor management and cost optimization. Weakness: cross-building resource sharing still manual. Key lesson: early vendor digitization saved ¥12M/year.",
+        "externalLiaison": ["Mitsui Fudosan — co-management advisory", "Daiwa House — maintenance partnership", "Tokyo Metropolitan Gov — building compliance", "JLL Japan — market analytics feed"],
+        "dailyTraining": "Ingests daily maintenance logs, occupancy sensors, tenant communications, and vendor invoices. Model retrains nightly on anomaly patterns."
+      },
+      {
+        "id": "med", "label": "Medical", "icon": "🏥",
+        "historicalEvents": ["2016 — Opened first medical-grade floor in Minato building", "2019 — APPI audit passed with zero findings", "2022 — Integrated patient flow with 3 partner clinics", "2024 — AI-assisted appointment scheduling reduced wait times 40%"],
+        "workInsights": "Excellent regulatory track record. Challenge: data silos between clinics. Breakthrough: shared patient flow model across 3 facilities.",
+        "externalLiaison": ["Tokyo Medical Association — compliance guidance", "NTT DATA — health IT systems", "Hitachi Healthcare — medical equipment", "MHLW — regulatory updates"],
+        "dailyTraining": "Processes patient appointment logs, equipment usage, APPI compliance scans, and clinical staff schedules. Weekly model tuning on efficiency metrics."
+      },
+      {
+        "id": "fin", "label": "Finance", "icon": "💰",
+        "historicalEvents": ["2017 — Consolidated 11-entity accounting into unified ledger", "2020 — Implemented real-time bank feed reconciliation", "2023 — AI tax optimization saved ¥28M across entities", "2025 — Predictive cash flow accuracy reached 94%"],
+        "workInsights": "Core strength: multi-entity consolidation. Known gap: FX hedging for overseas coffee operations. Win: automated reconciliation cut month-end close from 12 days to 2.",
+        "externalLiaison": ["Deloitte Tohmatsu — annual audit", "SMBC — primary banking", "NTA (National Tax Agency) — tax filing", "PwC Japan — transfer pricing advisory"],
+        "dailyTraining": "Ingests bank feeds, invoice scans, expense receipts, and tax regulation updates daily. Cash flow model retrains weekly with actuals vs. forecast delta."
+      },
+      {
+        "id": "hr", "label": "HR & Admin", "icon": "👥",
+        "historicalEvents": ["2018 — Unified HR system across all facilities", "2021 — Remote work policy implemented post-COVID", "2023 — AI shift scheduling reduced overtime 35%", "2025 — Employee satisfaction score hit 4.2/5.0 (from 3.1)"],
+        "workInsights": "Strength: low turnover in core staff. Challenge: seasonal part-time staffing. Key win: AI-predicted turnover risk flagged 8 departures 3 months early.",
+        "externalLiaison": ["Hello Work (ハローワーク) — recruitment", "Social Insurance Office — compliance", "Recruit Holdings — staffing agency", "Japan Labor Board — labor law updates"],
+        "dailyTraining": "Processes attendance logs, leave requests, performance reviews, and labor law RSS feeds. Turnover risk model retrains monthly on exit interview data."
+      }
+    ],
+    "experts": [
+      {
+        "id": "tax", "label": "Tax Agent", "icon": "💹",
+        "expertise": ["Japanese corporate tax (法人税) optimization", "Consumption tax (消費税) filing & compliance", "Depreciation scheduling for real estate assets", "Transfer pricing for cross-border entities", "Withholding tax on rental income"],
+        "enterpriseKnowledge": "Trained on 10+ years of TAKI Group filings, depreciation schedules, and tax authority correspondence. Knows every building's tax basis and optimal write-off timing.",
+        "dailyTraining": "Ingests National Tax Agency bulletins, new tax court rulings, and daily transaction data. Retrains depreciation models when asset values change."
+      },
+      {
+        "id": "legal", "label": "Legal Agent", "icon": "⚖️",
+        "expertise": ["Japanese property law (借地借家法)", "APPI personal data protection", "Commercial lease contract drafting & review", "Labor Standards Act compliance", "Medical facility regulations"],
+        "enterpriseKnowledge": "Contains full history of every lease negotiation, tenant dispute, regulatory audit, and legal precedent from 15+ years of TAKI Group operations.",
+        "dailyTraining": "Monitors Diet legislation updates, court rulings, and regulatory gazette. Scans all new contracts against compliance rule engine nightly."
+      },
+      {
+        "id": "eng", "label": "Engineering Agent", "icon": "🔧",
+        "expertise": ["Elevator & escalator predictive maintenance", "HVAC system optimization & energy efficiency", "Plumbing & fire protection system monitoring", "Building Management System (BMS) integration", "Electrical distribution & emergency power"],
+        "enterpriseKnowledge": "Knows the maintenance history of every piece of equipment in all 11 buildings — 2,400+ asset records with failure patterns, vendor SLAs, and lifecycle curves.",
+        "dailyTraining": "Processes IoT sensor streams (vibration, temperature, pressure) from 11 buildings in real-time. Failure prediction model retrains nightly on new data."
+      },
+      {
+        "id": "ai", "label": "AI & Data Agent", "icon": "🤖",
+        "expertise": ["RAG pipeline design & vector search", "LoRA fine-tuning on enterprise data", "Multi-modal AI (voice + image + text)", "Anomaly detection & pattern recognition", "Data pipeline orchestration & ETL"],
+        "enterpriseKnowledge": "Meta-agent that understands all other agents' data schemas, model performance metrics, and training schedules. Orchestrates cross-agent data sharing.",
+        "dailyTraining": "Monitors model drift metrics, retraining schedules, and data quality scores across all agents. Triggers retraining when accuracy drops below thresholds."
+      }
+    ],
+    "projects": [
+      { "dept": "prop", "expert": "tax", "name": "Rent AI", "color": "#D97706", "desc": "Automated rent invoicing, payment tracking, and overdue alerts. AI reconciles bank credits with tenant ledgers.", "roleAgent": "Property Accountant Agent", "retention": "Retains decade-long billing history and tenant relationship logs — no knowledge loss when staff rotates.", "staff": [{"icon": "👩‍💼", "name": "Tanaka Yuki", "role": "Billing Supervisor"}, {"icon": "👨‍💻", "name": "Sato Kenji", "role": "Reconciliation Engineer"}, {"icon": "👩‍🔧", "name": "Yamada Aiko", "role": "Tenant Relations"}] },
+      { "dept": "prop", "expert": "eng", "name": "Predict Maint", "color": "#059669", "desc": "AI monitors elevator, HVAC, and plumbing sensor data to predict failures before they occur.", "roleAgent": "Maintenance Coordinator Agent", "retention": "Preserves vendor performance data and building-specific maintenance patterns across staff changes.", "staff": [{"icon": "👷", "name": "Nakamura Taro", "role": "Chief Engineer"}, {"icon": "👩‍🔬", "name": "Ito Mika", "role": "Sensor Data Analyst"}, {"icon": "🧑‍🔧", "name": "Suzuki Ryo", "role": "HVAC Specialist"}, {"icon": "👨‍🏭", "name": "Kobayashi Jin", "role": "Elevator Technician"}] },
+      { "dept": "prop", "expert": "legal", "name": "Lease Audit", "color": "#7C3AED", "desc": "Auto-review lease terms, flag non-compliant clauses, generate renewal recommendations.", "roleAgent": "Lease Manager Agent", "retention": "Stores all historical lease negotiations and legal precedents permanently.", "staff": [{"icon": "👩‍⚖️", "name": "Ogawa Haruna", "role": "Legal Reviewer"}, {"icon": "👨‍💼", "name": "Watanabe Koji", "role": "Contract Specialist"}] },
+      { "dept": "prop", "expert": "ai", "name": "Occupancy AI", "color": "#2563EB", "desc": "Predict occupancy trends, optimize pricing, and identify buildings at risk of vacancy increases.", "roleAgent": "Asset Strategy Agent", "retention": "Maintains market analysis history and pricing optimization models.", "staff": [{"icon": "👩‍💻", "name": "Kimura Sakura", "role": "Data Scientist"}, {"icon": "👨‍📊", "name": "Hashimoto Ren", "role": "Market Analyst"}, {"icon": "🧑‍💼", "name": "Morita Yuma", "role": "Pricing Strategist"}] },
+      { "dept": "med", "expert": "legal", "name": "APPI Comply", "color": "#DC2626", "desc": "Continuous monitoring of patient data handling against APPI regulations. Auto-generate compliance reports.", "roleAgent": "Compliance Officer Agent", "retention": "Maintains full audit trail and regulatory change history regardless of personnel turnover.", "staff": [{"icon": "👩‍⚕️", "name": "Fujita Emi", "role": "Privacy Officer"}, {"icon": "👨‍💻", "name": "Nishida Takuya", "role": "Audit Engineer"}] },
+      { "dept": "med", "expert": "ai", "name": "Patient Flow", "color": "#2563EB", "desc": "Optimize appointment scheduling, bed allocation, and resource utilization using predictive models.", "roleAgent": "Medical Admin Agent", "retention": "Preserves scheduling patterns and patient flow insights across staff rotations.", "staff": [{"icon": "👩‍⚕️", "name": "Ueda Nana", "role": "Scheduling Lead"}, {"icon": "👨‍💻", "name": "Aoki Hiroshi", "role": "ML Engineer"}, {"icon": "🧑‍⚕️", "name": "Saito Yui", "role": "Clinical Coordinator"}] },
+      { "dept": "fin", "expert": "tax", "name": "Tax Optimize", "color": "#D97706", "desc": "Multi-entity tax planning, depreciation scheduling, and cross-building expense optimization.", "roleAgent": "Tax Specialist Agent", "retention": "Retains decade-long tax filing history and optimization strategies permanently.", "staff": [{"icon": "👩‍💼", "name": "Kato Misaki", "role": "Tax Manager"}, {"icon": "👨‍💻", "name": "Takahashi Sota", "role": "Tax Analyst"}, {"icon": "🧑‍💼", "name": "Endo Kaito", "role": "Depreciation Planner"}] },
+      { "dept": "fin", "expert": "ai", "name": "Cash Forecast", "color": "#2563EB", "desc": "ML-powered cash flow prediction across all properties with seasonal trend analysis.", "roleAgent": "Financial Analyst Agent", "retention": "Preserves forecast model tuning parameters and historical accuracy data.", "staff": [{"icon": "👩‍💻", "name": "Hayashi Mao", "role": "ML Modeler"}, {"icon": "👨‍📊", "name": "Shimizu Daiki", "role": "Financial Planner"}] },
+      { "dept": "hr", "expert": "legal", "name": "Labor Law", "color": "#7C3AED", "desc": "Monitor working hours, contract compliance, and labor law changes across all facilities.", "roleAgent": "HR Compliance Agent", "retention": "Retains employee policy history and compliance records permanently.", "staff": [{"icon": "👩‍💼", "name": "Murakami Hana", "role": "HR Compliance Lead"}, {"icon": "👨‍⚖️", "name": "Yoshida Akira", "role": "Labor Law Specialist"}] },
+      { "dept": "hr", "expert": "ai", "name": "Workforce AI", "color": "#2563EB", "desc": "Analyze staffing patterns, predict turnover risks, and optimize shift scheduling.", "roleAgent": "Workforce Agent", "retention": "Preserves organizational knowledge and staffing analytics through staff transitions.", "staff": [{"icon": "👩‍💻", "name": "Inoue Riko", "role": "People Analytics"}, {"icon": "👨‍💼", "name": "Matsumoto Shun", "role": "Shift Optimizer"}, {"icon": "🧑‍💻", "name": "Okada Nao", "role": "Retention Modeler"}] }
+    ],
+    "constitution": {
+      "title": "Enterprise Constitution & Culture Layer",
+      "gmAgent": "🎖️ GM Agent — Central Orchestrator",
+      "schedulerAgent": "📅 Scheduler Agent — Timeline & Escalation",
+      "desc": "All agents operate within Japanese business culture: keigo protocol, seniority awareness, and respectful follow-ups.",
+      "roleRetention": "👤 Person leaves, position stays — Role Agents permanently retain institutional knowledge"
+    }
+  },
+  "slide7": {
+    "badge": "Growth Architecture",
+    "title": "From Desk to Data Center",
+    "titleHighlight": "Desk to Data Center",
+    "subtitle": "Start small, scale seamlessly — your data never leaves the building",
+    "stages": [
+      {
+        "level": 1,
+        "title": "Personal AI",
+        "subtitle": "DGX Spark Desktop",
+        "desc": "Single desktop-class AI node for initial pilot. Perfect for testing with a small team before wider rollout.",
+        "specs": ["1× DGX Spark", "Local LLM Inference", "~10 concurrent users"],
+        "icon": "💻"
+      },
+      {
+        "level": 2,
+        "title": "Team AI",
+        "subtitle": "3–5 Node Cluster",
+        "desc": "Department-level cluster handling multi-modal AI processing — voice, document OCR, and real-time classification.",
+        "specs": ["3–5× DGX Spark", "Multi-modal Pipeline", "~100 concurrent users"],
+        "icon": "🖥️"
+      },
+      {
+        "level": 3,
+        "title": "Enterprise AI",
+        "subtitle": "H200 → Blackwell",
+        "desc": "Full enterprise compute center supporting all 11 buildings, RAG pipelines, and continuous model fine-tuning for 7,500+ personnel.",
+        "specs": ["H200 → Blackwell GPU", "Full RAG + LoRA Fine-tune", "7,500+ users"],
+        "icon": "🏢"
+      }
+    ],
+    "dataShield": {
+      "title": "Data Sovereignty Shield",
+      "badge": "🛡️ Data Never Leaves Your Building",
+      "points": [
+        "All LLMs run on-premises — zero API calls to external clouds",
+        "Data encrypted at rest (AES-256) and in transit (TLS 1.3) within Japan",
+        "No training data exported — models fine-tuned locally on your hardware",
+        "APPI-compliant architecture verified from day one"
+      ]
+    },
+    "upgradeNote": "Zero downtime — same software stack, just more compute power. No vendor lock-in."
+  },
+  "slide8": {
+    "badge": "Phase 2: Global-Bean",
+    "title": "AI-Powered Rapid Delivery",
+    "titleHighlight": "Rapid Delivery",
+    "subtitle": "Full supply chain ERP in 1–2 months — AI replaces an entire traditional development team",
+    "wordCloud": {
+      "title": "One AI Replaces a Full Team",
+      "roles": [
+        { "role": "Project Manager", "size": 3 },
+        { "role": "Backend Dev", "size": 4 },
+        { "role": "Frontend Dev", "size": 4 },
+        { "role": "QA Engineer", "size": 3 },
+        { "role": "DBA", "size": 2 },
+        { "role": "DevOps", "size": 3 },
+        { "role": "UI Designer", "size": 2 },
+        { "role": "Sys Admin", "size": 2 },
+        { "role": "Tech Lead", "size": 3 },
+        { "role": "Architect", "size": 2 }
+      ]
+    },
+    "techStack": {
+      "title": "Modern Tech Stack",
+      "clickHint": "Click a layer to see details",
+      "layers": [
+        { "name": "Frontend", "color": "#3B82F6", "techs": ["Next.js", "React", "Tailwind CSS"], "detail": "Server-side rendered React with responsive design, optimized for Japanese locales and senior-friendly accessibility standards." },
+        { "name": "Backend", "color": "#8B5CF6", "techs": ["Node.js", "Edge Functions", "REST API"], "detail": "Serverless backend with edge computing for ultra-low latency. Auto-scales with zero DevOps overhead." },
+        { "name": "Database", "color": "#059669", "techs": ["Supabase", "PostgreSQL", "Vector DB"], "detail": "Real-time database with row-level security. Vector search enables semantic document retrieval across all enterprise data." },
+        { "name": "AI Layer", "color": "#D97706", "techs": ["Local LLM", "RAG", "LoRA Fine-tune"], "detail": "On-premises LLM with retrieval augmented generation. Enterprise data stays local — fine-tuning runs on your own hardware." },
+        { "name": "Deployment", "color": "#DC2626", "techs": ["Vercel", "Cloudflare", "Docker"], "detail": "Edge-first deployment with CDN coverage across Asia-Pacific. Docker containers for on-prem components." }
+      ]
+    },
+    "esb": {
+      "title": "Enterprise Service Bus (ESB)",
+      "subtitle": "IBM-Grade Heterogeneous System Integration",
+      "desc": "The ESB acts as a universal translator between modern cloud-native systems and legacy enterprise infrastructure. It enables seamless data exchange across incompatible protocols, formats, and generations of technology — critical for interfacing with Japanese retail giants like Isetan.",
+      "protocols": [
+        { "modern": "REST / GraphQL", "legacy": "JCA Format", "icon": "🔄" },
+        { "modern": "Real-time Webhooks", "legacy": "Zengin Protocol", "icon": "🏦" },
+        { "modern": "JSON / Structured Data", "legacy": "SFTP CSV/XML", "icon": "📄" }
+      ],
+      "capabilities": [
+        "Message transformation: XML ↔ JSON ↔ EDI ↔ CSV",
+        "Protocol bridging: HTTP ↔ SFTP ↔ JCA ↔ SOAP",
+        "Transaction management across distributed systems",
+        "Service orchestration with retry, failover & dead-letter queues"
+      ],
+      "clickHint": "Click for ESB architecture details"
+    },
+    "flow": ["🌱 Harvest", "📦 Warehouse", "🚢 Ship", "🛃 Customs", "🏬 Retail"],
+    "highlight": "1–2 Months",
+    "highlightLabel": "vs. Traditional 12–18 Months"
+  },
+  "slide9": {
+    "badge": "Partnership",
+    "title": "Let's Build the Future Together",
+    "titleHighlight": "the Future",
+    "subtitle": "MOTA TECHLINK — Where frontier AI meets enterprise-grade architecture",
+    "advantages": [
+      {
+        "icon": "🧠",
+        "title": "Frontier + Enterprise",
+        "description": "AI fine-tuning (RAG/LoRA), multi-agent orchestration, PLUS IBM-grade ESB architecture and hybrid cloud deployment"
+      },
+      {
+        "icon": "🎌",
+        "title": "Cultural Intelligence",
+        "description": "Deep understanding of Japanese business culture — referral-based trust, senior-friendly design, keigo-aware AI communication"
+      },
+      {
+        "icon": "⚡",
+        "title": "AI-Speed Delivery",
+        "description": "What takes traditional consultancies 12+ months, we deliver in 1–2 months via AI Coding and iterative deployment"
+      }
+    ],
+    "nextSteps": {
+      "title": "Recommended Next Steps",
+      "steps": [
+        { "number": "1", "action": "Confirm \"Stabilize Home first, then Expand\" rhythm with Chairman TAKI" },
+        { "number": "2", "action": "Identify top 3–5 highest-friction property management scenarios" },
+        { "number": "3", "action": "MOTA delivers a Voice + Photo Agent demo within 1–2 weeks" }
+      ]
+    },
+    "cta": {
+      "label": "Start the Conversation",
+      "website": "atom.motaiot.com"
+    },
+    "footer": "MOTA TECHLINK INC. — Empowering Legacy Businesses with AI"
+  }
+}

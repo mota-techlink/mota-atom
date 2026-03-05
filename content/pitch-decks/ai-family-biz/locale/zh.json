@@ -1,0 +1,411 @@
+{
+  "slideTitles": [
+    "愿景",
+    "战略",
+    "一期概览",
+    "数据拓扑",
+    "指挥驾驶舱",
+    "AI智能体矩阵",
+    "成长架构",
+    "AI极速交付",
+    "下一步"
+  ],
+  "slide1": {
+    "badge": "战略规划 v1.0",
+    "title": "双轨数字化转型",
+    "titleHighlight": "数字化转型",
+    "subtitle": "TAKI集团全链路智能管理",
+    "proposedBy": "提案方：MOTA TECHLINK INC.",
+    "vision": "以「零阻力」适老化交互重塑家族重资产管理，以「敏捷全链路」架构护航跨国咖啡供应链。",
+    "visionHighlight": "零阻力",
+    "tagline": "跨国跨界，如臂使指。",
+    "stats": [
+      { "value": "11", "label": "商业/医疗大楼" },
+      { "value": "7,500+", "label": "相关人员" },
+      { "value": "2", "label": "战略阶段" }
+    ],
+    "website": "atom.motaiot.com"
+  },
+  "slide2": {
+    "badge": "核心原则",
+    "title": "三大战略支柱",
+    "titleHighlight": "战略支柱",
+    "subtitle": "引领无阻力转型的核心理念",
+    "principles": [
+      {
+        "icon": "🎯",
+        "title": "适老与无感接入",
+        "description": "尊重姐姐们数十年的工作习惯，不强迫改变。AI在后台完成传统动作的「数字化翻译」。",
+        "details": [
+          "语音指令和拍照取代复杂的软件界面",
+          "多语言OCR自动提取纸质文档的结构化数据",
+          "平板/手机多模态输入终端，无需培训",
+          "零学习曲线——延续现有工作流"
+        ]
+      },
+      {
+        "icon": "👁️",
+        "title": "韩信点兵·高管视界",
+        "description": "多层级数据穿透管理——一屏掌控全局，随时下钻至具体事件。",
+        "details": [
+          "一屏总览11栋大楼的资产收益率、空置率、异常预警",
+          "从宏观KPI一键穿透至具体单据或事件链",
+          "AI驱动的预测性维护与异常实时检测",
+          "远在美国也能实时管控东京运营"
+        ]
+      },
+      {
+        "icon": "🔒",
+        "title": "数据主权与绝对合规",
+        "description": "严格遵守日本APPI及医疗数据规范，核心敏感数据不出境、不外泄。",
+        "details": [
+          "端-边-云混合架构，敏感数据留在本地",
+          "全面合规日本《个人信息保护法》(APPI)",
+          "医疗数据遵循医疗隐私法规",
+          "大模型本地运行，天然免疫数据泄露风险"
+        ]
+      }
+    ]
+  },
+  "slide3": {
+    "badge": "阶段一：安内",
+    "title": "家族地产与资产管理",
+    "titleHighlight": "资产管理",
+    "subtitle": "数字化11栋商业/医疗大楼——实现太平洋彼岸的远程指挥",
+    "objective": "解决11栋大楼的日常运营、收支流转及供应商协同，让董事长在美国也能远程管控。",
+    "clickHint": "点击卡片查看详情",
+    "features": [
+      {
+        "icon": "🏥",
+        "title": "11栋大楼",
+        "description": "商业与医疗地产统一管理",
+        "details": ["统一物业数据库", "实时入住率追踪", "跨楼栋资源共享", "集中化供应商管理"]
+      },
+      {
+        "icon": "💰",
+        "title": "收支流转",
+        "description": "自动化收入追踪、租金催缴与费用审批",
+        "details": ["自动生成租金账单", "银行流水自动对账", "费用审批工作流", "多实体合并报表"]
+      },
+      {
+        "icon": "🤝",
+        "title": "供应商协同",
+        "description": "无缝对接外部维修与服务供应商",
+        "details": ["供应商绩效评分", "自动派发维修工单", "合同合规监控", "付款节点跟踪"]
+      },
+      {
+        "icon": "🌏",
+        "title": "远程管控",
+        "description": "从洛杉矶到东京的全方位运营监控",
+        "details": ["事件实时通知推送", "视频通话集成", "时区感知的日程安排", "紧急事件升级协议"]
+      }
+    ]
+  },
+  "slide4": {
+    "badge": "业务数据流",
+    "title": "智能运营拓扑",
+    "titleHighlight": "运营拓扑",
+    "subtitle": "从现场设备到AI处理到安全云存储——无缝数据流转",
+    "inputSources": [
+      { "icon": "📱", "label": "移动APP", "detail": "现场员工随时随地通过手机提交语音报告和照片，支持离线模式自动同步。" },
+      { "icon": "🖥️", "label": "桌面门户", "detail": "办公人员通过Web浏览器管理审批、生成报告并处理复杂文档工作流。" },
+      { "icon": "🎤", "label": "语音汇报", "detail": "自然语言语音自动转录为日/英/中文本，AI将内容结构化为可执行的任务。" },
+      { "icon": "📄", "label": "单据上传", "detail": "纸质发票、维修报告、合同通过拍照扫描，多语言OCR即时提取全部结构化数据。" },
+      { "icon": "🔗", "label": "外部集成", "detail": "银行流水、政府门户、供应商API和公用事业系统自动同步，协议适配器处理日本传统EDI格式。" }
+    ],
+    "aiHub": {
+      "title": "AI处理引擎",
+      "subtitle": "基于企业反馈持续学习",
+      "items": [
+        { "icon": "🧠", "label": "NLP & OCR", "detail": "多语言文本提取和文档理解，日本商业文档识别准确率99.2%" },
+        { "icon": "📊", "label": "自动分类", "detail": "基于内容分析和历史模式，智能路由至正确的部门和负责的Agent" },
+        { "icon": "⚠️", "label": "异常检测", "detail": "实时标记费用、维修请求、入住率下降或供应商计费中的异常模式" },
+        { "icon": "🔄", "label": "迭代训练", "detail": "模型基于纠正后的输出持续改进，企业专属微调每晚在本地硬件上运行" }
+      ]
+    },
+    "storage": {
+      "title": "日本境内云OSS",
+      "icon": "☁️",
+      "detail": "所有处理后的数据安全存储在日本境内的对象存储（Cloudflare R2 / Supabase Storage），配备向量索引支持即时语义检索。完全符合APPI——数据永不出境。",
+      "badge": "🛡️ APPI合规"
+    },
+    "flowLabels": ["输入设备", "AI引擎", "云存储"]
+  },
+  "slide5": {
+    "badge": "高管指挥中心",
+    "title": "实时指挥驾驶舱",
+    "titleHighlight": "指挥驾驶舱",
+    "subtitle": "一屏全景——点击任何指标即可下钻到具体案例",
+    "drillHint": "↓ 点击任意卡片下钻查看详情",
+    "propertyMap": {
+      "title": "物业组合",
+      "count": "11栋大楼",
+      "locations": ["新宿 ×3", "涉谷 ×2", "港区 ×2", "千代田 ×2", "目黑 ×1", "世田谷 ×1"]
+    },
+    "revenueTrend": {
+      "title": "收支趋势 (百万¥)",
+      "months": ["10月", "11月", "12月", "1月", "2月", "3月"],
+      "revenue": [42, 45, 41, 48, 51, 53],
+      "expense": [28, 31, 29, 32, 27, 29],
+      "revenueLabel": "收入",
+      "expenseLabel": "支出"
+    },
+    "warrantyPie": {
+      "title": "维保状态",
+      "segments": [
+        { "label": "已完成", "value": 72, "color": "#22C55E" },
+        { "label": "进行中", "value": 18, "color": "#F59E0B" },
+        { "label": "待处理", "value": 10, "color": "#EF4444" }
+      ]
+    },
+    "occupancyBar": {
+      "title": "各楼栋入住率",
+      "buildings": ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11"],
+      "rates": [95, 88, 92, 100, 78, 96, 85, 91, 97, 83, 90]
+    },
+    "todoList": {
+      "title": "待办事务",
+      "items": [
+        { "text": "审批电梯维修——3号楼", "priority": "high" },
+        { "text": "审核Q2租约续签（7个单元）", "priority": "medium" },
+        { "text": "保险理赔跟进——7号楼水损", "priority": "high" },
+        { "text": "月度财务报告签字", "priority": "low" }
+      ]
+    },
+    "drillDown": {
+      "title": "下钻：案例详情",
+      "case": {
+        "id": "#MNT-2847",
+        "title": "漏水维修——3号楼5层",
+        "status": "进行中",
+        "assignee": "山本维修公司",
+        "cost": "¥380,000",
+        "timeline": "预计剩余3天",
+        "history": [
+          "3月1日——租户报告天花板水渍",
+          "3月1日——AI自动派发检查请求至供应商",
+          "3月2日——供应商检查完成：管道接头老化",
+          "3月3日——维修工作开始，替换零件已订购"
+        ]
+      }
+    }
+  },
+  "slide6": {
+    "badge": "AI智能体矩阵",
+    "title": "企业智能体生态",
+    "titleHighlight": "智能体生态",
+    "subtitle": "部门 × 专家矩阵——每个交叉点都是一个活跃项目。点击任意表头或单元格查看详情。",
+    "stats": [
+      { "value": "10", "label": "运行中AI项目" },
+      { "value": "4×4", "label": "部门×专家网格" },
+      { "value": "40+", "label": "岗位Agent在线" },
+      { "value": "24/7", "label": "全天候学习" }
+    ],
+    "departments": [
+      {
+        "id": "prop", "label": "物业管理", "icon": "🏢",
+        "historicalEvents": ["2018年——收购新宿医疗大厦，扩展至11栋", "2020年——疫情空置危机：AI定价策略6个月内恢复92%入住率", "2023年——在3栋楼启动预测性维护试点", "2025年——11栋物业全面部署数字孪生"],
+        "workInsights": "供应商管理和成本优化是强项。短板：跨楼栋资源共享仍为手动。关键经验：供应商早期数字化每年节省¥1200万。",
+        "externalLiaison": ["三井不动产——联合管理顾问", "大和ハウス——维保合作", "东京都政府——建筑合规", "仲量联行日本——市场分析数据"],
+        "dailyTraining": "每日摄入维修日志、入住率传感器、租户通讯和供应商发票。模型每晚基于异常模式重新训练。"
+      },
+      {
+        "id": "med", "label": "医疗设施", "icon": "🏥",
+        "historicalEvents": ["2016年——在港区大厦开设首个医疗级楼层", "2019年——APPI审计零缺陷通过", "2022年——与3家合作诊所整合患者流", "2024年——AI辅助排程将等待时间减少40%"],
+        "workInsights": "法规追踪记录优秀。挑战：诊所间数据孤岛。突破：跨3家设施的共享患者流模型。",
+        "externalLiaison": ["东京医师会——合规指导", "NTT DATA——医疗IT系统", "日立医疗——医疗设备", "厚生劳动省——法规更新"],
+        "dailyTraining": "处理患者预约日志、设备使用率、APPI合规扫描和临床排班。每周基于效率指标调优模型。"
+      },
+      {
+        "id": "fin", "label": "财务", "icon": "💰",
+        "historicalEvents": ["2017年——将11个实体的会计合并为统一账本", "2020年——实现银行流水实时对账", "2023年——AI税务优化跨实体节省¥2800万", "2025年——现金流预测准确率达94%"],
+        "workInsights": "核心优势：多实体合并。已知差距：海外咖啡业务的外汇对冲。成果：自动对账将月末结账从12天缩至2天。",
+        "externalLiaison": ["德勤——年度审计", "三井住友银行——主银行", "国税厅——税务申报", "普华永道日本——转移定价咨询"],
+        "dailyTraining": "每日摄入银行流水、发票扫描、费用收据和税法更新。现金流模型每周基于实际vs预测差异重新训练。"
+      },
+      {
+        "id": "hr", "label": "人事行政", "icon": "👥",
+        "historicalEvents": ["2018年——统一所有设施的HR系统", "2021年——实施后疫情远程工作政策", "2023年——AI排班减少加班35%", "2025年——员工满意度从3.1升至4.2/5.0"],
+        "workInsights": "优势：核心员工低流失率。挑战：季节性兼职人员。关键成果：AI预测的离职风险提前3个月标记了8例离职。",
+        "externalLiaison": ["ハローワーク——招聘", "社会保险事务所——合规", "Recruit Holdings——人力派遣", "劳动基准监督署——劳动法更新"],
+        "dailyTraining": "处理考勤日志、请假申请、绩效评估和劳动法RSS。离职风险模型每月基于离职面谈数据重新训练。"
+      }
+    ],
+    "experts": [
+      {
+        "id": "tax", "label": "财税Agent", "icon": "💹",
+        "expertise": ["日本法人税优化", "消费税申报与合规", "不动产折旧排程", "跨境转移定价", "租金收入源泉征收"],
+        "enterpriseKnowledge": "基于TAKI集团10年以上的申报记录、折旧计划表和税务局往来函件训练。了解每栋楼的税基和最优抵扣时机。",
+        "dailyTraining": "摄入国税厅公告、最新税务判例和每日交易数据。资产价值变动时重新训练折旧模型。"
+      },
+      {
+        "id": "legal", "label": "法务Agent", "icon": "⚖️",
+        "expertise": ["日本不动产法（借地借家法）", "APPI个人数据保护", "商业租赁合同起草与审查", "劳动基准法合规", "医疗设施法规"],
+        "enterpriseKnowledge": "包含TAKI集团15年以上每一次租约谈判、租户纠纷、监管审计和法律先例的完整历史。",
+        "dailyTraining": "监控国会立法动态、法院判决和监管公报。每晚将所有新合同扫描对比合规规则引擎。"
+      },
+      {
+        "id": "eng", "label": "工程Agent", "icon": "🔧",
+        "expertise": ["电梯扶梯预测性维护", "HVAC系统优化与节能", "给排水与消防系统监控", "楼宇管理系统(BMS)集成", "配电与应急电源"],
+        "enterpriseKnowledge": "了解11栋楼每一件设备的维护历史——2,400+资产记录，包含故障模式、供应商SLA和寿命曲线。",
+        "dailyTraining": "实时处理11栋楼的IoT传感器数据流（振动、温度、压力）。故障预测模型每晚基于最新数据重新训练。"
+      },
+      {
+        "id": "ai", "label": "AI数据Agent", "icon": "🤖",
+        "expertise": ["RAG管线设计与向量搜索", "LoRA企业数据微调", "多模态AI（语音+图像+文本）", "异常检测与模式识别", "数据管道编排与ETL"],
+        "enterpriseKnowledge": "元Agent——理解所有其他Agent的数据模式、模型性能指标和训练计划。协调跨Agent数据共享。",
+        "dailyTraining": "监控所有Agent的模型漂移指标、重训练计划和数据质量评分。当准确率低于阈值时自动触发重训练。"
+      }
+    ],
+    "projects": [
+      { "dept": "prop", "expert": "tax", "name": "租金AI", "color": "#D97706", "desc": "自动化租金开票、付款跟踪和逾期提醒。AI将银行流水与租户台账自动对账。", "roleAgent": "物业会计Agent", "retention": "保留数十年的账单历史和租户关系日志——员工轮换不丢失任何知识。", "staff": [{"icon": "👩‍💼", "name": "田中优希", "role": "账单主管"}, {"icon": "👨‍💻", "name": "佐藤健司", "role": "对账工程师"}, {"icon": "👩‍🔧", "name": "山田爱子", "role": "租户关系"}] },
+      { "dept": "prop", "expert": "eng", "name": "预测维护", "color": "#059669", "desc": "AI监控电梯、空调和管道传感器数据，在故障发生前进行预测。", "roleAgent": "维修协调Agent", "retention": "保存供应商绩效数据和楼栋专属维护模式，跨越人员变动。", "staff": [{"icon": "👷", "name": "中村太郎", "role": "总工程师"}, {"icon": "👩‍🔬", "name": "伊藤美佳", "role": "传感器分析师"}, {"icon": "🧑‍🔧", "name": "铃木凉", "role": "HVAC专家"}, {"icon": "👨‍🏭", "name": "小林仁", "role": "电梯技师"}] },
+      { "dept": "prop", "expert": "legal", "name": "租约审计", "color": "#7C3AED", "desc": "自动审核租约条款、标记不合规条款、生成续约建议。", "roleAgent": "租赁经理Agent", "retention": "永久存储所有历史租约谈判记录和法律先例。", "staff": [{"icon": "👩‍⚖️", "name": "小川春菜", "role": "法务审查员"}, {"icon": "👨‍💼", "name": "渡边浩二", "role": "合同专家"}] },
+      { "dept": "prop", "expert": "ai", "name": "入住率AI", "color": "#2563EB", "desc": "预测入住趋势、优化定价策略、识别空置率上升风险的楼栋。", "roleAgent": "资产策略Agent", "retention": "维护市场分析历史和定价优化模型。", "staff": [{"icon": "👩‍💻", "name": "木村樱", "role": "数据科学家"}, {"icon": "👨‍📊", "name": "桥本莲", "role": "市场分析师"}, {"icon": "🧑‍💼", "name": "森田悠真", "role": "定价策略师"}] },
+      { "dept": "med", "expert": "legal", "name": "APPI合规", "color": "#DC2626", "desc": "持续监控患者数据处理是否符合APPI法规，自动生成合规报告。", "roleAgent": "合规官Agent", "retention": "保持完整的审计追踪和法规变更历史，不受人员变动影响。", "staff": [{"icon": "👩‍⚕️", "name": "藤田惠美", "role": "隐私官"}, {"icon": "👨‍💻", "name": "西田拓也", "role": "审计工程师"}] },
+      { "dept": "med", "expert": "ai", "name": "患者流AI", "color": "#2563EB", "desc": "利用预测模型优化预约排程、床位分配和资源利用率。", "roleAgent": "医务管理Agent", "retention": "保存排程模式和患者流量洞察，跨越员工轮换。", "staff": [{"icon": "👩‍⚕️", "name": "上田奈奈", "role": "排程主管"}, {"icon": "👨‍💻", "name": "青木宏", "role": "ML工程师"}, {"icon": "🧑‍⚕️", "name": "�的藤结衣", "role": "临床协调员"}] },
+      { "dept": "fin", "expert": "tax", "name": "税务优化", "color": "#D97706", "desc": "多实体税务规划、折旧排程和跨楼栋费用优化。", "roleAgent": "税务专家Agent", "retention": "永久保留十年以上的税务申报历史和优化策略。", "staff": [{"icon": "👩‍💼", "name": "加藤美咲", "role": "税务经理"}, {"icon": "👨‍💻", "name": "高桥苍太", "role": "税务分析师"}, {"icon": "🧑‍💼", "name": "远藤海斗", "role": "折旧规划师"}] },
+      { "dept": "fin", "expert": "ai", "name": "现金流预测", "color": "#2563EB", "desc": "基于ML的跨物业现金流预测，结合季节趋势和市场环境。", "roleAgent": "财务分析Agent", "retention": "保存预测模型调优参数和历史准确率数据。", "staff": [{"icon": "👩‍💻", "name": "林真央", "role": "ML建模师"}, {"icon": "👨‍📊", "name": "清水大辉", "role": "财务规划师"}] },
+      { "dept": "hr", "expert": "legal", "name": "劳动法规", "color": "#7C3AED", "desc": "监控工时、合同合规和所有设施的劳动法变化。", "roleAgent": "人事合规Agent", "retention": "永久保留员工政策历史和合规记录。", "staff": [{"icon": "👩‍💼", "name": "村上花", "role": "人事合规主管"}, {"icon": "👨‍⚖️", "name": "吉田明", "role": "劳动法专家"}] },
+      { "dept": "hr", "expert": "ai", "name": "劳动力AI", "color": "#2563EB", "desc": "分析人员配置模式、预测离职风险、优化排班。", "roleAgent": "劳动力Agent", "retention": "通过人员变动保存组织知识和人员配置分析数据。", "staff": [{"icon": "👩‍💻", "name": "井上理子", "role": "人员分析"}, {"icon": "👨‍💼", "name": "松本瞬", "role": "排班优化师"}, {"icon": "🧑‍💻", "name": "冈田直", "role": "留存建模师"}] }
+    ],
+    "constitution": {
+      "title": "企业宪法与文化层",
+      "gmAgent": "🎖️ 总经理Agent——中枢调度",
+      "schedulerAgent": "📅 日程Agent——时限与升级",
+      "desc": "所有Agent在日式企业文化框架内运作：敬语协议、长幼秩序、礼貌催办。",
+      "roleRetention": "👤 人走岗位留——岗位Agent永久保留组织知识"
+    }
+  },
+  "slide7": {
+    "badge": "成长架构",
+    "title": "从桌面到数据中心",
+    "titleHighlight": "桌面到数据中心",
+    "subtitle": "小起步，大成长——数据永远留在企业内部",
+    "stages": [
+      {
+        "level": 1,
+        "title": "个人AI",
+        "subtitle": "DGX Spark 桌面机",
+        "desc": "单台桌面级AI节点，用于初始试点。在大规模推广前与小团队完美测试。",
+        "specs": ["1× DGX Spark", "本地LLM推理", "~10并发用户"],
+        "icon": "💻"
+      },
+      {
+        "level": 2,
+        "title": "团队AI",
+        "subtitle": "3–5节点集群",
+        "desc": "部门级集群，处理多模态AI——语音、文档OCR和实时分类。",
+        "specs": ["3–5× DGX Spark", "多模态流水线", "~100并发用户"],
+        "icon": "🖥️"
+      },
+      {
+        "level": 3,
+        "title": "企业AI",
+        "subtitle": "H200 → Blackwell",
+        "desc": "全企业级计算中心，支持11栋大楼的RAG管线和持续模型微调，服务7,500+人员。",
+        "specs": ["H200 → Blackwell GPU", "完整RAG + LoRA微调", "7,500+用户"],
+        "icon": "🏢"
+      }
+    ],
+    "dataShield": {
+      "title": "数据主权护盾",
+      "badge": "🛡️ 数据永不出楼",
+      "points": [
+        "所有大模型在本地运行——零外部云API调用",
+        "数据在日本境内静态加密(AES-256)和传输加密(TLS 1.3)",
+        "训练数据不外传——模型在自有硬件上本地微调",
+        "APPI合规架构从第一天起经过验证"
+      ]
+    },
+    "upgradeNote": "零停机——同一软件栈，只增加算力。无供应商锁定。"
+  },
+  "slide8": {
+    "badge": "阶段二：攘外",
+    "title": "AI极速交付",
+    "titleHighlight": "极速交付",
+    "subtitle": "1-2个月交付完整供应链ERP——AI取代全套传统开发团队",
+    "wordCloud": {
+      "title": "一个AI取代一整支团队",
+      "roles": [
+        { "role": "项目经理", "size": 3 },
+        { "role": "后端开发", "size": 4 },
+        { "role": "前端开发", "size": 4 },
+        { "role": "QA测试", "size": 3 },
+        { "role": "DBA", "size": 2 },
+        { "role": "运维", "size": 3 },
+        { "role": "UI设计师", "size": 2 },
+        { "role": "系统管理员", "size": 2 },
+        { "role": "技术负责人", "size": 3 },
+        { "role": "架构师", "size": 2 }
+      ]
+    },
+    "techStack": {
+      "title": "现代技术栈",
+      "clickHint": "点击技术层查看详情",
+      "layers": [
+        { "name": "前端", "color": "#3B82F6", "techs": ["Next.js", "React", "Tailwind CSS"], "detail": "服务端渲染的React框架，响应式设计，针对日语区域和适老化无障碍标准优化。" },
+        { "name": "后端", "color": "#8B5CF6", "techs": ["Node.js", "Edge Functions", "REST API"], "detail": "Serverless后端配合边缘计算，超低延迟，自动扩展无需运维开销。" },
+        { "name": "数据库", "color": "#059669", "techs": ["Supabase", "PostgreSQL", "向量DB"], "detail": "实时数据库配备行级安全策略，向量搜索支持全企业数据的语义文档检索。" },
+        { "name": "AI层", "color": "#D97706", "techs": ["本地LLM", "RAG", "LoRA微调"], "detail": "本地运行的大模型配合检索增强生成，企业数据留在本地——微调在自有硬件上运行。" },
+        { "name": "部署", "color": "#DC2626", "techs": ["Vercel", "Cloudflare", "Docker"], "detail": "边缘优先部署，CDN覆盖亚太地区，Docker容器用于本地组件。" }
+      ]
+    },
+    "esb": {
+      "title": "企业服务总线 (ESB)",
+      "subtitle": "IBM级异构系统集成",
+      "desc": "ESB作为现代云原生系统与传统企业基础设施之间的通用翻译器，实现跨不兼容协议、格式和技术代际的无缝数据交换——对接伊势丹等日本零售巨头的关键桥梁。",
+      "protocols": [
+        { "modern": "REST / GraphQL", "legacy": "JCA步顺", "icon": "🔄" },
+        { "modern": "实时Webhooks", "legacy": "全银协格式", "icon": "🏦" },
+        { "modern": "JSON / 结构化", "legacy": "SFTP CSV/XML", "icon": "📄" }
+      ],
+      "capabilities": [
+        "消息转换：XML ↔ JSON ↔ EDI ↔ CSV",
+        "协议桥接：HTTP ↔ SFTP ↔ JCA ↔ SOAP",
+        "跨分布式系统的事务管理",
+        "服务编排：重试、故障转移与死信队列"
+      ],
+      "clickHint": "点击查看ESB架构详情"
+    },
+    "flow": ["🌱 采摘", "📦 仓储", "🚢 海运", "🛃 清关", "🏬 零售"],
+    "highlight": "1-2个月",
+    "highlightLabel": "对比传统12-18个月"
+  },
+  "slide9": {
+    "badge": "合作共赢",
+    "title": "携手共建未来",
+    "titleHighlight": "未来",
+    "subtitle": "MOTA TECHLINK——前沿AI与企业级架构的完美融合",
+    "advantages": [
+      {
+        "icon": "🧠",
+        "title": "前沿+企业级",
+        "description": "AI大模型微调（RAG/LoRA）、多智能体协同，加上IBM级ESB架构与混合云部署"
+      },
+      {
+        "icon": "🎌",
+        "title": "文化洞察力",
+        "description": "深刻理解日本商业文化——圈内推荐信任、适老化设计、敬语交互"
+      },
+      {
+        "icon": "⚡",
+        "title": "AI速度交付",
+        "description": "传统咨询公司12+个月的工作量，我们1-2个月内通过AI Coding和迭代部署完成"
+      }
+    ],
+    "nextSteps": {
+      "title": "建议下一步",
+      "steps": [
+        { "number": "1", "action": "与TAKI先生确认「安内优先，攘外并行」的总体节奏" },
+        { "number": "2", "action": "收集日本地产管理中最高频的3-5个痛点场景" },
+        { "number": "3", "action": "MOTA在1-2周内提供语音+照片输入的Agent Demo演示" }
+      ]
+    },
+    "cta": {
+      "label": "开始对话",
+      "website": "atom.motaiot.com"
+    },
+    "footer": "MOTA TECHLINK INC. — 以AI赋能传承企业"
+  }
+}

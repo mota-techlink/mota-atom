@@ -16,6 +16,11 @@ const AIWeb3LogisticsDeck = dynamic(
   { loading: () => <LoadingSpinner /> }
 );
 
+const AIFamilyBizDeck = dynamic(
+  () => import("@content/pitch-decks/ai-family-biz/deck").then(mod => mod.AIFamilyBizDeck),
+  { loading: () => <LoadingSpinner /> }
+);
+
 function LoadingSpinner() {
   return (
     <div className="w-full h-full flex items-center justify-center bg-black">
@@ -46,6 +51,13 @@ export function PitchDeckViewer({ slug, meta, isAuthenticated }: PitchDeckViewer
     case "ai-web3-logistics":
       return (
         <AIWeb3LogisticsDeck
+          isAuthenticated={isAuthenticated}
+          transition={transition}
+        />
+      );
+    case "ai-family-biz":
+      return (
+        <AIFamilyBizDeck
           isAuthenticated={isAuthenticated}
           transition={transition}
         />

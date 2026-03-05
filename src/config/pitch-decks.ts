@@ -10,6 +10,7 @@
 
 import elmsMeta from "@content/pitch-decks/elms-logistics/meta.json";
 import aiWeb3Meta from "@content/pitch-decks/ai-web3-logistics/meta.json";
+import aiFamilyBizMeta from "@content/pitch-decks/ai-family-biz/meta.json";
 
 export interface PitchDeckMeta {
   title: string;
@@ -30,7 +31,7 @@ export interface PitchDeckMeta {
  * Automatically populated from each deck's meta.json.
  */
 export const PITCH_DECK_REGISTRY: Record<string, PitchDeckMeta> = Object.fromEntries(
-  [elmsMeta, aiWeb3Meta].map((m) => [m.slug, m as PitchDeckMeta])
+  [elmsMeta, aiWeb3Meta, aiFamilyBizMeta].map((m) => [m.slug, m as PitchDeckMeta])
 );
 
 /**
