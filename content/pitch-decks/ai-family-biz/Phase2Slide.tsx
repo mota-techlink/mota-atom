@@ -53,7 +53,7 @@ function StrategyBanner({
     tagline: string;
   };
 }) {
-  const [expanded, setExpanded] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
   return (
     <motion.div
       className="w-full rounded-xl bg-gradient-to-r from-amber-950/40 via-amber-900/25 to-amber-950/40 border border-amber-600/30 p-3 sm:p-4"
@@ -66,34 +66,38 @@ function StrategyBanner({
         {strategy.steps.map((s, i) => (
           <motion.div
             key={i}
-            className={`relative rounded-xl border p-3 cursor-pointer transition-colors ${
-              expanded === i
-                ? "bg-amber-800/25 border-amber-500/50"
-                : "bg-amber-900/15 border-amber-700/25 hover:border-amber-600/40"
-            }`}
+            className="relative rounded-xl border p-3 cursor-default transition-colors bg-amber-900/15 border-amber-700/25 hover:border-amber-500/50 hover:bg-amber-800/25"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 + i * 0.12 }}
             whileHover={{ scale: 1.02 }}
-            onClick={() => setExpanded(expanded === i ? null : i)}
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
           >
-            <div className="flex items-center gap-2 mb-1.5">
+            <div className="flex items-center gap-2">
               <span className="text-2xl">{s.icon}</span>
               <span className="text-sm sm:text-base font-bold text-amber-100">{s.label}</span>
             </div>
             {/* Step number pill */}
             <span className="absolute top-2 right-2 w-5 h-5 rounded-full bg-amber-600/30 text-[10px] text-amber-200 flex items-center justify-center font-bold">{i + 1}</span>
+            {/* Hover tooltip */}
             <AnimatePresence>
-              {expanded === i && (
-                <motion.p
-                  className="text-xs sm:text-sm text-amber-200/80 leading-relaxed mt-1"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.25 }}
+              {hovered === i && (
+                <motion.div
+                  className="absolute z-30 left-1/2 -translate-x-1/2 bottom-full mb-2 w-64 px-3 py-2.5 rounded-xl border shadow-xl"
+                  style={{
+                    borderColor: "rgba(217,170,80,0.35)",
+                    backgroundColor: "#1a0f08",
+                    boxShadow: "0 4px 24px rgba(196,140,40,0.15)",
+                  }}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 6 }}
+                  transition={{ duration: 0.18 }}
                 >
-                  {s.desc}
-                </motion.p>
+                  <p className="text-xs text-amber-200/85 leading-relaxed">{s.desc}</p>
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-transparent" style={{ borderTopColor: "rgba(217,170,80,0.35)" }} />
+                </motion.div>
               )}
             </AnimatePresence>
             {/* Arrow connector */}

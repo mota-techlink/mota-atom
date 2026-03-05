@@ -16,7 +16,7 @@
     "titleHighlight": "Digital Transformation",
     "subtitle": "Full-Link Intelligent Management for TAKI Group",
     "proposedBy": "Proposed by MOTA TECHLINK INC.",
-    "vision": "Reshape family heavy-asset management with \"Zero-Friction\" senior-friendly interaction; safeguard cross-border coffee supply chain with \"Agile Full-Link\" architecture.",
+    "vision": "Reshape family asset management with \"Zero-Friction\" senior-friendly interaction; safeguard cross-border coffee supply chain with \"Agile Full-Link\" architecture.",
     "visionHighlight": "Zero-Friction",
     "tagline": "Command your empire with the ease of a gesture — across borders, across generations.",
     "stats": [
@@ -376,7 +376,7 @@
       "steps": [
         { "icon": "☕", "label": "Business First", "desc": "Ground every decision in real bean-trading workflows — origin sourcing, cupping scores, lot pricing. We never build in a vacuum." },
         { "icon": "🔧", "label": "System Follows", "desc": "Technology is shaped by field reality: roast profiles update the ERP schema; customs clearance triggers auto-invoicing. The system molds to the business, not vice versa." },
-        { "icon": "🌱", "label": "Grow Together", "desc": "As TAKI expands new origins (Ethiopia, Guatemala), the platform absorbs new parameters with zero rework. Business and system evolve in lockstep." }
+        { "icon": "🌱", "label": "Grow Together", "desc": "Expands new origins (Ethiopia, Guatemala), the platform absorbs new parameters with zero rework. Business and system evolve in lockstep." }
       ],
       "tagline": "☕ From seed to cup, every byte follows every bean"
     }
