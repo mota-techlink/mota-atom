@@ -41,10 +41,11 @@ Validation scripts automatically generate runtime artifacts to `src/generated/co
 - Periodically sync template features without overwriting own content
 
 ```bash
-git remote add upstream <template-repo-url>
+git remote add upstream https://github.com/mota-techlink/mota-atom.git
 git fetch upstream
 git checkout main
 git merge upstream/main
+git push origin main
 ```
 
 ## Content Replacement Process (Production Project)
@@ -52,6 +53,56 @@ git merge upstream/main
 1. Replace business content under `content/` (docs, products, multi-language)
 2. Replace brand assets under `public/` (logos, images, videos)
 3. Keep `src/` feature layer, avoid divergence conflicts with template features
+
+## Syncing Only Code Changes (Excluding content/ and public/)
+
+The upstream template repository for this project is:
+
+```
+https://github.com/mota-techlink/mota-atom.git
+```
+
+If you only want to sync feature code from upstream without bringing in upstream changes to `content/` and `public/`, the following approaches are available:
+
+### Option 1: gitattributes Content Protection (with merge, Recommended)
+
+Once `.gitattributes` is configured (see the "Best Practice" section below), a standard merge will automatically protect your content directories:
+
+```bash
+git fetch upstream
+git merge upstream/main
+# Changes in content/ and public/ are automatically ignored; src/ code merges normally
+git push origin main
+```
+
+### Option 2: Selective Path Sync
+
+Precisely control what gets synced by checking out only code-related files from upstream, leaving `content/` and `public/` completely untouched:
+
+```bash
+git fetch upstream
+# Sync only code and configuration paths
+git checkout upstream/main -- src/ scripts/ package.json tsconfig.json \
+  next.config.ts tailwind.config.ts postcss.config.mjs \
+  eslint.config.mjs webpack.config.js
+git commit -m "Sync code from upstream/main, local content unchanged"
+git push origin main
+```
+
+> **Note**: This approach directly replaces local files with upstream content without creating a merge commit. It gives precise control over the sync scope but does not automatically handle new files added to upstream.
+
+### Option 3: Merge then Reset Content Directories
+
+Merge all upstream changes, then force-restore your local content:
+
+```bash
+git fetch upstream
+git merge upstream/main --no-commit --no-ff
+# After staging the merge, force-restore local content directories
+git checkout HEAD -- content/ public/
+git commit -m "Sync upstream code changes, keep local content"
+git push origin main
+```
 
 ## Best Practice: Conflict Avoidance Strategy
 

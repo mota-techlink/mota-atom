@@ -315,6 +315,116 @@ interface ProductLayoutProps {
   content: React.ReactNode; // MDX 正文内容
 }
 
+function ComparisonTable({ pricing }: { pricing: any[] }) {
+  const t = useTranslations("ProductPage")
+
+  if (!pricing || pricing.length === 0) return null
+
+  // Tier names used to detect inheritance-marker lines (works across all languages)
+  const tierNamesLower = new Set(pricing.map((t: any) => t.name.toLowerCase()))
+
+  const isInheritanceMarker = (feat: string) =>
+    Array.from(tierNamesLower).some(name => feat.toLowerCase().includes(name))
+
+  // Raw features per tier — skip any inheritance-marker lines
+  const rawFeatures: string[][] = pricing.map((tier: any) =>
+    (tier.features ?? []).filter((f: string) => !isInheritanceMarker(f))
+  )
+
+  // Propagate upward: tier N's effective set = features of tiers 0..N combined
+  const effectiveFeatures: string[][] = rawFeatures.map((_, idx) => {
+    const seen = new Set<string>()
+    const result: string[] = []
+    for (let i = 0; i <= idx; i++) {
+      for (const feat of rawFeatures[i]) {
+        if (!seen.has(feat)) {
+          seen.add(feat)
+          result.push(feat)
+        }
+      }
+    }
+    return result
+  })
+
+  // Collect all unique features in order of first appearance
+  const allFeatures: string[] = []
+  const featureSet = new Set<string>()
+  for (const features of effectiveFeatures) {
+    for (const feat of features) {
+      if (!featureSet.has(feat)) {
+        featureSet.add(feat)
+        allFeatures.push(feat)
+      }
+    }
+  }
+
+  if (allFeatures.length === 0) return null
+
+  // Build inclusion map from effective (resolved) feature sets
+  const includedIn: Map<string, Set<number>> = new Map()
+  for (const feat of allFeatures) {
+    const tiers = new Set<number>()
+    effectiveFeatures.forEach((features, idx) => {
+      if (features.includes(feat)) tiers.add(idx)
+    })
+    includedIn.set(feat, tiers)
+  }
+
+  return (
+    <div className="hidden md:block">
+      <h3 className="text-xl font-bold mb-6">{t("comparePackages")}</h3>
+      <div className="border rounded-xl overflow-hidden">
+        <table className="w-full text-sm table-fixed">
+          <thead>
+            <tr className="bg-muted/50 border-b">
+              <th className="text-left px-5 py-4 font-semibold text-muted-foreground w-[40%]">
+                {t("feature")}
+              </th>
+              {pricing.map((tier, idx) => (
+                <th key={idx} className="text-center px-2 py-4 font-semibold w-[20%]">
+                  <div className="flex flex-col items-center gap-1">
+                    <span className="whitespace-nowrap">{tier.name}</span>
+                    <span className="text-xs font-normal text-muted-foreground whitespace-nowrap">{tier.price}</span>
+                  </div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {/* Delivery time row */}
+            <tr className="border-b bg-muted/20">
+              <td className="px-5 py-3 text-muted-foreground">{t("delivery")}</td>
+              {pricing.map((tier, idx) => (
+                <td key={idx} className="text-center px-2 py-3 text-muted-foreground whitespace-nowrap">
+                  {tier.deliveryTime}
+                </td>
+              ))}
+            </tr>
+            {/* Feature rows */}
+            {allFeatures.map((feat, rowIdx) => (
+              <tr
+                key={rowIdx}
+                className={`border-b last:border-0 ${rowIdx % 2 === 0 ? "" : "bg-muted/10"}`}
+              >
+                <td className="px-5 py-3 text-foreground/80">{feat}</td>
+                {pricing.map((_, tierIdx) => (
+                  <td key={tierIdx} className="text-center px-2 py-3">
+                    {includedIn.get(feat)?.has(tierIdx) ? (
+                      <Check className="w-4 h-4 text-green-500 mx-auto" />
+                    ) : (
+                      <span className="text-muted-foreground/40 text-lg leading-none">—</span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
 {/* === RIGHT COLUMN: Sticky Pricing Card === */}
 function PricingWidget({ data }: { data: any }) {
   const pathname = usePathname();
@@ -482,16 +592,8 @@ export function ProductLayout({ data, content }: ProductLayoutProps) {
             </div>
           </div>
 
-          {/* D. Comparison Table (Fiverr Style) - 可选 */}
-          <div className="hidden md:block">
-            <h3 className="text-xl font-bold mb-6">{t("comparePackages")}</h3>
-            <div className="border rounded-xl overflow-hidden">
-               {/* 这里可以放一个 Table 组件对比三个套餐的详细参数 */}
-               <div className="p-8 text-center text-muted-foreground bg-muted/20">
-                  {t("comparisonPlaceholder")}
-               </div>
-            </div>
-          </div>
+          {/* D. Comparison Table (Fiverr Style) */}
+          <ComparisonTable pricing={data.pricing} />
 
           {/* E. FAQ Section */}
           <div>
